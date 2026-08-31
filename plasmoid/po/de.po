@@ -1,0 +1,231 @@
+# German translations for Seu Dia... package.
+# Copyright (C) 2026 Seu Dia... contributors
+# This file is distributed under the same license as the widget.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Seu Dia... 1.0\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: contents/ui/configGeneral.qml
+msgid "Informe uma URL válida (ex.: https://exemplo.com/feed.xml)."
+msgstr "Geben Sie eine gültige URL ein (z. B. https://beispiel.com/feed.xml)."
+
+#: contents/ui/configGeneral.qml
+msgid "Esse feed já foi adicionado."
+msgstr "Dieser Feed wurde bereits hinzugefügt."
+
+#: contents/ui/configGeneral.qml
+msgid "Adicionar feed RSS"
+msgstr "RSS-Feed hinzufügen"
+
+#: contents/ui/configGeneral.qml
+msgid "URL do feed (RSS ou Atom)…"
+msgstr "Feed-URL (RSS oder Atom)…"
+
+#: contents/ui/configGeneral.qml
+msgid "Limpar"
+msgstr "Leeren"
+
+#: contents/ui/configGeneral.qml
+msgid "Adicionar"
+msgstr "Hinzufügen"
+
+#: contents/ui/configGeneral.qml
+msgid "Testando…"
+msgstr "Teste läuft…"
+
+#: contents/ui/configGeneral.qml
+msgid "Testar"
+msgstr "Testen"
+
+#: contents/ui/configGeneral.qml
+msgid "Seus feeds (%1)"
+msgstr "Deine Feeds (%1)"
+
+#: contents/ui/configGeneral.qml
+msgid "Atualizar"
+msgstr "Aktualisieren"
+
+#: contents/ui/configGeneral.qml
+msgid "Atualização automática dos feeds"
+msgstr "Automatische Aktualisierung der Feeds"
+
+#: contents/ui/configGeneral.qml
+msgid "Nenhum feed adicionado. Cole a URL de um feed no campo acima e clique em “Adicionar”."
+msgstr "Kein Feed hinzugefügt. Fügen Sie die URL eines Feeds in das Feld oben ein und klicken Sie auf „Hinzufügen“."
+
+#: contents/ui/configGeneral.qml
+msgid "Remover feed"
+msgstr "Feed entfernen"
+
+#: contents/ui/configGeneral.qml
+msgid "Limite de notícias deste feed:"
+msgstr "Nachrichtenlimit für diesen Feed:"
+
+#: contents/ui/configGeneral.qml
+msgid "notícias"
+msgstr "Nachrichten"
+
+#: contents/ui/configGeneral.qml
+msgid "O limite total de notícias da lista está na seção “Exibição”. As alterações são aplicadas imediatamente."
+msgstr "Das Gesamtlimit der Nachrichtenliste befindet sich im Abschnitt „Anzeige“. Änderungen werden sofort angewendet."
+
+#: contents/ui/configView.qml
+msgid "Escolher ícone"
+msgstr "Symbol auswählen"
+
+#: contents/ui/configView.qml
+msgid "Imagens (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"
+msgstr "Bilder (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"
+
+#: contents/ui/configView.qml
+msgid "Todos os arquivos (*)"
+msgstr "Alle Dateien (*)"
+
+#: contents/ui/configView.qml
+msgid "Exibição"
+msgstr "Anzeige"
+
+#: contents/ui/configView.qml
+msgid "Máximo total de notícias na lista:"
+msgstr "Maximale Gesamtzahl der Nachrichten in der Liste:"
+
+#: contents/ui/configView.qml
+msgid "Linhas da chamada da matéria:"
+msgstr "Zeilen der Schlagzeile:"
+
+#: contents/ui/configView.qml
+msgid "linhas por notícia"
+msgstr "Zeilen pro Nachricht"
+
+#: contents/ui/configView.qml
+msgid "Colunas de notícias:"
+msgstr "Nachrichtenspalten:"
+
+#: contents/ui/configView.qml
+msgid "colunas no widget"
+msgstr "Spalten im Widget"
+
+#: contents/ui/configView.qml
+msgid "Com mais de 1 coluna, as notícias são distribuídas automaticamente entre as colunas."
+msgstr "Bei mehr als 1 Spalte werden die Nachrichten automatisch auf die Spalten verteilt."
+
+#: contents/ui/configView.qml
+msgid "Este limite vale para a lista inteira, somando todos os feeds. Para ajustar cada fonte individualmente, use a seção “Feeds de notícias”."
+msgstr "Dieses Limit gilt für die gesamte Liste unter Einbeziehung aller Feeds. Um jede Quelle einzeln anzupassen, verwenden Sie den Abschnitt „Nachrichtenfeeds“."
+
+#: contents/ui/configView.qml
+msgid "As alterações são aplicadas imediatamente ao widget."
+msgstr "Die Änderungen werden sofort auf das Widget angewendet."
+
+#: contents/ui/configView.qml
+msgid "Ícone do widget"
+msgstr "Widget-Symbol"
+
+#: contents/ui/configView.qml
+msgid "Este ícone aparece na barra de tarefas e no próprio widget."
+msgstr "Dieses Symbol erscheint in der Taskleiste und im Widget selbst."
+
+#: contents/ui/configView.qml
+msgid "Usar padrão"
+msgstr "Standard verwenden"
+
+#: contents/ui/configView.qml
+msgid "Carregar arquivo próprio…"
+msgstr "Eigene Datei laden…"
+
+#: contents/ui/configView.qml
+msgid "Use uma imagem (PNG, SVG, JPG…) do seu computador como ícone."
+msgstr "Verwenden Sie ein Bild (PNG, SVG, JPG…) von Ihrem Computer als Symbol."
+
+#: contents/ui/configView.qml
+msgid "Ícone próprio em uso:\n%1"
+msgstr "Eigenes Symbol in Verwendung:\n%1"
+
+#: contents/ui/configView.qml
+msgid "Remover arquivo"
+msgstr "Datei entfernen"
+
+#: contents/ui/configView.qml
+msgid "Digite o nome de um ícone…"
+msgstr "Geben Sie den Namen eines Symbols ein…"
+
+#: contents/ui/configView.qml
+msgid "Escolha um dos ícones acima, digite o nome de qualquer ícone do tema (ex.: rss, internet-mail, text-html) ou carregue um arquivo próprio."
+msgstr "Wählen Sie eines der Symbole oben, geben Sie den Namen eines beliebigen Themen-Symbols ein (z. B. rss, internet-mail, text-html) oder laden Sie eine eigene Datei."
+
+#: contents/ui/main.qml
+msgid "tempo esgotado"
+msgstr "Zeitüberschreitung"
+
+#: contents/ui/main.qml
+msgid "falha de conexão"
+msgstr "Verbindungsfehler"
+
+#: contents/ui/main.qml
+msgid "resposta inválida (não é RSS) ou servidor inacessível"
+msgstr "ungültige Antwort (kein RSS) oder Server nicht erreichbar"
+
+#: contents/ui/main.qml
+msgid "HTTP %1"
+msgstr "HTTP %1"
+
+#: contents/ui/main.qml
+msgid "%1 — %2"
+msgstr "%1 — %2"
+
+#: contents/ui/main.qml
+msgid "Falha em %1 (%2)"
+msgstr "Fehler bei %1 (%2)"
+
+#: contents/ui/main.qml
+msgid "Atualizar notícias"
+msgstr "Nachrichten aktualisieren"
+
+#: contents/ui/main.qml
+msgid "Nenhum feed configurado"
+msgstr "Kein Feed konfiguriert"
+
+#: contents/ui/main.qml
+msgid "Nenhuma notícia encontrada"
+msgstr "Keine Nachrichten gefunden"
+
+#: contents/ui/main.qml
+msgid "Nenhuma notícia carregada. Veja os detalhes abaixo."
+msgstr "Keine Nachrichten geladen. Siehe Details unten."
+
+#: contents/ui/main.qml
+msgid "Adicionar feed…"
+msgstr "Feed hinzufügen…"
+
+#: contents/ui/main.qml
+msgid "Tentar novamente"
+msgstr "Erneut versuchen"
+
+#: contents/ui/main.qml
+msgid "Alguns feeds não carregaram:"
+msgstr "Einige Feeds wurden nicht geladen:"
+
+#: contents/ui/main.qml
+msgid "Atualizado às %1"
+msgstr "Aktualisiert um %1"
+
+#: <saudacao dinamica>
+msgid "Bom dia"
+msgstr "Guten Morgen"
+
+#: <saudacao dinamica>
+msgid "Boa tarde"
+msgstr "Guten Tag"
+
+#: <saudacao dinamica>
+msgid "Boa noite"
+msgstr "Guten Abend"

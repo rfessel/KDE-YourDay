@@ -1,0 +1,5 @@
+# gettext backup de msgmerge
+plasmoid/po/*.po~
+# bytecode python
+__pycache__/
+*.pyc

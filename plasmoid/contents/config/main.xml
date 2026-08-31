@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+  <kcfgfile name=""/>
+
+  <group name="General">
+    <entry name="feeds" type="StringList">
+      <label>URLs dos feeds RSS a serem exibidos no widget.</label>
+    </entry>
+    <entry name="feedLimits" type="StringList">
+      <label>Limite máximo de notícias por feed (mesma ordem de "feeds"; vazio = usar o padrão).</label>
+    </entry>
+    <entry name="maxItems" type="Int">
+      <label>Número máximo de notícias listadas simultaneamente.</label>
+      <default>50</default>
+    </entry>
+    <entry name="headlineLines" type="Int">
+      <label>Número de linhas exibidas do resumo (chamada) de cada notícia.</label>
+      <default>2</default>
+    </entry>
+    <entry name="columns" type="Int">
+      <default>1</default>
+      <label>Número de colunas de notícias exibidas no widget.</label>
+    </entry>
+    <entry name="refreshMinutes" type="Int">
+      <default>10</default>
+      <label>Intervalo (em minutos) de atualização automática dos feeds; 0 = somente manual.</label>
+    </entry>
+    <entry name="iconName" type="String">
+      <default>view-pim-news</default>
+      <label>Ícone do widget.</label>
+    </entry>
+    <entry name="customIcon" type="String">
+      <default></default>
+      <label>Caminho (URL) de uma imagem usada como ícone do widget; vazio = usar iconName.</label>
+    </entry>
+  </group>
+
+</kcfg>

@@ -1,0 +1,22 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "rafael.fessel@gmail.com",
+                "Name": "Rafael Fessel"
+            }
+        ],
+        "Category": "Online Services",
+        "Description": "Seu resumo diário de notícias, tudo num só lugar.",
+        "Description[pt_BR]": "Seu resumo diário de notícias, tudo num só lugar.",
+        "Icon": "view-calendar-day",
+        "Id": "kde.yourday",
+        "License": "GPL-2.0-or-later",
+        "Name": "Seu Dia...",
+        "Name[pt_BR]": "Seu Dia...",
+        "Version": "1.0",
+        "Website": ""
+    },
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

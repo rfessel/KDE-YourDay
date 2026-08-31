@@ -1,0 +1,231 @@
+# Japanese translations for Seu Dia... package.
+# Copyright (C) 2026 Seu Dia... contributors
+# This file is distributed under the same license as the widget.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Seu Dia... 1.0\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: contents/ui/configGeneral.qml
+msgid "Informe uma URL válida (ex.: https://exemplo.com/feed.xml)."
+msgstr "有効なURLを入力してください（例：https://example.com/feed.xml）。"
+
+#: contents/ui/configGeneral.qml
+msgid "Esse feed já foi adicionado."
+msgstr "このフィードはすでに追加されています。"
+
+#: contents/ui/configGeneral.qml
+msgid "Adicionar feed RSS"
+msgstr "RSSフィードを追加"
+
+#: contents/ui/configGeneral.qml
+msgid "URL do feed (RSS ou Atom)…"
+msgstr "フィードのURL（RSSまたはAtom）…"
+
+#: contents/ui/configGeneral.qml
+msgid "Limpar"
+msgstr "クリア"
+
+#: contents/ui/configGeneral.qml
+msgid "Adicionar"
+msgstr "追加"
+
+#: contents/ui/configGeneral.qml
+msgid "Testando…"
+msgstr "テスト中…"
+
+#: contents/ui/configGeneral.qml
+msgid "Testar"
+msgstr "テスト"
+
+#: contents/ui/configGeneral.qml
+msgid "Seus feeds (%1)"
+msgstr "フィード (%1)"
+
+#: contents/ui/configGeneral.qml
+msgid "Atualizar"
+msgstr "更新"
+
+#: contents/ui/configGeneral.qml
+msgid "Atualização automática dos feeds"
+msgstr "フィードの自動更新"
+
+#: contents/ui/configGeneral.qml
+msgid "Nenhum feed adicionado. Cole a URL de um feed no campo acima e clique em “Adicionar”."
+msgstr "フィードが追加されていません。上の欄にフィードのURLを貼り付けて「追加」をクリックしてください。"
+
+#: contents/ui/configGeneral.qml
+msgid "Remover feed"
+msgstr "フィードを削除"
+
+#: contents/ui/configGeneral.qml
+msgid "Limite de notícias deste feed:"
+msgstr "このフィードのニュース上限："
+
+#: contents/ui/configGeneral.qml
+msgid "notícias"
+msgstr "ニュース"
+
+#: contents/ui/configGeneral.qml
+msgid "O limite total de notícias da lista está na seção “Exibição”. As alterações são aplicadas imediatamente."
+msgstr "リストのニュース総数上限は「表示」セクションにあります。変更はすぐに反映されます。"
+
+#: contents/ui/configView.qml
+msgid "Escolher ícone"
+msgstr "アイコンを選択"
+
+#: contents/ui/configView.qml
+msgid "Imagens (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"
+msgstr "画像 (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"
+
+#: contents/ui/configView.qml
+msgid "Todos os arquivos (*)"
+msgstr "すべてのファイル (*)"
+
+#: contents/ui/configView.qml
+msgid "Exibição"
+msgstr "表示"
+
+#: contents/ui/configView.qml
+msgid "Máximo total de notícias na lista:"
+msgstr "リストのニュースの最大数："
+
+#: contents/ui/configView.qml
+msgid "Linhas da chamada da matéria:"
+msgstr "見出しの行数："
+
+#: contents/ui/configView.qml
+msgid "linhas por notícia"
+msgstr "ニュースごとの行数"
+
+#: contents/ui/configView.qml
+msgid "Colunas de notícias:"
+msgstr "ニュースの列数："
+
+#: contents/ui/configView.qml
+msgid "colunas no widget"
+msgstr "ウィジェットの列数"
+
+#: contents/ui/configView.qml
+msgid "Com mais de 1 coluna, as notícias são distribuídas automaticamente entre as colunas."
+msgstr "2列以上の場合、ニュースは各列に自動的に振り分けられます。"
+
+#: contents/ui/configView.qml
+msgid "Este limite vale para a lista inteira, somando todos os feeds. Para ajustar cada fonte individualmente, use a seção “Feeds de notícias”."
+msgstr "この上限はすべてのフィードを合計したリスト全体に適用されます。各ソースを個別に調整するには、「ニュースフィード」セクションを使用してください。"
+
+#: contents/ui/configView.qml
+msgid "As alterações são aplicadas imediatamente ao widget."
+msgstr "変更はウィジェットにすぐ反映されます。"
+
+#: contents/ui/configView.qml
+msgid "Ícone do widget"
+msgstr "ウィジェットのアイコン"
+
+#: contents/ui/configView.qml
+msgid "Este ícone aparece na barra de tarefas e no próprio widget."
+msgstr "このアイコンはタスクバーとウィジェット本体に表示されます。"
+
+#: contents/ui/configView.qml
+msgid "Usar padrão"
+msgstr "既定を使用"
+
+#: contents/ui/configView.qml
+msgid "Carregar arquivo próprio…"
+msgstr "独自のファイルを読み込む…"
+
+#: contents/ui/configView.qml
+msgid "Use uma imagem (PNG, SVG, JPG…) do seu computador como ícone."
+msgstr "コンピューターの画像（PNG、SVG、JPG…）をアイコンとして使用します。"
+
+#: contents/ui/configView.qml
+msgid "Ícone próprio em uso:\n%1"
+msgstr "独自のアイコンを使用中：\n%1"
+
+#: contents/ui/configView.qml
+msgid "Remover arquivo"
+msgstr "ファイルを削除"
+
+#: contents/ui/configView.qml
+msgid "Digite o nome de um ícone…"
+msgstr "アイコンの名前を入力…"
+
+#: contents/ui/configView.qml
+msgid "Escolha um dos ícones acima, digite o nome de qualquer ícone do tema (ex.: rss, internet-mail, text-html) ou carregue um arquivo próprio."
+msgstr "上のアイコンを選ぶか、テーマの任意のアイコン名（例：rss、internet-mail、text-html）を入力するか、独自のファイルを読み込んでください。"
+
+#: contents/ui/main.qml
+msgid "tempo esgotado"
+msgstr "タイムアウト"
+
+#: contents/ui/main.qml
+msgid "falha de conexão"
+msgstr "接続エラー"
+
+#: contents/ui/main.qml
+msgid "resposta inválida (não é RSS) ou servidor inacessível"
+msgstr "無効な応答（RSSではない）またはサーバーにアクセス不可"
+
+#: contents/ui/main.qml
+msgid "HTTP %1"
+msgstr "HTTP %1"
+
+#: contents/ui/main.qml
+msgid "%1 — %2"
+msgstr "%1 — %2"
+
+#: contents/ui/main.qml
+msgid "Falha em %1 (%2)"
+msgstr "%1 でエラー (%2)"
+
+#: contents/ui/main.qml
+msgid "Atualizar notícias"
+msgstr "ニュースを更新"
+
+#: contents/ui/main.qml
+msgid "Nenhum feed configurado"
+msgstr "フィードが設定されていません"
+
+#: contents/ui/main.qml
+msgid "Nenhuma notícia encontrada"
+msgstr "ニュースが見つかりません"
+
+#: contents/ui/main.qml
+msgid "Nenhuma notícia carregada. Veja os detalhes abaixo."
+msgstr "ニュースが読み込まれませんでした。詳細は下記をご覧ください。"
+
+#: contents/ui/main.qml
+msgid "Adicionar feed…"
+msgstr "フィードを追加…"
+
+#: contents/ui/main.qml
+msgid "Tentar novamente"
+msgstr "再試行"
+
+#: contents/ui/main.qml
+msgid "Alguns feeds não carregaram:"
+msgstr "一部のフィードが読み込まれませんでした。"
+
+#: contents/ui/main.qml
+msgid "Atualizado às %1"
+msgstr "%1 に更新"
+
+#: <saudacao dinamica>
+msgid "Bom dia"
+msgstr "おはようございます"
+
+#: <saudacao dinamica>
+msgid "Boa tarde"
+msgstr "こんにちは"
+
+#: <saudacao dinamica>
+msgid "Boa noite"
+msgstr "こんばんは"
