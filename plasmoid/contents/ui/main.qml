@@ -91,18 +91,24 @@ PlasmoidItem {
 
     // ---------------------------------------------------------------- plugins
 
-    compactRepresentation: PlasmaComponents3.ToolButton {
-        id: compactButton
-        display: PlasmaComponents3.AbstractButton.IconOnly
-        icon.name: root.iconResolvedName
-        icon.source: root.iconResolvedSource
-        text: Plasmoid.title
-        Accessible.name: text
-        Layout.fillWidth: false
-        Layout.fillHeight: false
-        Layout.minimumWidth: implicitWidth
-        Layout.maximumWidth: implicitWidth
-        onClicked: root.expanded = !root.expanded
+    compactRepresentation: Item {
+        id: compactRoot
+        Layout.minimumWidth: Kirigami.Units.iconSizes.medium
+        Layout.minimumHeight: Kirigami.Units.iconSizes.medium
+        Layout.preferredWidth: Kirigami.Units.iconSizes.large
+        Layout.preferredHeight: Kirigami.Units.iconSizes.large
+
+        DayIcon {
+            anchors.fill: parent
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: root.expanded = !root.expanded
+            Accessible.name: Plasmoid.title
+            cursorShape: Qt.PointingHandCursor
+        }
     }
 
     // ------------------------------------------------------------------ lógica
@@ -462,15 +468,11 @@ PlasmoidItem {
             Layout.rightMargin: Kirigami.Units.largeSpacing
             spacing: Kirigami.Units.smallSpacing
 
-            PlasmaComponents3.ToolButton {
-                display: PlasmaComponents3.AbstractButton.IconOnly
-                icon.name: root.iconResolvedName
-        icon.source: root.iconResolvedSource
-                hoverEnabled: false
+            DayIcon {
+                cellSize: 56
                 Layout.preferredWidth: 56
                 Layout.preferredHeight: 56
                 Layout.alignment: Qt.AlignVCenter
-                Accessible.name: "RSS"
             }
 
             ColumnLayout {
