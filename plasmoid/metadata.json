@@ -8,8 +8,8 @@
             }
         ],
         "Category": "Online Services",
-        "Description": "Seu resumo diário de notícias, tudo num só lugar.",
-        "Description[pt_BR]": "Seu resumo diário de notícias, tudo num só lugar.",
+        "Description": "Seu resumo diário do que você precisa fazer e gosta de saber.",
+        "Description[pt_BR]": "Seu resumo diário do que você precisa fazer e gosta de saber.",
         "Icon": "view-calendar-day",
         "Id": "kde.yourday",
         "License": "GPL-2.0-or-later",

@@ -29,12 +29,55 @@
       <label>Intervalo (em minutos) de atualização automática dos feeds; 0 = somente manual.</label>
     </entry>
     <entry name="iconName" type="String">
-      <default>view-pim-news</default>
+      <default>view-calendar-day</default>
       <label>Ícone do widget.</label>
     </entry>
     <entry name="customIcon" type="String">
       <default></default>
       <label>Caminho (URL) de uma imagem usada como ícone do widget; vazio = usar iconName.</label>
+    </entry>
+    <entry name="agendaSources" type="StringList">
+      <label>Lista de fontes da agenda: URLs .ics (CalDAV/Google export) ou caminhos de arquivo .ics locais.</label>
+    </entry>
+    <entry name="todos" type="StringList">
+      <label>Lista de tarefas do dia (to-dos), serializadas como "texto|1"(concluída) ou "texto|0".</label>
+    </entry>
+    <entry name="completedTodos" type="StringList">
+      <label>Lista de tarefas concluídas, serializadas como "texto".</label>
+    </entry>
+    <entry name="notes" type="StringList">
+      <label>Lista de notas (post-its), serializadas como "texto|cor".</label>
+    </entry>
+    <entry name="lists" type="StringList">
+      <label>Lista de listas, serializadas como "nome|itens (separados por ;)".</label>
+    </entry>
+    <entry name="weatherCity" type="String">
+      <default></default>
+      <label>Cidade para previsão do tempo.</label>
+    </entry>
+    <entry name="weatherLatitude" type="Double">
+      <default>0</default>
+      <label>Latitude da cidade.</label>
+    </entry>
+    <entry name="weatherLongitude" type="Double">
+      <default>0</default>
+      <label>Longitude da cidade.</label>
+    </entry>
+    <entry name="weatherCities" type="String">
+      <default></default>
+      <label>JSON array de cidades adicionais: [{"name":"X","lat":0,"lon":0}].</label>
+    </entry>
+    <entry name="cachedNews" type="String">
+      <default></default>
+      <label>JSON array de notícias cacheadas para uso offline.</label>
+    </entry>
+    <entry name="defaultTab" type="Int">
+      <default>0</default>
+      <label>Aba padrão ao abrir o widget (0=Resumo, 1=Agenda, 2=Tarefas, 3=Clima, 4=Notas, 5=Notícias).</label>
+    </entry>
+    <entry name="themeMode" type="Int">
+      <default>2</default>
+      <label>Modo de tema (0=Claro, 1=Escuro, 2=Automático).</label>
     </entry>
   </group>
 
