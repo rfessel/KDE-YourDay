@@ -193,12 +193,18 @@ PlasmoidItem {
         return isNaN(v) || v <= 0 ? 0 : v;
     }
 
+    property var _lastSliced: []
+    property string _lastSlicedKey: ""
+
     function sliceItems() {
         var limit = Number(Plasmoid.configuration.maxItems) || 50;
-        var sliced = root.allItems.slice(0, limit);
-        newsModel.clear();
-        for (var i = 0; i < sliced.length; i++) {
-            newsModel.append(sliced[i]);
+        var items = root.allItems.slice(0, limit);
+        // Só atualiza se mudou (evita re-render desnecessário)
+        var key = items.length + ":" + (items.length > 0 ? items[0].title : "");
+        if (key !== root._lastSlicedKey) {
+            root._lastSlicedKey = key;
+            // Força atualização apenas quando necessário
+            root._lastSliced = items;
         }
     }
 
@@ -804,10 +810,6 @@ PlasmoidItem {
 
     // ------------------------------------------------------------------- dados
 
-    ListModel {
-        id: newsModel
-    }
-
     Component {
         id: newsCardDelegate
 
@@ -827,7 +829,7 @@ PlasmoidItem {
             border.color: Qt.alpha(root.isDarkTheme ? Qt.rgba(0.4, 0.4, 0.4, 1) : Qt.rgba(0.75, 0.75, 0.75, 1), 0.5)
 
             Behavior on color {
-                ColorAnimation { duration: 120 }
+                enabled: false // Desabilitado para performance
             }
 
             Rectangle {
@@ -847,6 +849,8 @@ PlasmoidItem {
                     anchors.fill: parent
                     source: card.model.image
                     fillMode: Image.PreserveAspectCrop
+                    asynchronous: true
+                    cache: true
                     onStatusChanged: {
                         if (status === Image.Error) {
                             thumbBox.visible = false;
@@ -1101,8 +1105,6 @@ PlasmoidItem {
                     RowLayout {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 48
-                        Layout.leftMargin: Kirigami.Units.largeSpacing
-                        Layout.rightMargin: Kirigami.Units.largeSpacing
                         spacing: Kirigami.Units.smallSpacing
 
                         PlasmaExtras.Heading {
@@ -1163,7 +1165,11 @@ PlasmoidItem {
                         Layout.fillHeight: true
                         clip: true
 
-                        onWidthChanged: root.bodyWidth = bodyArea.width
+                        onWidthChanged: {
+                            if (Math.abs(root.bodyWidth - bodyArea.width) > 1) {
+                                root.bodyWidth = bodyArea.width;
+                            }
+                        }
                         Component.onCompleted: root.bodyWidth = bodyArea.width
 
                         Flickable {
