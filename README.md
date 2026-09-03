@@ -1,19 +1,31 @@
 # Seu Dia...
 
-Widget de leitura de notícias RSS/Atom para PLASMA 6 — seu resumo diário
-de notícias, tudo num só lugar.
+Dashboard pessoal para KDE Plasma 6 — resumo diário com notícias, agenda,
+tarefas, clima, notas, listas e mais, tudo num só lugar.
+
+## Abas
+
+| Aba | Descrição |
+|-----|-----------|
+| **Resumo** | Saudação, clima atual, próximos compromissos e tarefas do dia |
+| **Agenda** | Calendário mensal + eventos do dia selecionado |
+| **Tarefas** | Gerenciamento de tarefas com histórico |
+| **Clima** | Card principal, previsão 7 dias, multi-cidades |
+| **Notas** | Post-its coloridos com editor popup |
+| **Listas** | Listas gerais/compras com exportação TXT/CSV |
+| **Notícias** | Feed RSS/Atom com cache e cards |
 
 ## Recursos
 
-- Adicionar feeds RSS ou Atom manualmente (URL)
-- Múltiplos feeds ao mesmo tempo; as notícias são mescladas e ordenadas
-  por data.
-- Visual limpo,com miniatura   da imagem quando o feed fornecee um breve resumo
-- Clique na notícia abre o link no navegador; passe o mouse para ver o
-  resumo.
-- Atualização manual ou automática editável na aba feeds.
-- Limite de notícias configurável (exibição).
-- Feed sem XML válido é ignorado com aviso discreto.
+- 7 abas com navegação lateral por ícones
+- Tema claro/escuro/automático (segue o sistema)
+- Geolocalização automática para o clima (via IP)
+- Previsão do tempo para múltiplas cidades (Open-Meteo)
+- Parser RSS/Atom customizado (sem dependências externas)
+- Exportação de listas para TXT e CSV
+- Calendário com suporte a eventos recorrentes (RRULE)
+- Atualização automática de feeds e clima
+- Traduções: pt_BR, en, en_US, es, it, de, fr, ru, he, ja, zh_CN
 
 ## Requisitos
 
@@ -41,84 +53,48 @@ plasmashell:
 kquitapp6 plasmashell && kstart plasmashell
 ```
 
-Ou via Gerenciador de Widgets
-...
-Baixar o plasmoid e adicionar diretamente na edição de desktop/widgets
-...
+## Configuração
 
-## Uso
+Botão direito no widget → **Configure Seu Dia...**
 
-1. Adicione o widget ao desktop (ou ao painel — na versão compacta, o
-   ícone abre o popup).
-2. Clique no botão **+** no cabeçalho e cole a URL de um feed, ou
-   adicione pelas configurações (botão direito → *Configure Seu Dia...*).
-3. Feeds sugeridos para testar:
-   - `https://g1.globo.com/rss/g1/tecnologia/`
-   - `https://www.tweakers.net/nieuws/overzicht/feed.xml`
-   - `https://feeds.npr.org/1001/rss.xml`
-
-## Desinstalação
-
-```sh
-cd ~/YourDay
-./uninstall.sh
-```
+- **Geral**: Aba padrão, ícone do widget, tema
+- **Feeds de notícias**: Adicionar/remover feeds RSS, limite de itens
+- **Agenda**: Fontes .ics (Google Calendar export, URL, arquivo local)
+- **Clima**: Cidade principal e cidades adicionais
+- **Listas**: Exportar listas para TXT ou CSV
 
 ## Estrutura
 
 ```
 plasmoid/
-├── metadata.json                 # metadados do pacote (Plasma/Applet)
-├── po/                           # fontes de tradução (.pot/.po) + scripts
-│   ├── extract.py                # extrai i18n("...") dos QML -> template.pot
-│   ├── translations.py           # dicionários de tradução por idioma
-│   ├── fill_po.py                # aplica as traduções em um po/<lang>.po
-│   └── build_translations.sh     # gera template.pot, mescla e compila .mo
+├── metadata.json
+├── po/                            # traduções
+│   └── build_translations.sh
 └── contents/
     ├── config/
-    │   ├── config.qml            # define a página de configurações
-    │   └── main.xml              # esquema de configuração (feeds, maxItems)
+    │   ├── config.qml             # categorias de config
+    │   └── main.xml               # esquema de configuração
     ├── locale/
-    │   └── <lang>/LC_MESSAGES/plasma_applet_kde.yourday.mo
+    │   └── <lang>/LC_MESSAGES/*.mo
     └── ui/
-        ├── main.qml              # widget (PlasmoidItem + UI estilo Win11)
-        ├── configGeneral.qml     # página: adicionar/remover feeds
-        └── js/feeds.js           # parser RSS/Atom + carregamento (JS puro)
-```
-
-`feeds.js` não depende de `DOMParser` nem de `XmlListModel` (indisponíveis
-neste Qt 6): faz a varredura XML com tokenização própria, cobrindo RSS 2.0,
-Atom, CDATA, entidades, `enclosure`/`media:content` e links do tipo
-`<atom:link href="…"/>` (Google Notícias).
-
-## Traduções
-
-O widget segue o idioma do sistema (Plasma carrega automaticamente os
-catálogos embutidos em `contents/locale/`). Os textos-fonte estão em
-português; já há catálogos para **pt_BR, en, en_US, es, it, de, fr, ru,
-he, ja e zh_CN**. O idioma do sistema que não tiver catálogo cai de volta
-para o português.
-
-Para adicionar/atualizar idiomas:
-
-```sh
-cd plasmoid/po
-msginit --no-translator --locale=fr --input=template.pot -o fr.po
-# edite fr.po (traduza as msgstr) OU adicione o dicionário `fr` em translations.py
-sh build_translations.sh        # reextrai strings, mescla, compensa .mo
-```
-
-Depois de mudar qualquer texto nos QML: `sh plasmoid/po/build_translations.sh`
-e reinstale o widget (`./install.sh`).
-
-## Testes
-
-O parser é testado com `qmltestrunner` (Qt Quick Test), incluindo um teste
-de ponta a ponta com o feed do G1:
-
-```sh
-cd tests
-QT_QPA_PLATFORM=offscreen /usr/lib/qt6/bin/qmltestrunner -input tst_feeds.qml
+        ├── main.qml               # widget principal
+        ├── pages/
+        │   ├── ResumoPage.qml
+        │   ├── AgendaPage.qml
+        │   ├── ToDoPage.qml
+        │   ├── ClimaPage.qml
+        │   ├── NotasPage.qml
+        │   ├── ListasPage.qml
+        │   └── (Notícias inline no main.qml)
+        ├── configGeneral.qml
+        ├── configFeeds.qml
+        ├── configAgenda.qml
+        ├── configWeather.qml
+        ├── configListas.qml
+        └── js/
+            ├── feeds.js           # parser RSS/Atom
+            ├── weather.js         # Open-Meteo + Nominatim + ipinfo.io
+            └── calendar.js        # parser .ics
 ```
 
 ## Licença
