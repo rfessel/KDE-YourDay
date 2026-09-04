@@ -16,6 +16,7 @@ import org.kde.kirigami as Kirigami
 import "js/feeds.js" as FeedParser
 import "js/calendar.js" as Cal
 import "js/weather.js" as Weather
+import "js/i18n.js" as I18n
 import "pages"
 
 PlasmoidItem {
@@ -55,6 +56,13 @@ PlasmoidItem {
         if (currentTab === 3) {
             root.selectedCityName = Plasmoid.configuration.weatherCity || "";
         }
+    }
+
+    // -------- tradução forçada --------------------
+    function T(text) {
+        var lang = I18n.getLang();
+        if (!lang) return text;
+        return I18n.translate(text, lang);
     }
 
     // -------- clima --------------------------------
@@ -1017,13 +1025,13 @@ PlasmoidItem {
 
                 Repeater {
                     model: [
-                        { label: i18n("Resumo"), icon: "view-calendar-day" },
-                        { label: i18n("Agenda"), icon: "view-calendar" },
-                        { label: i18n("Tarefas"), icon: "task-new" },
-                        { label: i18n("Clima"), icon: "weather-clear" },
-                        { label: i18n("Notas"), icon: "note" },
-                        { label: i18n("Listas"), icon: "view-list" },
-                        { label: i18n("Notícias"), icon: root.iconResolvedName }
+                        { label: root.T("Resumo"), icon: "view-calendar-day" },
+                        { label: root.T("Agenda"), icon: "view-calendar" },
+                        { label: root.T("Tarefas"), icon: "task-new" },
+                        { label: root.T("Clima"), icon: "weather-clear" },
+                        { label: root.T("Notas"), icon: "note" },
+                        { label: root.T("Listas"), icon: "view-list" },
+                        { label: root.T("Notícias"), icon: root.iconResolvedName }
                     ]
                     delegate: navButton
                 }
@@ -1115,7 +1123,7 @@ PlasmoidItem {
                         PlasmaExtras.Heading {
                             level: 4
                             Layout.fillWidth: true
-                            text: i18n("Aqui estão as principais notícias de seu interesse")
+                            text: root.T("Aqui estão as principais notícias de seu interesse")
                             elide: Text.ElideRight
                             font.pixelSize: 13
                             color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
