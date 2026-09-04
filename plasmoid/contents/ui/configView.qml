@@ -16,31 +16,26 @@ import "js/i18n.js" as I18n
 KCM.SimpleKCM {
     id: page
 
-    property string _lang: Plasmoid.configuration.language || ""
+    property string _lang: cfg_language || ""
 
     function t(text) {
         if (!_lang) return text;
         return I18n.translate(text, _lang);
     }
 
-    readonly property int maxItemsValue: Plasmoid.configuration.maxItems
-    readonly property int headlineLinesValue: Plasmoid.configuration.headlineLines
-    readonly property int columnsValue: 1
+    readonly property int maxItemsValue: cfg_maxItems
+    readonly property int headlineLinesValue: cfg_headlineLines
 
     function setMaxItems(value) {
-        Plasmoid.configuration.maxItems = value;
+        cfg_maxItems = value;
     }
 
     function setHeadlineLines(value) {
-        Plasmoid.configuration.headlineLines = value;
-    }
-
-    function setColumns(value) {
-        Plasmoid.configuration.columns = value;
+        cfg_headlineLines = value;
     }
 
     function agendaSources() {
-        var s = Plasmoid.configuration.agendaSources;
+        var s = cfg_agendaSources;
         if (typeof s === "undefined" || s === null) {
             return [];
         }
@@ -110,7 +105,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: t("Este limite vale para a lista inteira, somando todos os feeds. Para ajustar cada fonte individualmente, use a seção “Feeds de notícias”.")
+            text: t("Este limite vale para a lista inteira, somando todos os feeds. Para ajustar cada fonte individualmente, use a seção "Feeds de notícias".")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -139,7 +134,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: t("Fontes de calendário (.ics): uma URL do Google/CalDAV (definição “URL pessoal do iCal” / secret) ou um caminho local para um arquivo .ics. Os compromissos de hoje aparecem nas abas Agenda e Resumo.")
+            text: t("Fontes de calendário (.ics): uma URL do Google/CalDAV (definição "URL pessoal do iCal" / secret) ou um caminho local para um arquivo .ics. Os compromissos de hoje aparecem nas abas Agenda e Resumo.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -166,7 +161,7 @@ KCM.SimpleKCM {
                     var list = page.agendaSources();
                     if (list.indexOf(u) !== -1) return;
                     list.push(u);
-                    Plasmoid.configuration.agendaSources = list;
+                    cfg_agendaSources = list;
                     agSourceField.text = "";
                 }
             }
@@ -200,7 +195,7 @@ KCM.SimpleKCM {
                     onClicked: {
                         var list = page.agendaSources().slice();
                         list.splice(index, 1);
-                        Plasmoid.configuration.agendaSources = list;
+                        cfg_agendaSources = list;
                     }
                 }
             }

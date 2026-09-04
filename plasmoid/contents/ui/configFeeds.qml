@@ -16,7 +16,7 @@ import "js/feeds.js" as FeedParser
 KCM.SimpleKCM {
     id: page
 
-    property string _lang: Plasmoid.configuration.language || ""
+    property string _lang: cfg_language || ""
 
     function t(text) {
         if (!_lang) return text;
@@ -24,13 +24,13 @@ KCM.SimpleKCM {
     }
 
     function feeds() {
-        var f = Plasmoid.configuration.feeds;
+        var f = cfg_feeds;
         if (typeof f === "undefined" || f === null) return [];
         return f;
     }
 
     function rawLimits() {
-        var l = Plasmoid.configuration.feedLimits;
+        var l = cfg_feedLimits;
         if (typeof l === "undefined" || l === null) return [];
         return l;
     }
@@ -52,7 +52,7 @@ KCM.SimpleKCM {
     }
 
     function saveFeeds(list) {
-        Plasmoid.configuration.feeds = list;
+        cfg_feeds = list;
         feedModel.clear();
         for (var i = 0; i < list.length; i++) {
             feedModel.append({ url: list[i] });
@@ -60,7 +60,7 @@ KCM.SimpleKCM {
     }
 
     function saveLimits(list) {
-        Plasmoid.configuration.feedLimits = list;
+        cfg_feedLimits = list;
     }
 
     function tryAddFeed(url) {
@@ -96,7 +96,7 @@ KCM.SimpleKCM {
     }
 
     function applyRefresh(m) {
-        Plasmoid.configuration.refreshMinutes = m;
+        cfg_refreshMinutes = m;
     }
 
     ListModel {
@@ -357,8 +357,8 @@ KCM.SimpleKCM {
                 from: 1
                 to: 200
                 editable: true
-                value: Plasmoid.configuration.maxItems
-                onValueModified: Plasmoid.configuration.maxItems = value
+                value: cfg_maxItems
+                onValueModified: cfg_maxItems = value
             }
 
             Item { Layout.fillWidth: true }
@@ -374,8 +374,8 @@ KCM.SimpleKCM {
                 from: 1
                 to: 5
                 editable: true
-                value: Plasmoid.configuration.headlineLines
-                onValueModified: Plasmoid.configuration.headlineLines = value
+                value: cfg_headlineLines
+                onValueModified: cfg_headlineLines = value
             }
 
             QQC2.Label { text: t("linhas por notícia"); opacity: 0.6 }
@@ -392,7 +392,7 @@ KCM.SimpleKCM {
             QQC2.ComboBox {
                 model: page.refreshOptions
                 textRole: "t"
-                currentIndex: page.refreshIndexFor(Plasmoid.configuration.refreshMinutes)
+                currentIndex: page.refreshIndexFor(cfg_refreshMinutes)
                 onActivated: page.applyRefresh(page.refreshOptions[currentIndex].v)
             }
 

@@ -17,7 +17,7 @@ import "js/i18n.js" as I18n
 KCM.SimpleKCM {
     id: page
 
-    property string _lang: Plasmoid.configuration.language || ""
+    property string _lang: cfg_language || ""
 
     function t(text) {
         if (!_lang) return text;
@@ -30,7 +30,7 @@ KCM.SimpleKCM {
     }
 
     readonly property string currentIcon: {
-        var c = Plasmoid.configuration.customIcon;
+        var c = cfg_customIcon;
         return (c && c.trim() !== "") ? c : Plasmoid.icon;
     }
 
@@ -41,8 +41,8 @@ KCM.SimpleKCM {
         onAccepted: {
             var u = iconFileDialog.fileUrl.toString();
             if (u) {
-                Plasmoid.configuration.customIcon = u;
-                Plasmoid.configuration.iconName = "";
+                cfg_customIcon = u;
+                cfg_iconName = "";
             }
         }
     }
@@ -78,10 +78,8 @@ KCM.SimpleKCM {
 
             QQC2.ComboBox {
                 model: page.tabNames
-                currentIndex: Plasmoid.configuration.defaultTab || 0
-                onActivated: {
-                    Plasmoid.configuration.defaultTab = index;
-                }
+                currentIndex: cfg_defaultTab
+                onActivated: cfg_defaultTab = index
             }
         }
 
@@ -108,10 +106,8 @@ KCM.SimpleKCM {
 
             QQC2.ComboBox {
                 model: [t("Claro"), t("Escuro"), t("Automático")]
-                currentIndex: Plasmoid.configuration.themeMode || 2
-                onActivated: {
-                    Plasmoid.configuration.themeMode = index;
-                }
+                currentIndex: cfg_themeMode
+                onActivated: cfg_themeMode = index
             }
         }
 
@@ -153,7 +149,7 @@ KCM.SimpleKCM {
                 }
                 textRole: "text"
                 currentIndex: {
-                    var lang = Plasmoid.configuration.language || "";
+                    var lang = cfg_language || "";
                     if (lang === "") return 0;
                     for (var i = 1; i < languageCombo.count; i++) {
                         if (languageCombo.model.get(i).value === lang) return i;
@@ -161,8 +157,7 @@ KCM.SimpleKCM {
                     return 0;
                 }
                 onActivated: {
-                    var val = index === 0 ? "" : languageCombo.model.get(index).value;
-                    Plasmoid.configuration.language = val;
+                    cfg_language = index === 0 ? "" : languageCombo.model.get(index).value;
                 }
             }
         }
@@ -210,8 +205,8 @@ KCM.SimpleKCM {
                         text: t("Ícone do sistema")
                         icon.name: "icon-preview"
                         onClicked: {
-                            Plasmoid.configuration.customIcon = "";
-                            Plasmoid.configuration.iconName = Plasmoid.icon || "view-calendar-day";
+                            cfg_customIcon = "";
+                            cfg_iconName = Plasmoid.icon || "view-calendar-day";
                         }
                     }
 
@@ -224,8 +219,8 @@ KCM.SimpleKCM {
 
                 PlasmaComponents3.Label {
                     Layout.fillWidth: true
-                    visible: Plasmoid.configuration.customIcon !== ""
-                    text: Plasmoid.configuration.customIcon
+                    visible: cfg_customIcon !== ""
+                    text: cfg_customIcon
                     opacity: 0.5
                     font.pixelSize: 10
                     elide: Text.ElideMiddle
