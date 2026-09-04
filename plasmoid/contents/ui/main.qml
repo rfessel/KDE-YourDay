@@ -60,7 +60,7 @@ PlasmoidItem {
 
     // -------- tradução forçada --------------------
     function t(text) {
-        var lang = I18n.getLang();
+        var lang = Plasmoid.configuration.language || "";
         if (!lang) return text;
         return I18n.translate(text, lang);
     }

@@ -1,9 +1,5 @@
 .pragma library
 
-function getLang() {
-    return Plasmoid.configuration.language || "";
-}
-
 var translations = {
     en: {
         // Tabs
