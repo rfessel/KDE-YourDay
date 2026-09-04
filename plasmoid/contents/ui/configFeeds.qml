@@ -14,12 +14,14 @@ import "js/i18n.js" as I18n
 import "js/feeds.js" as FeedParser
 
 KCM.SimpleKCM {
-    function t(text) {
-        var lang = Plasmoid.configuration.language || "";
-        if (!lang) return text;
-        return I18n.translate(text, lang);
-    }
     id: page
+
+    property string _lang: Plasmoid.configuration.language || ""
+
+    function t(text) {
+        if (!_lang) return text;
+        return I18n.translate(text, _lang);
+    }
 
     function feeds() {
         var f = Plasmoid.configuration.feeds;
@@ -64,11 +66,11 @@ KCM.SimpleKCM {
     function tryAddFeed(url) {
         var u = (url || "").trim();
         if (!u || (u.indexOf("http://") !== 0 && u.indexOf("https://") !== 0)) {
-            return i18n("Informe uma URL válida (ex.: https://exemplo.com/feed.xml).");
+            return t("Informe uma URL válida (ex.: https://exemplo.com/feed.xml).");
         }
         var list = feeds().slice();
         if (list.indexOf(u) !== -1) {
-            return i18n("Esse feed já foi adicionado.");
+            return t("Esse feed já foi adicionado.");
         }
         list.push(u);
         var l = limits().slice();
@@ -120,7 +122,7 @@ KCM.SimpleKCM {
         if (page.testingUrl) return;
         var u = (text || "").trim();
         if (!u || (u.indexOf("http://") !== 0 && u.indexOf("https://") !== 0)) {
-            page.testResultText = i18n("Informe uma URL válida.");
+            page.testResultText = t("Informe uma URL válida.");
             page.testResultKind = Kirigami.MessageType.Warning;
             return;
         }
@@ -144,7 +146,7 @@ KCM.SimpleKCM {
             if (token !== page.testToken) return;
             testTimer.stop();
             page.testingUrl = false;
-            page.testResultText = i18n("Falha ao testar: ") + String(e);
+            page.testResultText = t("Falha ao testar: ") + String(e);
             page.testResultKind = Kirigami.MessageType.Negative;
         }
     }
@@ -153,28 +155,28 @@ KCM.SimpleKCM {
         testTimer.stop();
         page.testingUrl = false;
         if (ok) {
-            page.testResultText = i18n("Endereço válido — %1 notícia(s) carregada(s).", codeOrCount);
+            page.testResultText = t("Endereço válido — %1 notícia(s) carregada(s).", codeOrCount);
             page.testResultKind = Kirigami.MessageType.Positive;
         } else {
             var why;
             switch (codeOrCount) {
-            case -2: why = i18n("Tempo esgotado."); break;
-            case -1: why = i18n("Falha de conexão."); break;
-            case 0:  why = i18n("Resposta inválida."); break;
-            default: why = i18n("Erro HTTP %1.", codeOrCount); break;
+            case -2: why = t("Tempo esgotado."); break;
+            case -1: why = t("Falha de conexão."); break;
+            case 0:  why = t("Resposta inválida."); break;
+            default: why = t("Erro HTTP %1.", codeOrCount); break;
             }
-            page.testResultText = i18n("Endereço inválido: ") + why;
+            page.testResultText = t("Endereço inválido: ") + why;
             page.testResultKind = Kirigami.MessageType.Negative;
         }
     }
 
     property var refreshOptions: [
-        { v: 5,  t: i18n("A cada 5 minutos") },
-        { v: 10, t: i18n("A cada 10 minutos") },
-        { v: 15, t: i18n("A cada 15 minutos") },
-        { v: 30, t: i18n("A cada 30 minutos") },
-        { v: 60, t: i18n("A cada 1 hora") },
-        { v: 0,  t: i18n("Atualizar manualmente") }
+        { v: 5,  t: t("A cada 5 minutos") },
+        { v: 10, t: t("A cada 10 minutos") },
+        { v: 15, t: t("A cada 15 minutos") },
+        { v: 30, t: t("A cada 30 minutos") },
+        { v: 60, t: t("A cada 1 hora") },
+        { v: 0,  t: t("Atualizar manualmente") }
     ]
 
     function refreshIndexFor(m) {
@@ -245,7 +247,7 @@ KCM.SimpleKCM {
             }
 
             QQC2.Button {
-                text: page.testingUrl ? i18n("Testando...") : i18n("Testar")
+                text: page.testingUrl ? t("Testando...") : t("Testar")
                 icon.name: "system-run"
                 onClicked: page.startTest(urlField.text)
             }
@@ -298,7 +300,7 @@ KCM.SimpleKCM {
 
                     QQC2.ToolButton {
                         icon.name: "list-remove"
-                        Accessible.name: i18n("Remover feed")
+                        Accessible.name: t("Remover feed")
                         onClicked: page.removeFeed(index)
                     }
                 }

@@ -17,13 +17,17 @@ import "js/i18n.js" as I18n
 KCM.SimpleKCM {
     id: page
 
+    property string _lang: Plasmoid.configuration.language || ""
+
     function t(text) {
-        var lang = Plasmoid.configuration.language || "";
-        if (!lang) return text;
-        return I18n.translate(text, lang);
+        if (!_lang) return text;
+        return I18n.translate(text, _lang);
     }
 
-    property var tabNames: [t("Resumo"), t("Agenda"), t("Tarefas"), t("Clima"), t("Notas"), t("Notícias")]
+    property var tabNames: {
+        var _ = _lang;
+        return [t("Resumo"), t("Agenda"), t("Tarefas"), t("Clima"), t("Notas"), t("Notícias")];
+    }
 
     readonly property string currentIcon: {
         var c = Plasmoid.configuration.customIcon;
@@ -33,7 +37,7 @@ KCM.SimpleKCM {
     FileDialog {
         id: iconFileDialog
         title: t("Escolher ícone")
-        nameFilters: [ t("Imagens (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"), i18n("Todos os arquivos (*)") ]
+        nameFilters: [ t("Imagens (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"), t("Todos os arquivos (*)") ]
         onAccepted: {
             var u = iconFileDialog.fileUrl.toString();
             if (u) {
@@ -104,7 +108,7 @@ KCM.SimpleKCM {
             Item { Layout.fillWidth: true }
 
             QQC2.ComboBox {
-                model: [t("Claro"), i18n("Escuro"), i18n("Automático")]
+                model: [t("Claro"), t("Escuro"), t("Automático")]
                 currentIndex: Plasmoid.configuration.themeMode || 2
                 onActivated: {
                     Plasmoid.configuration.themeMode = index;

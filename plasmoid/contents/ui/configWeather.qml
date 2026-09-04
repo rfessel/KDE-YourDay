@@ -15,12 +15,14 @@ import "js/i18n.js" as I18n
 import "js/weather.js" as Weather
 
 KCM.SimpleKCM {
-    function t(text) {
-        var lang = Plasmoid.configuration.language || "";
-        if (!lang) return text;
-        return I18n.translate(text, lang);
-    }
     id: page
+
+    property string _lang: Plasmoid.configuration.language || ""
+
+    function t(text) {
+        if (!_lang) return text;
+        return I18n.translate(text, _lang);
+    }
 
     property var cityResults: []
     property var extraCities: []
@@ -99,7 +101,7 @@ KCM.SimpleKCM {
             }
 
             QQC2.Button {
-                text: page.geoLoading ? i18n("Obtendo localização...") : i18n("Minha localização")
+                text: page.geoLoading ? t("Obtendo localização...") : t("Minha localização")
                 icon.name: page.geoLoading ? "view-refresh" : "geo-location"
                 enabled: !page.geoLoading
                 onClicked: {
@@ -138,7 +140,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "go-home"
-                    Accessible.name: i18n("Definir como principal")
+                    Accessible.name: t("Definir como principal")
                     onClicked: {
                         page.setAsMain(modelData);
                         page.cityResults = [];
@@ -148,7 +150,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "list-add"
-                    Accessible.name: i18n("Adicionar como adicional")
+                    Accessible.name: t("Adicionar como adicional")
                     onClicked: {
                         page.addExtraCity(modelData);
                         page.cityResults = [];
@@ -212,7 +214,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "list-remove"
-                    Accessible.name: i18n("Remover")
+                    Accessible.name: t("Remover")
                     onClicked: page.removeExtraCity(index)
                 }
             }

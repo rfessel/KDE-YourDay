@@ -14,12 +14,14 @@ import org.kde.kcmutils as KCM
 import "js/i18n.js" as I18n
 
 KCM.SimpleKCM {
-    function t(text) {
-        var lang = Plasmoid.configuration.language || "";
-        if (!lang) return text;
-        return I18n.translate(text, lang);
-    }
     id: page
+
+    property string _lang: Plasmoid.configuration.language || ""
+
+    function t(text) {
+        if (!_lang) return text;
+        return I18n.translate(text, _lang);
+    }
 
     function agendaSources() {
         var s = Plasmoid.configuration.agendaSources;
@@ -38,7 +40,7 @@ KCM.SimpleKCM {
     FileDialog {
         id: fileDialog
         title: t("Selecionar arquivo .ics")
-        nameFilters: [ i18n("Calendário (*.ics)"), i18n("Todos os arquivos (*)") ]
+        nameFilters: [ t("Calendário (*.ics)"), t("Todos os arquivos (*)") ]
         onAccepted: {
             var u = fileDialog.fileUrl.toString().replace("file://", "");
             if (u && !page.isAlreadyAdded(u)) {
@@ -174,7 +176,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "list-remove"
-                    Accessible.name: i18n("Remover fonte")
+                    Accessible.name: t("Remover fonte")
                     onClicked: {
                         var list = page.agendaSources().slice();
                         list.splice(index, 1);

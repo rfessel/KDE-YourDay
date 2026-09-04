@@ -10,9 +10,18 @@ import QtQuick.Controls as QQC2
 import QtQuick.Dialogs
 
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid 2.0
+import "js/i18n.js" as I18n
 
 ColumnLayout {
     id: page
+
+    property string _lang: Plasmoid.configuration.language || ""
+
+    function t(text) {
+        if (!_lang) return text;
+        return I18n.translate(text, _lang);
+    }
 
     property var listsData: {
         var raw = Plasmoid.configuration.lists;
@@ -123,7 +132,7 @@ ColumnLayout {
         id: txtFileDialog
         title: t("Salvar como TXT")
         fileMode: FileDialog.SaveFile
-        nameFilters: [i18n("Arquivo de texto (*.txt)")]
+        nameFilters: [t("Arquivo de texto (*.txt)")]
         onAccepted: {
             saveFile(selectedFile, exportContent);
         }
@@ -133,7 +142,7 @@ ColumnLayout {
         id: csvFileDialog
         title: t("Salvar como CSV")
         fileMode: FileDialog.SaveFile
-        nameFilters: [i18n("Arquivo CSV (*.csv)")]
+        nameFilters: [t("Arquivo CSV (*.csv)")]
         onAccepted: {
             saveFile(selectedFile, exportContent);
         }
