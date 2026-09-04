@@ -8,12 +8,12 @@
             }
         ],
         "Category": "Online Services",
-        "Description": "Seu resumo diário do que você precisa fazer e gosta de saber.",
+        "Description": "Your daily summary of what you need to do and like to know.",
         "Description[pt_BR]": "Seu resumo diário do que você precisa fazer e gosta de saber.",
         "Icon": "view-calendar-day",
         "Id": "kde.yourday",
         "License": "GPL-2.0-or-later",
-        "Name": "Seu Dia...",
+        "Name": "Your Day...",
         "Name[pt_BR]": "Seu Dia...",
         "Version": "1.0",
         "Website": ""
