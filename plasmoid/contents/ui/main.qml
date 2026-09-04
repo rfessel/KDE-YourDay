@@ -1261,3 +1261,4 @@ PlasmoidItem {
         } // ColumnLayout (bodyItem)
     } // Rectangle
 }
+}
