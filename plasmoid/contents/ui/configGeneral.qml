@@ -43,7 +43,6 @@ KCM.SimpleKCM {
             if (u) {
                 Plasmoid.configuration.customIcon = u;
                 Plasmoid.configuration.iconName = "";
-                Plasmoid.icon = u;
             }
         }
     }
@@ -213,7 +212,6 @@ KCM.SimpleKCM {
                         onClicked: {
                             Plasmoid.configuration.customIcon = "";
                             Plasmoid.configuration.iconName = Plasmoid.icon || "view-calendar-day";
-                            Plasmoid.icon = Plasmoid.configuration.iconName;
                         }
                     }
 
