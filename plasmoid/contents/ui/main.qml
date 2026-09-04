@@ -1258,7 +1258,6 @@ PlasmoidItem {
                 opacity: 0.55
                 font.pixelSize: 10
             }
-        }
-        } // ColumnLayout
+        } // ColumnLayout (bodyItem)
     } // Rectangle
 }
