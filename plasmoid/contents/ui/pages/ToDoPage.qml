@@ -82,7 +82,7 @@ Item {
             PlasmaComponents3.Label {
                 Layout.fillWidth: true
                 visible: page.todos.length > 0
-                text: page.todos.length + i18n(" pendente(s)")
+                text: page.todos.length + root.t(" pendente(s)")
                 opacity: 0.6
                 font.pixelSize: 11
             }
@@ -136,7 +136,7 @@ Item {
 
                 PlasmaComponents3.ToolButton {
                     text: "✕"
-                    Accessible.name: i18n("Remover tarefa")
+                    Accessible.name: root.t("Remover tarefa")
                     onClicked: page.removeTodo(index)
                 }
             }
@@ -242,7 +242,7 @@ Item {
                             text: "✕"
                             width: 28
                             height: 28
-                            Accessible.name: i18n("Remover permanentemente")
+                            Accessible.name: root.t("Remover permanentemente")
                             onClicked: page.removeCompletedTodo(index)
                         }
                     }

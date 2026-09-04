@@ -314,7 +314,7 @@ Item {
 
                                 PlasmaComponents3.Label {
                                     Layout.preferredWidth: 50
-                                    text: model.allDay ? i18n("Dia todo") : Cal.formatTime(model.start, model.allDay)
+                                    text: model.allDay ? root.t("Dia todo") : Cal.formatTime(model.start, model.allDay)
                                     font.pixelSize: 12
                                     font.weight: Font.DemiBold
                                     color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))

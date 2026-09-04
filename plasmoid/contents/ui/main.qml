@@ -65,6 +65,13 @@ PlasmoidItem {
         return I18n.translate(text, lang);
     }
 
+    function tLocale() {
+        var lang = Plasmoid.configuration.language || "";
+        if (!lang) return Qt.locale();
+        var loc = Qt.locale(lang);
+        return loc && loc.language !== 0 ? loc : Qt.locale();
+    }
+
     // -------- clima --------------------------------
     property var weatherData: null
     property bool weatherLoading: false
@@ -225,9 +232,9 @@ PlasmoidItem {
         } else if (code === 0) {
             why = root.t("resposta inválida (não é RSS) ou servidor inacessível");
         } else {
-            why = i18n("HTTP %1", code);
+            why = root.t("HTTP %1").arg(code);
         }
-        return i18n("%1 — %2", url, why);
+        return root.t("%1 — %2").arg(url).arg(why);
     }
 
     // -------- cache de notícias (offline) --------
@@ -355,7 +362,7 @@ PlasmoidItem {
                     );
                 } catch (e) {
                     console.warn("[yourday] exceção ao carregar:", url, String(e));
-                    root.feedFailures.push(i18n("Falha em %1 (%2)", url, String(e)));
+                    root.feedFailures.push(root.t("Falha em %1 (%2)").arg(url).arg(String(e)));
                     root.feedGroups.push({ items: [], cap: 0 });
                     finishOne(url);
                 }
@@ -1227,13 +1234,13 @@ PlasmoidItem {
                             icon.name: root.iconResolvedName
                             icon.source: root.iconResolvedSource
                             text: root.currentFeeds().length === 0
-                                  ? i18n("Nenhum feed configurado.\nAdicione feeds RSS nas Configurações.")
+                                  ? root.t("Nenhum feed configurado.\nAdicione feeds RSS nas Configurações.")
                                   : (root.errorText === ""
-                                     ? i18n("Nenhuma notícia encontrada")
-                                     : i18n("Nenhuma notícia carregada. Veja os detalhes abaixo."))
+                                     ? root.t("Nenhuma notícia encontrada")
+                                     : root.t("Nenhuma notícia carregada. Veja os detalhes abaixo."))
 
                             helpfulAction: Kirigami.Action {
-                                text: root.currentFeeds().length === 0 ? i18n("Abrir configurações") : i18n("Tentar novamente")
+                                text: root.currentFeeds().length === 0 ? root.t("Abrir configurações") : root.t("Tentar novamente")
                                 icon.name: root.currentFeeds().length === 0 ? "configure" : "view-refresh"
                                 onTriggered: root.currentFeeds().length === 0 ? root.openConfig() : root.loadAll()
                             }
@@ -1257,7 +1264,7 @@ PlasmoidItem {
                 Layout.fillWidth: true
                 visible: root.errorText !== ""
                 type: Kirigami.MessageType.Warning
-                text: i18n("Alguns feeds não carregaram:") + "\n" + root.errorText
+                text: root.t("Alguns feeds não carregaram:") + "\n" + root.errorText
                 showCloseButton: true
                 onVisibleChanged: if (!visible) root.errorText = ""
             }
@@ -1267,7 +1274,7 @@ PlasmoidItem {
                 horizontalAlignment: Text.AlignRight
                 text: root.lastUpdated === ""
                       ? ""
-                      : i18n("Atualizado às %1", root.lastUpdated)
+                      : root.t("Atualizado às %1").arg(root.lastUpdated)
                 opacity: 0.55
                 font.pixelSize: 10
             }

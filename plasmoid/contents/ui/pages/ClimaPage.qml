@@ -81,8 +81,8 @@ Item {
             visible: !page.weatherLoading && page.currentData === null
             Layout.fillWidth: true
             text: page.weatherCity
-                  ? i18n("Toque em atualizar para carregar os dados.")
-                  : i18n("Nenhuma cidade configurada.\nVá em Configurações → Clima para adicionar.")
+                  ? root.t("Toque em atualizar para carregar os dados.")
+                  : root.t("Nenhuma cidade configurada.\nVá em Configurações → Clima para adicionar.")
             icon.name: "weather-clear"
             helpfulAction: Kirigami.Action {
                 text: root.t("Atualizar")
@@ -125,7 +125,7 @@ Item {
                         PlasmaExtras.Heading {
                             level: 2
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                            text: page.selectedCityName || i18n("Clima")
+                            text: page.selectedCityName || root.t("Clima")
                             Layout.fillWidth: true
                         }
 

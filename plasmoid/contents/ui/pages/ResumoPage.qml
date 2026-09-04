@@ -91,7 +91,7 @@ Item {
                         text: rootGreeting.capFirst(rootGreeting.greeting()) + ", " + rootGreeting.capFirst(kuserInfo.loginName)
                     }
                     PlasmaComponents3.Label {
-                        text: new Date().toLocaleString(Qt.locale(), "dddd, dd MMMM")
+                        text: new Date().toLocaleString(root.tLocale(), "dddd, dd MMMM")
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                         opacity: 0.6
                         font.pixelSize: 11
@@ -262,7 +262,7 @@ Item {
                     Layout.preferredWidth: 52
 
                     PlasmaComponents3.Label {
-                        text: model.allDay ? i18n("Dia") : Cal.formatTime(model.start, model.allDay)
+                        text: model.allDay ? root.t("Dia") : Cal.formatTime(model.start, model.allDay)
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                         font.pixelSize: 12
                         font.weight: Font.DemiBold
@@ -274,9 +274,9 @@ Item {
                             var d = new Date(model.start);
                             var now = new Date();
                             var diff = Math.floor((d - now) / 86400000);
-                            if (diff === 0) return i18n("Hoje");
-                            if (diff === 1) return i18n("Amanhã");
-                            return d.toLocaleString(Qt.locale(), "dd/MM");
+                            if (diff === 0) return root.t("Hoje");
+                            if (diff === 1) return root.t("Amanhã");
+                            return d.toLocaleString(root.tLocale(), "dd/MM");
                         }
                         font.pixelSize: 9
                         opacity: 0.5

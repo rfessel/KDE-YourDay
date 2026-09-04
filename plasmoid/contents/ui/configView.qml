@@ -11,9 +11,17 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kcmutils as KCM
+import "js/i18n.js" as I18n
 
 KCM.SimpleKCM {
     id: page
+
+    property string _lang: Plasmoid.configuration.language || ""
+
+    function t(text) {
+        if (!_lang) return text;
+        return I18n.translate(text, _lang);
+    }
 
     readonly property int maxItemsValue: Plasmoid.configuration.maxItems
     readonly property int headlineLinesValue: Plasmoid.configuration.headlineLines
@@ -46,7 +54,7 @@ KCM.SimpleKCM {
         Kirigami.Heading {
             level: 3
             Layout.fillWidth: true
-            text: i18n("Exibição")
+            text: t("Exibição")
             textFormat: Text.PlainText
         }
 
@@ -55,7 +63,7 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
 
             QQC2.Label {
-                text: i18n("Máximo total de notícias na lista:")
+                text: t("Máximo total de notícias na lista:")
             }
 
             QQC2.SpinBox {
@@ -78,7 +86,7 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
 
             QQC2.Label {
-                text: i18n("Linhas da chamada da matéria:")
+                text: t("Linhas da chamada da matéria:")
             }
 
             QQC2.SpinBox {
@@ -91,7 +99,7 @@ KCM.SimpleKCM {
             }
 
             QQC2.Label {
-                text: i18n("linhas por notícia")
+                text: t("linhas por notícia")
                 opacity: 0.6
             }
 
@@ -102,7 +110,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Este limite vale para a lista inteira, somando todos os feeds. Para ajustar cada fonte individualmente, use a seção “Feeds de notícias”.")
+            text: t("Este limite vale para a lista inteira, somando todos os feeds. Para ajustar cada fonte individualmente, use a seção “Feeds de notícias”.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -110,7 +118,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("As alterações são aplicadas imediatamente ao widget.")
+            text: t("As alterações são aplicadas imediatamente ao widget.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -125,13 +133,13 @@ KCM.SimpleKCM {
             level: 3
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.smallSpacing
-            text: i18n("Agenda")
+            text: t("Agenda")
             textFormat: Text.PlainText
         }
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Fontes de calendário (.ics): uma URL do Google/CalDAV (definição “URL pessoal do iCal” / secret) ou um caminho local para um arquivo .ics. Os compromissos de hoje aparecem nas abas Agenda e Resumo.")
+            text: t("Fontes de calendário (.ics): uma URL do Google/CalDAV (definição “URL pessoal do iCal” / secret) ou um caminho local para um arquivo .ics. Os compromissos de hoje aparecem nas abas Agenda e Resumo.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -144,13 +152,13 @@ KCM.SimpleKCM {
             QQC2.TextField {
                 id: agSourceField
                 Layout.fillWidth: true
-                placeholderText: i18n("URL .ics ou caminho local…")
+                placeholderText: t("URL .ics ou caminho local…")
                 onAccepted: addAgButton.clicked()
             }
 
             QQC2.Button {
                 id: addAgButton
-                text: i18n("Adicionar")
+                text: t("Adicionar")
                 icon.name: "list-add-symbolic"
                 onClicked: {
                     var u = agSourceField.text.trim();
@@ -168,7 +176,7 @@ KCM.SimpleKCM {
             visible: page.agendaSources().length === 0
             Layout.fillWidth: true
             opacity: 0.5
-            text: i18n("Nenhuma fonte adicionada.")
+            text: t("Nenhuma fonte adicionada.")
         }
 
         Repeater {
@@ -188,7 +196,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "edit-delete-remove-symbolic"
-                    Accessible.name: i18n("Remover fonte")
+                    Accessible.name: t("Remover fonte")
                     onClicked: {
                         var list = page.agendaSources().slice();
                         list.splice(index, 1);

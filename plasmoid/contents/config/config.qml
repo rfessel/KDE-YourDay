@@ -6,6 +6,8 @@ import QtQuick
 
 import org.kde.plasma.configuration 2.0
 
+import "../ui/js/i18n.js" as I18n
+
 ConfigModel {
     ConfigCategory {
         name: "Geral"

@@ -134,7 +134,7 @@ Item {
                             }
 
                             PlasmaComponents3.Label {
-                                text: modelData.items.length + " " + i18n("itens")
+                                text: modelData.items.length + " " + root.t("itens")
                                 font.pixelSize: 11
                                 color: root.isDarkTheme ? Qt.rgba(0.6, 0.6, 0.6, 1) : Qt.rgba(0.5, 0.5, 0.5, 1)
                             }
