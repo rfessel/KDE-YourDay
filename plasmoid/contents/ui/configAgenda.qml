@@ -16,7 +16,7 @@ import "js/i18n.js" as I18n
 KCM.SimpleKCM {
     id: page
 
-    property string _lang: cfg_language || ""
+    property string _lang: Plasmoid.configuration.language || ""
 
     function t(text) {
         if (!_lang) return text;
@@ -24,7 +24,7 @@ KCM.SimpleKCM {
     }
 
     function agendaSources() {
-        var s = cfg_agendaSources;
+        var s = Plasmoid.configuration.agendaSources;
         if (typeof s === "undefined" || s === null) return [];
         return s;
     }
@@ -46,7 +46,7 @@ KCM.SimpleKCM {
             if (u && !page.isAlreadyAdded(u)) {
                 var list = page.agendaSources();
                 list.push(u);
-                cfg_agendaSources = list;
+                Plasmoid.configuration.agendaSources = list;
             }
         }
     }
@@ -146,7 +146,7 @@ KCM.SimpleKCM {
                     if (page.isAlreadyAdded(u)) return;
                     var list = page.agendaSources();
                     list.push(u);
-                    cfg_agendaSources = list;
+                    Plasmoid.configuration.agendaSources = list;
                     agSourceField.text = "";
                 }
             }
@@ -180,7 +180,7 @@ KCM.SimpleKCM {
                     onClicked: {
                         var list = page.agendaSources().slice();
                         list.splice(index, 1);
-                        cfg_agendaSources = list;
+                        Plasmoid.configuration.agendaSources = list;
                     }
                 }
             }

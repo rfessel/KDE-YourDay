@@ -16,26 +16,26 @@ import "js/i18n.js" as I18n
 KCM.SimpleKCM {
     id: page
 
-    property string _lang: cfg_language || ""
+    property string _lang: Plasmoid.configuration.language || ""
 
     function t(text) {
         if (!_lang) return text;
         return I18n.translate(text, _lang);
     }
 
-    readonly property int maxItemsValue: cfg_maxItems
-    readonly property int headlineLinesValue: cfg_headlineLines
+    readonly property int maxItemsValue: Plasmoid.configuration.maxItems
+    readonly property int headlineLinesValue: Plasmoid.configuration.headlineLines
 
     function setMaxItems(value) {
-        cfg_maxItems = value;
+        Plasmoid.configuration.maxItems = value;
     }
 
     function setHeadlineLines(value) {
-        cfg_headlineLines = value;
+        Plasmoid.configuration.headlineLines = value;
     }
 
     function agendaSources() {
-        var s = cfg_agendaSources;
+        var s = Plasmoid.configuration.agendaSources;
         if (typeof s === "undefined" || s === null) {
             return [];
         }
@@ -161,7 +161,7 @@ KCM.SimpleKCM {
                     var list = page.agendaSources();
                     if (list.indexOf(u) !== -1) return;
                     list.push(u);
-                    cfg_agendaSources = list;
+                    Plasmoid.configuration.agendaSources = list;
                     agSourceField.text = "";
                 }
             }
@@ -195,7 +195,7 @@ KCM.SimpleKCM {
                     onClicked: {
                         var list = page.agendaSources().slice();
                         list.splice(index, 1);
-                        cfg_agendaSources = list;
+                        Plasmoid.configuration.agendaSources = list;
                     }
                 }
             }

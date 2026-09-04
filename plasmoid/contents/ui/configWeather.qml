@@ -17,7 +17,7 @@ import "js/weather.js" as Weather
 KCM.SimpleKCM {
     id: page
 
-    property string _lang: cfg_language || ""
+    property string _lang: Plasmoid.configuration.language || ""
 
     function t(text) {
         if (!_lang) return text;
@@ -30,7 +30,7 @@ KCM.SimpleKCM {
 
     function loadExtraCities() {
         try {
-            var raw = cfg_weatherCities;
+            var raw = Plasmoid.configuration.weatherCities;
             page.extraCities = raw ? JSON.parse(raw) : [];
         } catch (e) {
             page.extraCities = [];
@@ -38,7 +38,7 @@ KCM.SimpleKCM {
     }
 
     function saveExtraCities() {
-        cfg_weatherCities = JSON.stringify(page.extraCities);
+        Plasmoid.configuration.weatherCities = JSON.stringify(page.extraCities);
     }
 
     function addExtraCity(city) {
@@ -56,9 +56,9 @@ KCM.SimpleKCM {
     }
 
     function setAsMain(city) {
-        cfg_weatherCity = city.name;
-        cfg_weatherLatitude = city.lat;
-        cfg_weatherLongitude = city.lon;
+        Plasmoid.configuration.weatherCity = city.name;
+        Plasmoid.configuration.weatherLatitude = city.lat;
+        Plasmoid.configuration.weatherLongitude = city.lon;
     }
 
     Component.onCompleted: loadExtraCities()
@@ -109,9 +109,9 @@ KCM.SimpleKCM {
                     Weather.fetchLocationByIP(
                         function(loc) {
                             page.geoLoading = false;
-                            cfg_weatherCity = loc.name;
-                            cfg_weatherLatitude = loc.lat;
-                            cfg_weatherLongitude = loc.lon;
+                            Plasmoid.configuration.weatherCity = loc.name;
+                            Plasmoid.configuration.weatherLatitude = loc.lat;
+                            Plasmoid.configuration.weatherLongitude = loc.lon;
                             page.cityResults = [];
                             citySearchField.text = "";
                         },
@@ -161,21 +161,21 @@ KCM.SimpleKCM {
         }
 
         PlasmaComponents3.Label {
-            visible: cfg_weatherCity !== ""
+            visible: Plasmoid.configuration.weatherCity !== ""
             Layout.fillWidth: true
-            text: t("Cidade principal: %1", cfg_weatherCity)
+            text: t("Cidade principal: %1", Plasmoid.configuration.weatherCity)
             opacity: 0.6
             font.pixelSize: 11
         }
 
         QQC2.Button {
-            visible: cfg_weatherCity !== ""
+            visible: Plasmoid.configuration.weatherCity !== ""
             text: t("Limpar principal")
             icon.name: "edit-clear"
             onClicked: {
-                cfg_weatherCity = "";
-                cfg_weatherLatitude = 0;
-                cfg_weatherLongitude = 0;
+                Plasmoid.configuration.weatherCity = "";
+                Plasmoid.configuration.weatherLatitude = 0;
+                Plasmoid.configuration.weatherLongitude = 0;
             }
         }
 
