@@ -143,7 +143,6 @@ KCM.SimpleKCM {
                     ListElement { text: "Seguir idioma do sistema"; value: "" }
                     ListElement { text: "Português (Brasil)"; value: "pt_BR" }
                     ListElement { text: "English"; value: "en" }
-                    ListElement { text: "English (US)"; value: "en_US" }
                     ListElement { text: "Español"; value: "es" }
                     ListElement { text: "Français"; value: "fr" }
                     ListElement { text: "Deutsch"; value: "de" }

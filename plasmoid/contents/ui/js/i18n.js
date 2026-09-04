@@ -1914,13 +1914,18 @@ var translations = {
 };
 
 function translate(text, lang) {
-    if (!lang || !translations[lang]) {
-        return text;
-    }
-    if (translations[lang][text] !== undefined) {
+    if (!lang) return text;
+    // Try exact match first
+    if (translations[lang] && translations[lang][text] !== undefined) {
         return translations[lang][text];
     }
-    if (translations["en"][text] !== undefined) {
+    // Try base language (e.g. "en_US" -> "en", "pt_BR" -> "pt")
+    var base = lang.split("_")[0];
+    if (base !== lang && translations[base] && translations[base][text] !== undefined) {
+        return translations[base][text];
+    }
+    // Fallback to English
+    if (translations["en"] && translations["en"][text] !== undefined) {
         return translations["en"][text];
     }
     return text;
