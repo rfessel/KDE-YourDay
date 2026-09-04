@@ -11,8 +11,14 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kcmutils as KCM
+import "js/i18n.js" as I18n
 
 KCM.SimpleKCM {
+    function t(text) {
+        var lang = Plasmoid.configuration.language || "";
+        if (!lang) return text;
+        return I18n.translate(text, lang);
+    }
     id: page
 
     function agendaSources() {
@@ -31,7 +37,7 @@ KCM.SimpleKCM {
 
     FileDialog {
         id: fileDialog
-        title: i18n("Selecionar arquivo .ics")
+        title: t("Selecionar arquivo .ics")
         nameFilters: [ i18n("Calendário (*.ics)"), i18n("Todos os arquivos (*)") ]
         onAccepted: {
             var u = fileDialog.fileUrl.toString().replace("file://", "");
@@ -49,7 +55,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Adicione fontes de calendário (.ics) para ver seus compromissos nas abas Agenda e Resumo.")
+            text: t("Adicione fontes de calendário (.ics) para ver seus compromissos nas abas Agenda e Resumo.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -64,13 +70,13 @@ KCM.SimpleKCM {
             level: 4
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Google Calendar")
+            text: t("Google Calendar")
             textFormat: Text.PlainText
         }
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal")
+            text: t("1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -78,7 +84,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Formato:\nhttps://calendar.google.com/calendar/ical/seuemail%40gmail.com/public/basic.ics")
+            text: t("Formato:\nhttps://calendar.google.com/calendar/ical/seuemail%40gmail.com/public/basic.ics")
             opacity: 0.5
             font.pixelSize: 10
             font.italic: true
@@ -94,12 +100,12 @@ KCM.SimpleKCM {
             level: 4
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Arquivo local")
+            text: t("Arquivo local")
             textFormat: Text.PlainText
         }
 
         QQC2.Button {
-            text: i18n("Selecionar arquivo .ics...")
+            text: t("Selecionar arquivo .ics...")
             icon.name: "document-open"
             onClicked: fileDialog.open()
         }
@@ -113,7 +119,7 @@ KCM.SimpleKCM {
             level: 4
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Adicionar URL ou caminho")
+            text: t("Adicionar URL ou caminho")
             textFormat: Text.PlainText
         }
 
@@ -124,13 +130,13 @@ KCM.SimpleKCM {
             QQC2.TextField {
                 id: agSourceField
                 Layout.fillWidth: true
-                placeholderText: i18n("URL iCal ou caminho local...")
+                placeholderText: t("URL iCal ou caminho local...")
                 onAccepted: addAgButton.clicked()
             }
 
             QQC2.Button {
                 id: addAgButton
-                text: i18n("Adicionar")
+                text: t("Adicionar")
                 icon.name: "list-add"
                 onClicked: {
                     var u = agSourceField.text.trim();
@@ -148,7 +154,7 @@ KCM.SimpleKCM {
             visible: page.agendaSources().length === 0
             Layout.fillWidth: true
             opacity: 0.5
-            text: i18n("Nenhuma fonte adicionada.")
+            text: t("Nenhuma fonte adicionada.")
         }
 
         Repeater {

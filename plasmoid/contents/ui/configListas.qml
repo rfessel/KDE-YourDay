@@ -42,12 +42,12 @@ ColumnLayout {
 
     Kirigami.Heading {
         level: 2
-        text: i18n("Listas")
+        text: t("Listas")
         Layout.fillWidth: true
     }
 
     QQC2.Label {
-        text: i18n("Exportar suas listas para arquivo.")
+        text: t("Exportar suas listas para arquivo.")
         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
         opacity: 0.7
         Layout.fillWidth: true
@@ -58,14 +58,14 @@ ColumnLayout {
     }
 
     QQC2.Label {
-        text: i18n("Listas disponíveis: %1", listsData.length)
+        text: t("Listas disponíveis: %1", listsData.length)
         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
         Layout.fillWidth: true
     }
 
     // Exportar como TXT
     QQC2.Button {
-        text: i18n("Exportar como TXT")
+        text: t("Exportar como TXT")
         icon.name: "document-export"
         Layout.fillWidth: true
         onClicked: {
@@ -78,7 +78,7 @@ ColumnLayout {
 
     // Exportar como CSV
     QQC2.Button {
-        text: i18n("Exportar como CSV (Planilha)")
+        text: t("Exportar como CSV (Planilha)")
         icon.name: "document-export"
         Layout.fillWidth: true
         onClicked: {
@@ -121,7 +121,7 @@ ColumnLayout {
 
     FileDialog {
         id: txtFileDialog
-        title: i18n("Salvar como TXT")
+        title: t("Salvar como TXT")
         fileMode: FileDialog.SaveFile
         nameFilters: [i18n("Arquivo de texto (*.txt)")]
         onAccepted: {
@@ -131,7 +131,7 @@ ColumnLayout {
 
     FileDialog {
         id: csvFileDialog
-        title: i18n("Salvar como CSV")
+        title: t("Salvar como CSV")
         fileMode: FileDialog.SaveFile
         nameFilters: [i18n("Arquivo CSV (*.csv)")]
         onAccepted: {

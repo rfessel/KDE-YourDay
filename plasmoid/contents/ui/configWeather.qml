@@ -10,10 +10,16 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kcmutils as KCM
+import "js/i18n.js" as I18n
 
 import "js/weather.js" as Weather
 
 KCM.SimpleKCM {
+    function t(text) {
+        var lang = Plasmoid.configuration.language || "";
+        if (!lang) return text;
+        return I18n.translate(text, lang);
+    }
     id: page
 
     property var cityResults: []
@@ -61,7 +67,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Busque uma cidade e escolha se ela será a principal ou adicional.")
+            text: t("Busque uma cidade e escolha se ela será a principal ou adicional.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -74,13 +80,13 @@ KCM.SimpleKCM {
             QQC2.TextField {
                 id: citySearchField
                 Layout.fillWidth: true
-                placeholderText: i18n("Buscar cidade...")
+                placeholderText: t("Buscar cidade...")
                 onAccepted: citySearchButton.clicked()
             }
 
             QQC2.Button {
                 id: citySearchButton
-                text: i18n("Buscar")
+                text: t("Buscar")
                 icon.name: "edit-find"
                 onClicked: {
                     var q = citySearchField.text.trim();
@@ -155,14 +161,14 @@ KCM.SimpleKCM {
         PlasmaComponents3.Label {
             visible: Plasmoid.configuration.weatherCity !== ""
             Layout.fillWidth: true
-            text: i18n("Cidade principal: %1", Plasmoid.configuration.weatherCity)
+            text: t("Cidade principal: %1", Plasmoid.configuration.weatherCity)
             opacity: 0.6
             font.pixelSize: 11
         }
 
         QQC2.Button {
             visible: Plasmoid.configuration.weatherCity !== ""
-            text: i18n("Limpar principal")
+            text: t("Limpar principal")
             icon.name: "edit-clear"
             onClicked: {
                 Plasmoid.configuration.weatherCity = "";
@@ -179,7 +185,7 @@ KCM.SimpleKCM {
         QQC2.Label {
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Cidades adicionais:")
+            text: t("Cidades adicionais:")
             font.pixelSize: 12
             font.bold: true
         }
@@ -217,7 +223,7 @@ KCM.SimpleKCM {
             Layout.fillWidth: true
             opacity: 0.5
             font.pixelSize: 11
-            text: i18n("Nenhuma cidade adicional.")
+            text: t("Nenhuma cidade adicional.")
         }
     }
 }

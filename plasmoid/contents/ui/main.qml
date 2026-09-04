@@ -219,11 +219,11 @@ PlasmoidItem {
     function feedErrorText(url, code) {
         var why;
         if (code === -2) {
-            why = i18n("tempo esgotado");
+            why = root.t("tempo esgotado");
         } else if (code === -1) {
-            why = i18n("falha de conexão");
+            why = root.t("falha de conexão");
         } else if (code === 0) {
-            why = i18n("resposta inválida (não é RSS) ou servidor inacessível");
+            why = root.t("resposta inválida (não é RSS) ou servidor inacessível");
         } else {
             why = i18n("HTTP %1", code);
         }
@@ -1133,7 +1133,7 @@ PlasmoidItem {
                             id: newsRefreshBtn
                             onClicked: root.loadAll()
                             QQC2.ToolTip.visible: hovered
-                            QQC2.ToolTip.text: i18n("Atualizar notícias")
+                            QQC2.ToolTip.text: root.t("Atualizar notícias")
 
                             contentItem: Item {
                                 implicitWidth: 36

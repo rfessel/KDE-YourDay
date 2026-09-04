@@ -12,10 +12,18 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kcmutils as KCM
 
+import "js/i18n.js" as I18n
+
 KCM.SimpleKCM {
     id: page
 
-    property var tabNames: [i18n("Resumo"), i18n("Agenda"), i18n("Tarefas"), i18n("Clima"), i18n("Notas"), i18n("Notícias")]
+    function t(text) {
+        var lang = Plasmoid.configuration.language || "";
+        if (!lang) return text;
+        return I18n.translate(text, lang);
+    }
+
+    property var tabNames: [t("Resumo"), t("Agenda"), t("Tarefas"), t("Clima"), t("Notas"), t("Notícias")]
 
     readonly property string currentIcon: {
         var c = Plasmoid.configuration.customIcon;
@@ -24,8 +32,8 @@ KCM.SimpleKCM {
 
     FileDialog {
         id: iconFileDialog
-        title: i18n("Escolher ícone")
-        nameFilters: [ i18n("Imagens (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"), i18n("Todos os arquivos (*)") ]
+        title: t("Escolher ícone")
+        nameFilters: [ t("Imagens (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"), i18n("Todos os arquivos (*)") ]
         onAccepted: {
             var u = iconFileDialog.fileUrl.toString();
             if (u) {
@@ -42,7 +50,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Configurações gerais do widget.")
+            text: t("Configurações gerais do widget.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -59,7 +67,7 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
 
             PlasmaComponents3.Label {
-                text: i18n("Aba padrão ao abrir:")
+                text: t("Aba padrão ao abrir:")
                 font.pixelSize: 13
             }
 
@@ -76,7 +84,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Define qual aba será exibida ao clicar no widget.")
+            text: t("Define qual aba será exibida ao clicar no widget.")
             opacity: 0.5
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -89,14 +97,14 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
 
             PlasmaComponents3.Label {
-                text: i18n("Tema:")
+                text: t("Tema:")
                 font.pixelSize: 13
             }
 
             Item { Layout.fillWidth: true }
 
             QQC2.ComboBox {
-                model: [i18n("Claro"), i18n("Escuro"), i18n("Automático")]
+                model: [t("Claro"), i18n("Escuro"), i18n("Automático")]
                 currentIndex: Plasmoid.configuration.themeMode || 2
                 onActivated: {
                     Plasmoid.configuration.themeMode = index;
@@ -106,7 +114,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Define o tema visual do widget.")
+            text: t("Define o tema visual do widget.")
             opacity: 0.5
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -119,7 +127,7 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
 
             PlasmaComponents3.Label {
-                text: i18n("Idioma:")
+                text: t("Idioma:")
                 font.pixelSize: 13
             }
 
@@ -159,7 +167,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Força o idioma do widget. Se vazio, segue o idioma do sistema.")
+            text: t("Força o idioma do widget. Se vazio, segue o idioma do sistema.")
             opacity: 0.5
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -175,7 +183,7 @@ KCM.SimpleKCM {
             level: 3
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Ícone do widget")
+            text: t("Ícone do widget")
             textFormat: Text.PlainText
         }
 
@@ -197,7 +205,7 @@ KCM.SimpleKCM {
                     spacing: Kirigami.Units.smallSpacing
 
                     QQC2.Button {
-                        text: i18n("Ícone do sistema")
+                        text: t("Ícone do sistema")
                         icon.name: "icon-preview"
                         onClicked: {
                             Plasmoid.configuration.customIcon = "";
@@ -207,7 +215,7 @@ KCM.SimpleKCM {
                     }
 
                     QQC2.Button {
-                        text: i18n("Arquivo...")
+                        text: t("Arquivo...")
                         icon.name: "document-open"
                         onClicked: iconFileDialog.open()
                     }

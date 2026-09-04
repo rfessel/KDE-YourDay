@@ -51,7 +51,7 @@ Item {
                 QQC2.TextField {
                     id: newTodoField
                     Layout.fillWidth: true
-                    placeholderText: i18n("Nova tarefa…")
+                    placeholderText: root.t("Nova tarefa…")
                     onAccepted: {
                         if (text.trim() !== "") {
                             page.addTodo(text);
@@ -61,7 +61,7 @@ Item {
                 }
 
                 PlasmaComponents3.Button {
-                    text: i18n("Adicionar")
+                    text: root.t("Adicionar")
                     onClicked: {
                         if (newTodoField.text.trim() !== "") {
                             page.addTodo(newTodoField.text);
@@ -75,7 +75,7 @@ Item {
             PlasmaExtras.Heading {
                 level: 4
                 Layout.fillWidth: true
-                text: i18n("Tarefas de hoje")
+                text: root.t("Tarefas de hoje")
                 color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
             }
 
@@ -90,7 +90,7 @@ Item {
             Kirigami.PlaceholderMessage {
                 visible: page.todos.length === 0
                 Layout.fillWidth: true
-                text: i18n("Nenhuma tarefa ainda.\nAdicione uma acima para começar o dia.")
+                text: root.t("Nenhuma tarefa ainda.\nAdicione uma acima para começar o dia.")
                 icon.name: "task-new"
             }
 
@@ -154,7 +154,7 @@ Item {
         visible: page.completedTodos.length > 0
         onClicked: page.showHistory = !page.showHistory
         QQC2.ToolTip.visible: hovered
-        QQC2.ToolTip.text: i18n("Tarefas concluídas (%1)", page.completedTodos.length)
+        QQC2.ToolTip.text: root.t("Tarefas concluídas (%1)", page.completedTodos.length)
     }
 
     // Painel de histórico
@@ -182,7 +182,7 @@ Item {
                 PlasmaExtras.Heading {
                     level: 4
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                    text: i18n("Concluídas (%1)", page.completedTodos.length)
+                    text: root.t("Concluídas (%1)", page.completedTodos.length)
                     Layout.fillWidth: true
                 }
                 PlasmaComponents3.ToolButton {
@@ -234,7 +234,7 @@ Item {
                             width: 28
                             height: 28
                             QQC2.ToolTip.visible: hovered
-                            QQC2.ToolTip.text: i18n("Restaurar tarefa")
+                            QQC2.ToolTip.text: root.t("Restaurar tarefa")
                             onClicked: page.restoreTodo(index)
                         }
 

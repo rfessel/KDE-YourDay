@@ -85,7 +85,7 @@ Item {
                   : i18n("Nenhuma cidade configurada.\nVá em Configurações → Clima para adicionar.")
             icon.name: "weather-clear"
             helpfulAction: Kirigami.Action {
-                text: i18n("Atualizar")
+                text: root.t("Atualizar")
                 icon.name: "view-refresh"
                 onTriggered: root.refreshWeather()
             }
@@ -162,14 +162,14 @@ Item {
                                     spacing: Kirigami.Units.largeSpacing
 
                                     PlasmaComponents3.Label {
-                                        text: i18n("Máx: %1°", page.currentData && page.currentData.maxTemp !== undefined ? Math.round(page.currentData.maxTemp) : "—")
+                                        text: root.t("Máx: %1°", page.currentData && page.currentData.maxTemp !== undefined ? Math.round(page.currentData.maxTemp) : "—")
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                                         font.pixelSize: 13
                                         font.weight: Font.DemiBold
                                     }
 
                                     PlasmaComponents3.Label {
-                                        text: i18n("Mín: %1°", page.currentData && page.currentData.minTemp !== undefined ? Math.round(page.currentData.minTemp) : "—")
+                                        text: root.t("Mín: %1°", page.currentData && page.currentData.minTemp !== undefined ? Math.round(page.currentData.minTemp) : "—")
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                                         font.pixelSize: 13
                                         opacity: 0.6
@@ -188,19 +188,19 @@ Item {
                             rowSpacing: Kirigami.Units.smallSpacing
 
                             ColumnLayout { spacing: 0
-                                PlasmaComponents3.Label { text: i18n("Umidade"); font.pixelSize: 10; opacity: 0.5 }
+                                PlasmaComponents3.Label { text: root.t("Umidade"); font.pixelSize: 10; opacity: 0.5 }
                                 PlasmaComponents3.Label { text: page.currentData && page.currentData.humidity !== undefined ? page.currentData.humidity + "%" : "—"; font.pixelSize: 13; font.weight: Font.DemiBold }
                             }
                             ColumnLayout { spacing: 0
-                                PlasmaComponents3.Label { text: i18n("Chuva"); font.pixelSize: 10; opacity: 0.5 }
+                                PlasmaComponents3.Label { text: root.t("Chuva"); font.pixelSize: 10; opacity: 0.5 }
                                 PlasmaComponents3.Label { text: page.currentData && page.currentData.rainChance !== undefined ? page.currentData.rainChance + "%" : "—"; font.pixelSize: 13; font.weight: Font.DemiBold }
                             }
                             ColumnLayout { spacing: 0
-                                PlasmaComponents3.Label { text: i18n("Vento"); font.pixelSize: 10; opacity: 0.5 }
+                                PlasmaComponents3.Label { text: root.t("Vento"); font.pixelSize: 10; opacity: 0.5 }
                                 PlasmaComponents3.Label { text: page.currentData && page.currentData.windSpeed !== undefined ? Math.round(page.currentData.windSpeed) + " km/h" : "—"; font.pixelSize: 13; font.weight: Font.DemiBold }
                             }
                             ColumnLayout { spacing: 0
-                                PlasmaComponents3.Label { text: i18n("Sol"); font.pixelSize: 10; opacity: 0.5 }
+                                PlasmaComponents3.Label { text: root.t("Sol"); font.pixelSize: 10; opacity: 0.5 }
                                 PlasmaComponents3.Label {
                                     text: page.currentData && page.currentData.sunrise ? Weather.formatTime(page.currentData.sunrise) + "/" + Weather.formatTime(page.currentData.sunset) : "—"
                                     font.pixelSize: 11
@@ -230,7 +230,7 @@ Item {
                         PlasmaExtras.Heading {
                             level: 4
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                            text: i18n("Previsão 7 dias")
+                            text: root.t("Previsão 7 dias")
                         }
 
                         Repeater {
@@ -345,13 +345,13 @@ Item {
 
                                 ColumnLayout {
                                     spacing: 0
-                                    PlasmaComponents3.Label { text: i18n("Máx"); font.pixelSize: 10; opacity: 0.5 }
+                                    PlasmaComponents3.Label { text: root.t("Máx"); font.pixelSize: 10; opacity: 0.5 }
                                     PlasmaComponents3.Label { text: cityWeather && cityWeather.maxTemp !== undefined ? Math.round(cityWeather.maxTemp) + "°" : "—"; font.pixelSize: 12; font.weight: Font.DemiBold }
                                 }
 
                                 ColumnLayout {
                                     spacing: 0
-                                    PlasmaComponents3.Label { text: i18n("Mín"); font.pixelSize: 10; opacity: 0.5 }
+                                    PlasmaComponents3.Label { text: root.t("Mín"); font.pixelSize: 10; opacity: 0.5 }
                                     PlasmaComponents3.Label { text: cityWeather && cityWeather.minTemp !== undefined ? Math.round(cityWeather.minTemp) + "°" : "—"; font.pixelSize: 12; font.weight: Font.DemiBold }
                                 }
                             }
@@ -367,7 +367,7 @@ Item {
             spacing: Kirigami.Units.smallSpacing
 
             PlasmaComponents3.Label {
-                text: i18n("Cidade:")
+                text: root.t("Cidade:")
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                 font.pixelSize: 12
                 opacity: 0.7
@@ -392,7 +392,7 @@ Item {
 
             QQC2.Button {
                 visible: !page.weatherLoading
-                text: i18n("Atualizar")
+                text: root.t("Atualizar")
                 icon.name: "view-refresh"
                 onClicked: root.refreshWeather()
             }

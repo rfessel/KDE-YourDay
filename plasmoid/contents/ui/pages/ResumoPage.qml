@@ -55,7 +55,7 @@ Item {
             var raw = "Boa noite";
             if (h >= 5 && h < 12) raw = "Bom dia";
             else if (h >= 12 && h < 18) raw = "Boa tarde";
-            return typeof i18n === "function" ? i18n(raw) : raw;
+            return root.t(raw);
         }
     })
 
@@ -156,7 +156,7 @@ Item {
                 PlasmaComponents3.Label {
                     visible: page.weatherCity !== "" && !page.weatherLoading && page.weatherData === null
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                    text: i18n("Toque para atualizar")
+                    text: root.t("Toque para atualizar")
                     font.pixelSize: 10
                     opacity: 0.4
                     MouseArea {
@@ -181,12 +181,12 @@ Item {
                 PlasmaExtras.Heading {
                     level: 4
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                    text: i18n("Próximos compromissos")
+                    text: root.t("Próximos compromissos")
                     Layout.fillWidth: true
                 }
                 PlasmaComponents3.ToolButton {
                     text: "›"
-                    Accessible.name: i18n("Ver agenda")
+                    Accessible.name: root.t("Ver agenda")
                     onClicked: page.gotoAgenda()
                 }
             }
@@ -200,7 +200,7 @@ Item {
             Kirigami.PlaceholderMessage {
                 visible: !page.loading && page.nextEvents.length === 0
                 Layout.fillWidth: true
-                text: i18n("Nenhum compromisso próximo")
+                text: root.t("Nenhum compromisso próximo")
                 icon.name: "view-calendar-day"
             }
 
@@ -216,12 +216,12 @@ Item {
                 PlasmaExtras.Heading {
                     level: 4
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                    text: i18n("Tarefas do dia")
+                    text: root.t("Tarefas do dia")
                     Layout.fillWidth: true
                 }
                 PlasmaComponents3.ToolButton {
                     text: "›"
-                    Accessible.name: i18n("Ver to-dos")
+                    Accessible.name: root.t("Ver to-dos")
                     onClicked: page.gotoTodos()
                 }
             }
@@ -229,7 +229,7 @@ Item {
             Kirigami.PlaceholderMessage {
                 visible: page.todos.length === 0
                 Layout.fillWidth: true
-                text: i18n("Nenhuma tarefa para hoje")
+                text: root.t("Nenhuma tarefa para hoje")
                 icon.name: "task-new"
             }
 

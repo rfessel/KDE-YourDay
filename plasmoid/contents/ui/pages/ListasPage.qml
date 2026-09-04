@@ -51,7 +51,7 @@ Item {
                 PlasmaExtras.Heading {
                     level: 4
                     Layout.fillWidth: true
-                    text: i18n("Suas listas, compras ou qualquer coisa que precise organizar...")
+                    text: root.t("Suas listas, compras ou qualquer coisa que precise organizar...")
                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                     elide: Text.ElideRight
                     font.pixelSize: 13
@@ -75,7 +75,7 @@ Item {
                 QQC2.TextField {
                     id: newListField
                     Layout.fillWidth: true
-                    placeholderText: i18n("Nome da nova lista...")
+                    placeholderText: root.t("Nome da nova lista...")
                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                     onAccepted: {
                         if (text.trim().length > 0) {
@@ -222,7 +222,7 @@ Item {
 
                                 QQC2.TextField {
                                     Layout.fillWidth: true
-                                    placeholderText: i18n("Novo item...")
+                                    placeholderText: root.t("Novo item...")
                                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                                     onAccepted: {
                                         if (text.trim().length > 0) {

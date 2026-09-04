@@ -90,7 +90,7 @@ Item {
             PlasmaExtras.Heading {
                 level: 4
                 Layout.fillWidth: true
-                text: i18n("Estes são os seus compromissos para esta data...")
+                text: root.t("Estes são os seus compromissos para esta data...")
                 color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                 elide: Text.ElideRight
                 font.pixelSize: 13
@@ -163,11 +163,11 @@ Item {
             RowLayout {
                 Layout.fillWidth: true
                 PlasmaComponents3.ToolButton {
-                    text: i18n("Hoje")
+                    text: root.t("Hoje")
                     font.pixelSize: 10
                     Layout.fillWidth: true
                     contentItem: Text {
-                        text: i18n("Hoje")
+                        text: root.t("Hoje")
                         font.pixelSize: 10
                         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                         horizontalAlignment: Text.AlignHCenter
@@ -277,7 +277,7 @@ Item {
             Kirigami.PlaceholderMessage {
                 visible: !page.loading && page.selectedEvents.length === 0
                 Layout.fillWidth: true
-                text: i18n("Nenhum compromisso neste dia")
+                text: root.t("Nenhum compromisso neste dia")
                 icon.name: "view-calendar-day"
             }
 

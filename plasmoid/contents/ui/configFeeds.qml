@@ -9,10 +9,16 @@ import QtQuick.Controls as QQC2
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid 2.0
 import org.kde.kcmutils as KCM
+import "js/i18n.js" as I18n
 
 import "js/feeds.js" as FeedParser
 
 KCM.SimpleKCM {
+    function t(text) {
+        var lang = Plasmoid.configuration.language || "";
+        if (!lang) return text;
+        return I18n.translate(text, lang);
+    }
     id: page
 
     function feeds() {
@@ -192,14 +198,14 @@ KCM.SimpleKCM {
         Kirigami.Heading {
             level: 3
             Layout.fillWidth: true
-            text: i18n("Adicionar feed RSS")
+            text: t("Adicionar feed RSS")
             textFormat: Text.PlainText
         }
 
         QQC2.TextField {
             id: urlField
             Layout.fillWidth: true
-            placeholderText: i18n("URL do feed (RSS ou Atom)...")
+            placeholderText: t("URL do feed (RSS ou Atom)...")
             onAccepted: clickAdd.clicked()
         }
 
@@ -219,7 +225,7 @@ KCM.SimpleKCM {
             Item { Layout.fillWidth: true }
 
             QQC2.Button {
-                text: i18n("Limpar")
+                text: t("Limpar")
                 icon.name: "edit-clear"
                 onClicked: {
                     urlField.text = "";
@@ -229,7 +235,7 @@ KCM.SimpleKCM {
 
             QQC2.Button {
                 id: clickAdd
-                text: i18n("Adicionar")
+                text: t("Adicionar")
                 icon.name: "list-add"
                 onClicked: {
                     var err = page.tryAddFeed(urlField.text);
@@ -268,7 +274,7 @@ KCM.SimpleKCM {
             level: 3
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Seus feeds (%1)", page.feedListModel.count)
+            text: t("Seus feeds (%1)", page.feedListModel.count)
             textFormat: Text.PlainText
         }
 
@@ -302,7 +308,7 @@ KCM.SimpleKCM {
                     spacing: Kirigami.Units.smallSpacing
 
                     QQC2.Label {
-                        text: i18n("Limite:")
+                        text: t("Limite:")
                         font.pixelSize: 11
                         opacity: 0.7
                     }
@@ -316,7 +322,7 @@ KCM.SimpleKCM {
                     }
 
                     QQC2.Label {
-                        text: i18n("notícias")
+                        text: t("notícias")
                         font.pixelSize: 11
                         opacity: 0.6
                     }
@@ -335,7 +341,7 @@ KCM.SimpleKCM {
             level: 3
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Exibição")
+            text: t("Exibição")
             textFormat: Text.PlainText
         }
 
@@ -343,7 +349,7 @@ KCM.SimpleKCM {
             Layout.fillWidth: true
             spacing: Kirigami.Units.smallSpacing
 
-            QQC2.Label { text: i18n("Máximo total de notícias:") }
+            QQC2.Label { text: t("Máximo total de notícias:") }
 
             QQC2.SpinBox {
                 from: 1
@@ -360,7 +366,7 @@ KCM.SimpleKCM {
             Layout.fillWidth: true
             spacing: Kirigami.Units.smallSpacing
 
-            QQC2.Label { text: i18n("Linhas da chamada:") }
+            QQC2.Label { text: t("Linhas da chamada:") }
 
             QQC2.SpinBox {
                 from: 1
@@ -370,7 +376,7 @@ KCM.SimpleKCM {
                 onValueModified: Plasmoid.configuration.headlineLines = value
             }
 
-            QQC2.Label { text: i18n("linhas por notícia"); opacity: 0.6 }
+            QQC2.Label { text: t("linhas por notícia"); opacity: 0.6 }
 
             Item { Layout.fillWidth: true }
         }
@@ -379,7 +385,7 @@ KCM.SimpleKCM {
             Layout.fillWidth: true
             spacing: Kirigami.Units.smallSpacing
 
-            QQC2.Label { text: i18n("Atualizar:") }
+            QQC2.Label { text: t("Atualizar:") }
 
             QQC2.ComboBox {
                 model: page.refreshOptions
