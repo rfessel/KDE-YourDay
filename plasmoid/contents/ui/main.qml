@@ -59,7 +59,7 @@ PlasmoidItem {
     }
 
     // -------- tradução forçada --------------------
-    function T(text) {
+    function t(text) {
         var lang = I18n.getLang();
         if (!lang) return text;
         return I18n.translate(text, lang);
@@ -1025,13 +1025,13 @@ PlasmoidItem {
 
                 Repeater {
                     model: [
-                        { label: root.T("Resumo"), icon: "view-calendar-day" },
-                        { label: root.T("Agenda"), icon: "view-calendar" },
-                        { label: root.T("Tarefas"), icon: "task-new" },
-                        { label: root.T("Clima"), icon: "weather-clear" },
-                        { label: root.T("Notas"), icon: "note" },
-                        { label: root.T("Listas"), icon: "view-list" },
-                        { label: root.T("Notícias"), icon: root.iconResolvedName }
+                        { label: root.t("Resumo"), icon: "view-calendar-day" },
+                        { label: root.t("Agenda"), icon: "view-calendar" },
+                        { label: root.t("Tarefas"), icon: "task-new" },
+                        { label: root.t("Clima"), icon: "weather-clear" },
+                        { label: root.t("Notas"), icon: "note" },
+                        { label: root.t("Listas"), icon: "view-list" },
+                        { label: root.t("Notícias"), icon: root.iconResolvedName }
                     ]
                     delegate: navButton
                 }
@@ -1123,7 +1123,7 @@ PlasmoidItem {
                         PlasmaExtras.Heading {
                             level: 4
                             Layout.fillWidth: true
-                            text: root.T("Aqui estão as principais notícias de seu interesse")
+                            text: root.t("Aqui estão as principais notícias de seu interesse")
                             elide: Text.ElideRight
                             font.pixelSize: 13
                             color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
