@@ -79,6 +79,10 @@
       <default>2</default>
       <label>Modo de tema (0=Claro, 1=Escuro, 2=Automático).</label>
     </entry>
+    <entry name="language" type="String">
+      <default></default>
+      <label>Idioma forçado para o widget (vazio = usar idioma do sistema).</label>
+    </entry>
   </group>
 
 </kcfg>

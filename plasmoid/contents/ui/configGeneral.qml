@@ -112,6 +112,59 @@ KCM.SimpleKCM {
             wrapMode: Text.Wrap
         }
 
+        // Idioma
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.topMargin: Kirigami.Units.largeSpacing
+            spacing: Kirigami.Units.smallSpacing
+
+            PlasmaComponents3.Label {
+                text: i18n("Idioma:")
+                font.pixelSize: 13
+            }
+
+            Item { Layout.fillWidth: true }
+
+            QQC2.ComboBox {
+                id: languageCombo
+                model: ListModel {
+                    ListElement { text: "Seguir idioma do sistema"; value: "" }
+                    ListElement { text: "Português (Brasil)"; value: "pt_BR" }
+                    ListElement { text: "English"; value: "en" }
+                    ListElement { text: "English (US)"; value: "en_US" }
+                    ListElement { text: "Español"; value: "es" }
+                    ListElement { text: "Français"; value: "fr" }
+                    ListElement { text: "Deutsch"; value: "de" }
+                    ListElement { text: "Italiano"; value: "it" }
+                    ListElement { text: "日本語"; value: "ja" }
+                    ListElement { text: "Русский"; value: "ru" }
+                    ListElement { text: "עברית"; value: "he" }
+                    ListElement { text: "中文"; value: "zh_CN" }
+                }
+                textRole: "text"
+                currentIndex: {
+                    var lang = Plasmoid.configuration.language || "";
+                    if (lang === "") return 0;
+                    for (var i = 1; i < languageCombo.count; i++) {
+                        if (languageCombo.model.get(i).value === lang) return i;
+                    }
+                    return 0;
+                }
+                onActivated: {
+                    var val = index === 0 ? "" : languageCombo.model.get(index).value;
+                    Plasmoid.configuration.language = val;
+                }
+            }
+        }
+
+        QQC2.Label {
+            Layout.fillWidth: true
+            text: i18n("Força o idioma do widget. Se vazio, segue o idioma do sistema.")
+            opacity: 0.5
+            font.pixelSize: 11
+            wrapMode: Text.Wrap
+        }
+
         Kirigami.Separator {
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing

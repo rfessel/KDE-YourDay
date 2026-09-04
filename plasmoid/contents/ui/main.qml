@@ -706,6 +706,11 @@ PlasmoidItem {
     }
 
     Component.onCompleted: {
+        // Forçar idioma se configurado
+        var forcedLang = Plasmoid.configuration.language;
+        if (forcedLang && forcedLang !== "") {
+            Qt.locale(forcedLang);
+        }
         Plasmoid.icon = root.chosenIcon;
         root.loadNewsCache();
         loadAll();
