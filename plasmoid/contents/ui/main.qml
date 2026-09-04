@@ -1232,7 +1232,7 @@ PlasmoidItem {
 
         // ---------------- Rodapé (apenas na aba Notícias)
         ColumnLayout {
-            visible: root.currentTab === 5
+            visible: root.currentTab === 6
             Layout.fillWidth: true
             Layout.leftMargin: Kirigami.Units.largeSpacing
             Layout.rightMargin: Kirigami.Units.largeSpacing
