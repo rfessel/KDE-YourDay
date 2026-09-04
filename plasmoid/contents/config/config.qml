@@ -9,32 +9,41 @@ import org.kde.plasma.configuration 2.0
 import "../ui/js/i18n.js" as I18n
 
 ConfigModel {
+    id: cfgModel
+
+    property string _lang: Plasmoid.configuration.language || ""
+
+    function t(text) {
+        if (!_lang) return text;
+        return I18n.translate(text, _lang);
+    }
+
     ConfigCategory {
-        name: "Geral"
+        name: cfgModel.t("Geral")
         icon: "configure"
         source: "configGeneral.qml"
     }
 
     ConfigCategory {
-        name: "Feeds de notícias"
+        name: cfgModel.t("Feeds de notícias")
         icon: "view-pim-news"
         source: "configFeeds.qml"
     }
 
     ConfigCategory {
-        name: "Agenda"
+        name: cfgModel.t("Agenda")
         icon: "view-calendar"
         source: "configAgenda.qml"
     }
 
     ConfigCategory {
-        name: "Clima"
+        name: cfgModel.t("Clima")
         icon: "weather-clear"
         source: "configWeather.qml"
     }
 
     ConfigCategory {
-        name: "Listas"
+        name: cfgModel.t("Listas")
         icon: "view-list"
         source: "configListas.qml"
     }
