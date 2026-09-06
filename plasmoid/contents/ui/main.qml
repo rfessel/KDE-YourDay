@@ -1069,11 +1069,11 @@ PlasmoidItem {
     }
 
     onRefreshMinutesValueChanged: {
-        if (refreshTimer.running) {
-            refreshTimer.restart();
-        } else {
-            refreshTimer.start();
+        if (root.refreshMinutesValue <= 0) {
+            refreshTimer.stop();
+            return;
         }
+        refreshTimer.restart();
     }
 
     // Timer para atualização automática do clima (a cada 30 minutos)
