@@ -163,14 +163,14 @@ Item {
                                     spacing: Kirigami.Units.largeSpacing
 
                                     PlasmaComponents3.Label {
-                                        text: root.t("Máx: %1°", page.currentData && page.currentData.maxTemp !== undefined ? Math.round(page.currentData.maxTemp) : "—")
+                                        text: root.t("Máx: %1°").arg(page.currentData && page.currentData.maxTemp !== undefined ? Math.round(page.currentData.maxTemp) : "—")
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                                         font.pixelSize: 13
                                         font.weight: Font.DemiBold
                                     }
 
                                     PlasmaComponents3.Label {
-                                        text: root.t("Mín: %1°", page.currentData && page.currentData.minTemp !== undefined ? Math.round(page.currentData.minTemp) : "—")
+                                        text: root.t("Mín: %1°").arg(page.currentData && page.currentData.minTemp !== undefined ? Math.round(page.currentData.minTemp) : "—")
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                                         font.pixelSize: 13
                                         opacity: 0.6

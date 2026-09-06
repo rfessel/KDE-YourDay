@@ -67,7 +67,7 @@ ColumnLayout {
     }
 
     QQC2.Label {
-        text: t("Listas disponíveis: %1", listsData.length)
+        text: t("Listas disponíveis: %1").arg(listsData.length)
         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
         Layout.fillWidth: true
     }

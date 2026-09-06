@@ -155,7 +155,7 @@ KCM.SimpleKCM {
         testTimer.stop();
         page.testingUrl = false;
         if (ok) {
-            page.testResultText = t("Endereço válido — %1 notícia(s) carregada(s).", codeOrCount);
+            page.testResultText = t("Endereço válido — %1 notícia(s) carregada(s).").arg(codeOrCount);
             page.testResultKind = Kirigami.MessageType.Positive;
         } else {
             var why;
@@ -163,7 +163,7 @@ KCM.SimpleKCM {
             case -2: why = t("Tempo esgotado."); break;
             case -1: why = t("Falha de conexão."); break;
             case 0:  why = t("Resposta inválida."); break;
-            default: why = t("Erro HTTP %1.", codeOrCount); break;
+            default: why = t("Erro HTTP %1.").arg(codeOrCount); break;
             }
             page.testResultText = t("Endereço inválido: ") + why;
             page.testResultKind = Kirigami.MessageType.Negative;
@@ -276,7 +276,7 @@ KCM.SimpleKCM {
             level: 3
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: t("Seus feeds (%1)", page.feedListModel.count)
+            text: t("Seus feeds (%1)").arg(page.feedListModel.count)
             textFormat: Text.PlainText
         }
 

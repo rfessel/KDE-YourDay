@@ -163,7 +163,7 @@ KCM.SimpleKCM {
         PlasmaComponents3.Label {
             visible: Plasmoid.configuration.weatherCity !== ""
             Layout.fillWidth: true
-            text: t("Cidade principal: %1", Plasmoid.configuration.weatherCity)
+            text: t("Cidade principal: %1").arg(Plasmoid.configuration.weatherCity)
             opacity: 0.6
             font.pixelSize: 11
         }
