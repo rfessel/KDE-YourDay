@@ -55,6 +55,18 @@ PlasmoidItem {
     property bool agendaLoading: false
     property int currentTab: 0   // 0=Resumo, 1=Agenda, 2=Tarefas, 3=Clima, 4=Notas, 5=Listas, 6=Notícias
 
+    // Tokens de geração: callbacks de XHR antigos são ignorados após nova carga.
+    property int feedGen: 0
+    property int agendaGen: 0
+    property int weatherGen: 0
+    property int lastNewsRefresh: 0
+    property int lastAgendaRefresh: 0
+    property int lastWeatherRefresh: 0
+
+    // Fila de cargas no boot (uma de cada vez, sem tempestade na thread).
+    property int bootStep: 0
+    property var bootQueue: []
+
     onCurrentTabChanged: {
         if (currentTab === 3) {
             root.selectedCityName = Plasmoid.configuration.weatherCity || "";
@@ -337,6 +349,9 @@ PlasmoidItem {
             return;
         }
 
+        root.feedGen++;
+        var gen = root.feedGen;
+        root.lastNewsRefresh = Date.now();
         root.loading = true;
         root.errorText = "";
         root.feedGroups = [];
@@ -348,28 +363,30 @@ PlasmoidItem {
         hangTimer.running = true;
 
         for (var f = 0; f < feeds.length; f++) {
-            (function(url, idx) {
+            (function(url, idx, myGen) {
+                var done = function(code, items) {
+                    if (myGen !== root.feedGen) {
+                        return;
+                    }
+                    if (code !== 0) {
+                        console.warn("[yourday] feed FALHOU:", url, "código", code);
+                        root.feedFailures.push(root.feedErrorText(url, code));
+                        root.feedGroups.push({ items: [], cap: 0 });
+                    } else {
+                        console.log("[yourday] feed OK:", url, "->", items.length, "itens");
+                        root.feedGroups.push({ items: items, cap: root.feedCapFor(idx) });
+                    }
+                    finishOne(url);
+                };
                 try {
                     FeedParser.loadFeed(url,
-                        function(items) {
-                            console.log("[yourday] feed OK:", url, "->", items.length, "itens");
-                            root.feedGroups.push({ items: items, cap: root.feedCapFor(idx) });
-                            finishOne(url);
-                        },
-                        function(code) {
-                            console.warn("[yourday] feed FALHOU:", url, "código", code);
-                            root.feedFailures.push(root.feedErrorText(url, code));
-                            root.feedGroups.push({ items: [], cap: 0 });
-                            finishOne(url);
-                        }
+                        function(items) { done(0, items); },
+                        function(code) { done(code); }
                     );
                 } catch (e) {
-                    console.warn("[yourday] exceção ao carregar:", url, String(e));
-                    root.feedFailures.push(root.t("Falha em %1 (%2)").arg(url).arg(String(e)));
-                    root.feedGroups.push({ items: [], cap: 0 });
-                    finishOne(url);
+                    done(-1, []);
                 }
-            })(feeds[f], f);
+            })(feeds[f], f, gen);
         }
     }
 
@@ -668,6 +685,10 @@ PlasmoidItem {
 
     // Carrega eventos do dia a partir das fontes .ics configuradas.
     function refreshAgenda() {
+        root.agendaGen++;
+        var gen = root.agendaGen;
+        root.lastAgendaRefresh = Date.now();
+
         var sources = root.agendaSources();
         root.agendaLoading = true;
 
@@ -677,6 +698,9 @@ PlasmoidItem {
         // Busca eventos do Google Calendar via Apps Script
         var gcalPending = 0;
         function gcalDone() {
+            if (gen !== root.agendaGen) {
+                return;
+            }
             gcalPending--;
             if (gcalPending <= 0 && pendingCount <= 0) {
                 all.sort(function(a, b) { return (a.start - b.start); });
@@ -749,6 +773,9 @@ PlasmoidItem {
         var pendingCount = sources.length;
 
         function pendingDone() {
+            if (gen !== root.agendaGen) {
+                return;
+            }
             pendingCount--;
             if (pendingCount <= 0 && gcalPending <= 0) {
                 all.sort(function(a, b) { return (a.start - b.start); });
@@ -992,6 +1019,9 @@ PlasmoidItem {
     function gotoNoticias() { root.currentTab = 5; }
 
     function refreshWeather() {
+        root.weatherGen++;
+        var gen = root.weatherGen;
+        root.lastWeatherRefresh = Date.now();
         var lat = Plasmoid.configuration.weatherLatitude;
         var lon = Plasmoid.configuration.weatherLongitude;
         if (!lat || !lon || lat === 0 || lon === 0) {
@@ -1001,11 +1031,17 @@ PlasmoidItem {
         root.weatherLoading = true;
         Weather.fetchWeather(lat, lon,
             function(data) {
+                if (gen !== root.weatherGen) {
+                    return;
+                }
                 root.weatherData = data;
                 root.weatherLoading = false;
                 root.refreshAllCitiesWeather();
             },
             function(code) {
+                if (gen !== root.weatherGen) {
+                    return;
+                }
                 console.warn("[yourday] clima falhou:", code);
                 root.weatherLoading = false;
             }
@@ -1019,15 +1055,35 @@ PlasmoidItem {
             Qt.locale(forcedLang);
         }
         Plasmoid.icon = root.chosenIcon;
+        // Síncrono/barato primeiro (mostra Resumo na hora, sem rede).
         root.loadNewsCache();
-        loadAll();
-        parseLocalEvents();
-        refreshAgenda();
         parseTodos();
         parseNotes();
         loadLists();
-        refreshWeather();
-        loadExtraCities();
+        parseLocalEvents();
+        // Rede em fila, uma carga por vez.
+        root.bootQueue = [root.refreshWeather, root.refreshAgenda, root.loadAll, root.loadExtraCities];
+        root.bootStep = 0;
+        bootTimer.start();
+    }
+
+    Timer {
+        id: bootTimer
+        interval: 250
+        repeat: true
+        onTriggered: {
+            if (root.bootStep >= root.bootQueue.length) {
+                root.bootQueue = [];
+                root.bootStep = 0;
+                bootTimer.stop();
+                return;
+            }
+            var fn = root.bootQueue[root.bootStep];
+            root.bootStep++;
+            if (typeof fn === "function") {
+                fn();
+            }
+        }
     }
 
     Connections {
@@ -1052,9 +1108,11 @@ PlasmoidItem {
         target: Plasmoid
         function onActivated() {
             root.currentTab = Plasmoid.configuration.defaultTab || 0;
-            root.refreshAgenda();
+            // Sem tempestade ao abrir: só refaz rede se a última foi há > 5 min.
+            var now = Date.now();
+            if (now - root.lastAgendaRefresh >= 5 * 60000) root.refreshAgenda();
+            if (now - root.lastWeatherRefresh >= 5 * 60000) root.refreshWeather();
             root.parseTodos();
-            root.refreshWeather();
         }
     }
 
