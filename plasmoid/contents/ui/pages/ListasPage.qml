@@ -333,85 +333,11 @@ Item {
                     }
                 }
             }
-
-            Repeater {
-                model: page.showHistory ? page.doneLists : []
-
-                delegate: Rectangle {
-                    id: doneDelegate
-                    required property var modelData
-                    required property int index
-                    Layout.fillWidth: true
-                    radius: Kirigami.Units.largeSpacing
-                    color: "transparent"
-                    border.width: 1
-                    border.color: root.isDarkTheme ? Qt.rgba(0.4, 0.4, 0.4, 1) : Qt.rgba(0.8, 0.8, 0.8, 1)
-                    implicitHeight: doneCol.implicitHeight + Kirigami.Units.largeSpacing * 2
-                    Layout.topMargin: Kirigami.Units.smallSpacing
-
-                    ColumnLayout {
-                        id: doneCol
-                        anchors.fill: parent
-                        anchors.margins: Kirigami.Units.largeSpacing
-                        spacing: Kirigami.Units.smallSpacing
-
-                        RowLayout {
-                            Layout.fillWidth: true
-                            spacing: Kirigami.Units.smallSpacing
-
-                            PlasmaComponents3.Label {
-                                Layout.fillWidth: true
-                                text: doneDelegate.modelData.name
-                                font.italic: true
-                                font.pixelSize: 12
-                                opacity: 0.6
-                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                            }
-
-                            PlasmaComponents3.Label {
-                                text: doneDelegate.modelData.itemsModel.count + " " + root.t("itens")
-                                font.pixelSize: 11
-                                opacity: 0.6
-                                color: root.isDarkTheme ? Qt.rgba(0.6, 0.6, 0.6, 1) : Qt.rgba(0.5, 0.5, 0.5, 1)
-                            }
-
-                            PlasmaComponents3.ToolButton {
-                                text: "\u21BA"
-                                font.pixelSize: 12
-                                QQC2.ToolTip.visible: hovered
-                                QQC2.ToolTip.text: root.t("Restaurar lista")
-                                contentItem: Text {
-                                    text: "\u21BA"
-                                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                                    font.pixelSize: 12
-                                    horizontalAlignment: Text.AlignHCenter
-                                    verticalAlignment: Text.AlignVCenter
-                                }
-                                onClicked: page.setDone(page.activeCount + doneDelegate.index, false)
-                            }
-
-                            PlasmaComponents3.ToolButton {
-                                text: "\u00D7"
-                                font.pixelSize: 14
-                                QQC2.ToolTip.visible: hovered
-                                QQC2.ToolTip.text: root.t("Excluir permanentemente")
-                                contentItem: Text {
-                                    text: "\u00D7"
-                                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                                    font.pixelSize: 14
-                                    horizontalAlignment: Text.AlignHCenter
-                                    verticalAlignment: Text.AlignVCenter
-                                }
-                                onClicked: page.removeList(page.activeCount + doneDelegate.index)
-                            }
-                        }
-                    }
-                }
-            }
         }
         }
 
         PlasmaComponents3.Button {
+            id: histToggleBtn
             Layout.fillWidth: true
             Layout.leftMargin: Kirigami.Units.largeSpacing
             Layout.rightMargin: Kirigami.Units.largeSpacing
@@ -419,14 +345,130 @@ Item {
             Layout.bottomMargin: Kirigami.Units.smallSpacing
             visible: page.doneLists.length > 0
             text: (page.showHistory ? "\u25BC " : "\u25B6 ") + root.t("Histórico de listas finalizadas") + " (" + page.doneLists.length + ")"
-            onClicked: {
-                page.showHistory = !page.showHistory;
-                if (page.showHistory) {
-                    Qt.callLater(function() {
-                        listFlick.contentY = Math.max(0, listFlick.contentHeight - listFlick.height);
-                    });
+            onClicked: page.showHistory = !page.showHistory
+        }
+    }
+
+    // Popup de histórico de listas finalizadas (abre ao pressionar o botão)
+    Rectangle {
+    visible: page.showHistory && page.doneLists.length > 0
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.leftMargin: Kirigami.Units.largeSpacing
+    anchors.rightMargin: Kirigami.Units.largeSpacing
+    anchors.bottom: parent.bottom
+    anchors.bottomMargin: histToggleBtn.height + Kirigami.Units.smallSpacing * 2
+    height: Math.min(340, donePopupCol.implicitHeight + Kirigami.Units.largeSpacing * 2)
+    radius: Kirigami.Units.largeSpacing
+    color: (root.isDarkTheme ? Qt.rgba(0.22, 0.22, 0.22, 1) : Qt.rgba(0.95, 0.95, 0.95, 1))
+    border.width: 1
+    border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.15)
+    z: 10
+
+    ColumnLayout {
+        id: donePopupCol
+        anchors.fill: parent
+        anchors.margins: Kirigami.Units.largeSpacing
+        spacing: Kirigami.Units.smallSpacing
+
+        RowLayout {
+            Layout.fillWidth: true
+            PlasmaExtras.Heading {
+                level: 4
+                color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                text: root.t("Finalizadas (%1)").arg(page.doneLists.length)
+                Layout.fillWidth: true
+            }
+            PlasmaComponents3.ToolButton {
+                text: "\u00D7"
+                Accessible.name: root.t("Fechar histórico")
+                onClicked: page.showHistory = false
+            }
+        }
+
+        Kirigami.Separator {
+            Layout.fillWidth: true
+        }
+
+        Flickable {
+            id: donePopupFlick
+            Layout.fillWidth: true
+            Layout.preferredHeight: Math.min(230, donePopupItems.implicitHeight)
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
+            contentHeight: donePopupItems.implicitHeight
+
+            QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
+
+            ColumnLayout {
+                id: donePopupItems
+                width: parent.width
+                anchors.top: parent.top
+                spacing: Kirigami.Units.smallSpacing
+
+                Repeater {
+                    model: page.doneLists
+                    delegate: Rectangle {
+                        required property int index
+                        required property var modelData
+
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: Math.max(32, doneRow.implicitHeight + Kirigami.Units.smallSpacing * 2)
+                        radius: Kirigami.Units.smallSpacing
+                        color: "transparent"
+                        border.width: 1
+                        border.color: root.isDarkTheme ? Qt.rgba(0.4, 0.4, 0.4, 1) : Qt.rgba(0.8, 0.8, 0.8, 1)
+
+                        RowLayout {
+                            id: doneRow
+                            anchors.fill: parent
+                            anchors.margins: Kirigami.Units.smallSpacing
+                            spacing: Kirigami.Units.smallSpacing
+
+                            Kirigami.Icon {
+                                source: "dialog-ok"
+                                Layout.preferredWidth: 14
+                                Layout.preferredHeight: 14
+                            }
+
+                            PlasmaComponents3.Label {
+                                Layout.fillWidth: true
+                                text: modelData.name
+                                font.italic: true
+                                font.pixelSize: 11
+                                opacity: 0.7
+                                elide: Text.ElideRight
+                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                            }
+
+                            PlasmaComponents3.Label {
+                                text: modelData.itemsModel.count + " " + root.t("itens")
+                                font.pixelSize: 10
+                                opacity: 0.6
+                                color: root.isDarkTheme ? Qt.rgba(0.6, 0.6, 0.6, 1) : Qt.rgba(0.5, 0.5, 0.5, 1)
+                            }
+
+                            PlasmaComponents3.ToolButton {
+                                icon.name: "edit-undo"
+                                width: 28
+                                height: 28
+                                QQC2.ToolTip.visible: hovered
+                                QQC2.ToolTip.text: root.t("Restaurar lista")
+                                onClicked: page.setDone(page.activeCount + index, false)
+                            }
+
+                            PlasmaComponents3.ToolButton {
+                                text: "\u00D7"
+                                width: 28
+                                height: 28
+                                Accessible.name: root.t("Excluir permanentemente")
+                                onClicked: page.removeList(page.activeCount + index)
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
     }
 }

@@ -189,7 +189,7 @@ Rectangle {
             PlasmaExtras.Heading {
                 level: 4
                 color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                text: root.t("Concluídas (%1)", page.completedTodos.length)
+                text: root.t("Concluídas (%1)").arg(page.completedTodos.length)
                 Layout.fillWidth: true
             }
             PlasmaComponents3.ToolButton {
