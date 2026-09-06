@@ -141,12 +141,25 @@ function icsBlocks(text, tag) {
     return out;
 }
 
-// Expande ocorrências de um VEVENT segundo uma recorrência diária simples.
-// targetStart/targetEnd = limites (ms) do dia de interesse.
+// Extrai abstinência de horário de DTSTART (ms -> HH:MM:SS locais da parte do dia).
+function timeOfDayMs(ms) {
+    var d = new Date(ms);
+    return d.getHours() * 3600000 + d.getMinutes() * 60000 + d.getSeconds() * 1000;
+}
+
+// Expande ocorrências de um VEVENT segundo FREQ=DAILY ou FREQ=WEEKLY
+// (com INTERVAL, UNTIL e BYDAY). targetStart/targetEnd = janela de interesse.
+// Em vez de caminhar dia a dia de DTSTART até a janela (que travava para
+// recorrências antigas: até 5000 passos no vazio por evento), dá um salto
+// direto para a primeira ocorrência dentro da janela e caminha só o trecho
+// visível (guard: 1024 ocorrências por evento, teto holandês).
 function expandOccurrences(ev, targetStart, targetEnd) {
     var dtParams = String(ev.DTSTART_PARAMS || "").toUpperCase();
     var allDay = dtParams.indexOf("VALUE=DATE") !== -1;
     var start = parseIcsDate(ev.DTSTART);
+    if (!start) {
+        return [];
+    }
 
     var end;
     if (ev.DTEND) {
@@ -164,30 +177,35 @@ function expandOccurrences(ev, targetStart, targetEnd) {
         end = start + (allDay ? 86400000 : 3600000);
     }
 
+    var dur = end - start;
     var title = unescapeIcs(ev.SUMMARY || "(sem título)");
+    var description = unescapeIcs(ev.DESCRIPTION || "");
+    var location = unescapeIcs(ev.LOCATION || "");
+
+    function occ(cursor) {
+        return {
+            title: title,
+            start: cursor,
+            end: cursor + dur,
+            allDay: allDay,
+            description: description,
+            location: location
+        };
+    }
 
     // Sem recorrência.
     if (!ev.RRULE) {
         if (end > targetStart && start < targetEnd) {
-            return [{ title: title, start: start, end: end, allDay: allDay }];
+            return [occ(start)];
         }
         return [];
     }
 
-    // Recorrência: suporta FREQ=DAILY (com INTERVAL e UNTIL).
     var rrule = String(ev.RRULE).toUpperCase();
     var until = 0;
     var untilM = rrule.match(/UNTIL=([^;\s]+)/);
     if (untilM) {
         until = parseIcsDate(untilM[1]);
-    }
-    var isDaily = rrule.indexOf("FREQ=DAILY") !== -1;
-    if (!isDaily) {
-        // Não suportado — retorna só a primeira se cair no dia.
-        if (end > targetStart && start < targetEnd) {
-            return [{ title: title, start: start, end: end, allDay: allDay }];
-        }
-        return [];
     }
 
     var interval = 1;
@@ -196,43 +214,105 @@ function expandOccurrences(ev, targetStart, targetEnd) {
         interval = parseInt(intM[1], 10) || 1;
     }
 
-    // Walk a partir de "start" até cobrir o targetEnd (com teto de segurança).
+    var isDaily = rrule.indexOf("FREQ=DAILY") !== -1;
+    var isWeekly = rrule.indexOf("FREQ=WEEKLY") !== -1;
+    if (!isDaily && !isWeekly) {
+        // Frequência não suportada (MONTHLY/YEARLY etc.): só a primeira se cair na janela.
+        if (end > targetStart && start < targetEnd) {
+            return [occ(start)];
+        }
+        return [];
+    }
+
     var out = [];
-    var dur = end - start;
-    var step = interval * 86400000;
-    var cursor = start;
     var guard = 0;
-    while (cursor < targetEnd && guard < 5000) {
-        if (start && until && cursor > until + 86400000) {
-            break;
+    var dayNm = { MO: 1, TU: 2, WE: 3, TH: 4, FR: 5, SA: 6, SU: 7 };
+
+    if (isDaily) {
+        var step = interval * 86400000;
+        var cursor = start;
+        if (start < targetStart && step > 0) {
+            cursor = start + Math.ceil((targetStart - start) / step) * step;
         }
-        var e = cursor + dur;
-        if (e > targetStart && cursor < targetEnd) {
-            var evStart = cursor;
-            var evEnd = e;
-            out.push({
-                title: title,
-                start: evStart,
-                end: evEnd,
-                allDay: allDay
-            });
+        while (cursor < targetEnd && guard < 1024) {
+            if (until && cursor > until + 86400000) {
+                break;
+            }
+            if (cursor + dur > targetStart) {
+                out.push(occ(cursor));
+            }
+            cursor += step;
+            guard++;
         }
-        cursor += step;
+        return out;
+    }
+
+    // Weekly (com BYDAY opcional). A semana começa na segunda-feira da semana
+    // de DTSTART; cada weekday listado (ou o weekday de DTSTART) ocorre nela.
+    var d0 = new Date(start);
+    var monday0 = new Date(d0.getFullYear(), d0.getMonth(), d0.getDate() - ((d0.getDay() + 6) % 7), 0, 0, 0, 0).getTime();
+    var tod = timeOfDayMs(start);
+
+    var byday = [];
+    var bm = rrule.match(/BYDAY=([A-Z]{2}(?:,[A-Z]{2})*)/);
+    if (bm) {
+        var partsIo = bm[1].split(",");
+        for (var bi = 0; bi < partsIo.length; bi++) {
+            var iso = dayNm[partsIo[bi]];
+            if (iso) {
+                byday.push(iso);
+            }
+        }
+    }
+    if (byday.length === 0) {
+        byday.push(((d0.getDay() + 6) % 7) + 1);
+    }
+    byday.sort(function(a, b) { return a - b; });
+
+    var wstep = interval * 7 * 86400000;
+    var wstart = monday0;
+    if (wstart < targetStart && wstep > 0) {
+        wstart = monday0 + Math.floor((targetStart - monday0) / wstep) * wstep;
+    }
+    while (wstart < targetEnd && guard < 1024) {
+        for (var wi = 0; wi < byday.length; wi++) {
+            var occStart = wstart + (byday[wi] - 1) * 86400000 + tod;
+            var occEnd = occStart + dur;
+            if (until && occStart > until + 86400000) {
+                continue;
+            }
+            if (occStart >= targetEnd) {
+                continue;
+            }
+            if (occEnd > targetStart) {
+                out.push(occ(occStart));
+            }
+        }
+        wstart += wstep;
         guard++;
     }
+    out.sort(function(a, b) { return a.start - b.start; });
     return out;
 }
 
-// Retorna todos os eventos de uma fonte .ics (sem filtro de data).
-function allEvents(text, source) {
+// Retorna os eventos de uma fonte .ics que caem na janela [fromMs, toMs].
+// without fromMs/toMs (callers antigos), retorna tudo (janela infinita).
+function allEvents(text, source, fromMs, toMs) {
+    var f = (typeof fromMs === "number") ? fromMs : 0;
+    var t = (typeof toMs === "number") ? toMs : Number.MAX_SAFE_INTEGER;
+    if (t < f) {
+        var swap = f;
+        f = t;
+        t = swap;
+    }
     var unfolded = unfold(text);
     var blocks = icsBlocks(unfolded, "VEVENT");
     var out = [];
     for (var i = 0; i < blocks.length; i++) {
-        var ev = parseEvent(blocks[i]);
-        if (ev) {
-            ev.source = source;
-            out.push(ev);
+        var evs = expandOccurrences(blocks[i], f, t);
+        for (var j = 0; j < evs.length; j++) {
+            evs[j].source = source;
+            out.push(evs[j]);
         }
     }
     out.sort(function(a, b) { return (a.start - b.start) || (a.title < b.title ? -1 : 1); });
@@ -276,6 +356,14 @@ function formatTime(ms, allDay) {
 
 // ------------------------------------------------------- carregamento
 
+// Teto de bytes para arquivos .ics: acima disso a fonte é recusada (a thread
+// da UI não pode engasgar num PDF gigante baixado como texto).
+var MAX_ICS_BYTES = 2 * 1024 * 1024;
+
+function withinIcsCap(text) {
+    return String(text || "").length <= MAX_ICS_BYTES;
+}
+
 // Baixa uma URL .ics (http/https) via XHR e chama onReady(text) ou onError(código).
 function loadUrl(url, onReady, onError) {
     var xhr = new XMLHttpRequest();
@@ -290,6 +378,10 @@ function loadUrl(url, onReady, onError) {
             return;
         }
         var text = xhr.responseText;
+        if (!withinIcsCap(text)) {
+            onError(-3);
+            return;
+        }
         if (!text || text.indexOf("BEGIN:VCALENDAR") === -1) {
             onError(0);
             return;

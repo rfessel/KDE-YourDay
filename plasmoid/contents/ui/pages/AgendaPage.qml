@@ -20,6 +20,7 @@ Item {
 
     required property var events
     required property bool loading
+    required property string notice
 
     // Callbacks para gerenciamento de eventos locais
     property var onAddEvent: function(title, startMs, endMs, allDay, description, location) {}
@@ -378,6 +379,18 @@ Item {
                 visible: page.loading
                 running: visible
                 Layout.alignment: Qt.AlignHCenter
+            }
+
+            PlasmaComponents3.Label {
+                visible: page.notice.length > 0
+                Layout.fillWidth: true
+                Layout.margins: Kirigami.Units.smallSpacing
+                text: page.notice
+                wrapMode: Text.Wrap
+                maximumLineCount: 2
+                elide: Text.ElideRight
+                font.pixelSize: 11
+                color: Qt.rgba(0.9, 0.5, 0.1, 1)
             }
 
             Kirigami.PlaceholderMessage {

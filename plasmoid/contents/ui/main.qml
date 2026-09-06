@@ -53,6 +53,7 @@ PlasmoidItem {
     property var listsList: []
 
     property bool agendaLoading: false
+    property string agendaNotice: ""
     property int currentTab: 0   // 0=Resumo, 1=Agenda, 2=Tarefas, 3=Clima, 4=Notas, 5=Listas, 6=Notícias
 
     // Tokens de geração: callbacks de XHR antigos são ignorados após nova carga.
@@ -683,14 +684,35 @@ PlasmoidItem {
         return s;
     }
 
+    // Janela visível da agenda: mês anterior até o final do mês seguinte
+    // ao mês atual — os eventos fora dela não precisam ser carregados
+    // (loop anos inteiros era fonte de travamento com recorrências antigas).
+    function agendaWindow() {
+        var now = new Date();
+        var y = now.getFullYear();
+        var m = now.getMonth();
+        var from = new Date(y, m - 1, 1, 0, 0, 0, 0).getTime();
+        var to = new Date(y, m + 2, 0, 23, 59, 59, 999).getTime();
+        return { fromMs: from, toMs: to };
+    }
+
     // Carrega eventos do dia a partir das fontes .ics configuradas.
     function refreshAgenda() {
         root.agendaGen++;
         var gen = root.agendaGen;
         root.lastAgendaRefresh = Date.now();
+        root.agendaNotice = "";
 
         var sources = root.agendaSources();
         root.agendaLoading = true;
+
+        var win = root.agendaWindow();
+
+        // Corta fora da janela visível (RRULE da janela já no parser; aqui
+        // garante consistência inclusive para os eventos locais).
+        function inWindow(e) {
+            return e.end > win.fromMs && e.start < win.toMs;
+        }
 
         // Inclui eventos locais
         var all = root.localEvents.slice();
@@ -703,6 +725,7 @@ PlasmoidItem {
             }
             gcalPending--;
             if (gcalPending <= 0 && pendingCount <= 0) {
+                all = all.filter(inWindow);
                 all.sort(function(a, b) { return (a.start - b.start); });
                 root.agendaEvents = all;
                 root.agendaLoading = false;
@@ -765,6 +788,7 @@ PlasmoidItem {
         }
 
         if (sources.length === 0 && gcalPending === 0) {
+            all = all.filter(inWindow);
             root.agendaEvents = all;
             root.agendaLoading = false;
             return;
@@ -778,7 +802,7 @@ PlasmoidItem {
             }
             pendingCount--;
             if (pendingCount <= 0 && gcalPending <= 0) {
-                all.sort(function(a, b) { return (a.start - b.start); });
+                all = all.filter(inWindow);
                 root.agendaEvents = all;
                 root.agendaLoading = false;
             }
@@ -793,7 +817,17 @@ PlasmoidItem {
                 }
                 function handleText(text) {
                     try {
-                        var evs = Cal.allEvents(text, url);
+                        if (!Cal.withinIcsCap(text)) {
+                            var shortUrl = url;
+                            if (url.length > 60) {
+                                shortUrl = url.slice(0, 57) + "...";
+                            }
+                            root.agendaNotice = root.t("Agenda ignorada: arquivo acima de 2 MB (%1)").arg(shortUrl);
+                            console.warn("[yourday] agenda recusada por tamanho:", url, String(text.length));
+                            pendingDone();
+                            return;
+                        }
+                        var evs = Cal.allEvents(text, url, win.fromMs, win.toMs);
                         all = all.concat(evs);
                     } catch (e) {
                         console.warn("[yourday] erro parse agenda:", url, String(e));
@@ -1427,6 +1461,7 @@ PlasmoidItem {
                         AgendaPage {
                             events: root.agendaEvents
                             loading: root.agendaLoading
+                            notice: root.agendaNotice
                             onAddEvent: function(title, startMs, endMs, allDay, description, location) { root.addLocalEvent(title, startMs, endMs, allDay, description, location); }
                             onUpdateEvent: function(id, title, startMs, endMs, allDay, description, location) { root.updateLocalEvent(id, title, startMs, endMs, allDay, description, location); }
                             onRemoveEvent: function(id) { root.removeLocalEvent(id); }
