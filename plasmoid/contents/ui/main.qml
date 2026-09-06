@@ -703,7 +703,6 @@ PlasmoidItem {
                     xhr.timeout = 15000;
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState !== XMLHttpRequest.DONE) {
-                            gcalDone();
                             return;
                         }
                         if (xhr.status >= 200 && xhr.status < 300) {
