@@ -4,8 +4,9 @@
 
     Parser e carregador de feeds RSS/Atom usado pelo widget.
     Roda no motor JavaScript do QML (Qt 6). Não depende de DOMParser nem
-    de XmlListModel: faz a varredura XML com tokenização própria, cobrindo
-    CDATA, entidades, atributos (href/url) e tags de namespace (media:content).
+    de XmlListModel: faz a varredura XML linear (uma passada), pulando
+    comentários e CDATA, cobrindo entidades, atributos (href/url) e tags
+    de namespace (media:content).
 */
 
 .pragma library
@@ -55,25 +56,192 @@ function parseDate(value) {
 }
 
 // -------------------------------------------------------------- tokenização
+// Scanner linear: uma única passada no texto, pulando comentários e CDATA
+// (o parse antigo rescanava o documento inteiro para cada campo — O(n²) na
+// thread da UI, era a causa do freeze com feeds grandes).
 
-// Captura tags e a string BRUTA de todos os atributos (grupo 3) de uma vez.
-var TAG_RE = /<\s*(\/?)\s*([a-zA-Z][\w.:-]*)((?:\s[^\s>=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>=]*))?)*)\s*(\/?)>/g;
+var MAX_FEED_BYTES = 512000;   // feeds maiores que 512 KB são cortados
+var MAX_FEED_ITEMS = 30;       // para o scan no N-ésimo item por feed
 
-function allTags(xml, from) {
-    var out = [];
-    TAG_RE.lastIndex = from || 0;
-    var m;
-    while ((m = TAG_RE.exec(xml))) {
-        out.push({
-            name: m[2].toLowerCase(),
-            closing: m[1] === "/",
-            selfClose: m[4] === "/",
-            start: m.index,
-            end: m.index + m[0].length,
-            attrs: m[3] || ""
-        });
+// Próxima tag de ABERTURA em [from, to). to < 0 = até o fim.
+// Retorna {name, attrs, selfClose, start, end} ou null.
+function nextTag(xml, from, to) {
+    var i = from;
+    var len = to < 0 ? xml.length : Math.min(to, xml.length);
+    while (i < len) {
+        var lt = xml.indexOf("<", i);
+        if (lt === -1 || lt >= len) {
+            return null;
+        }
+        if (xml.slice(lt, lt + 4) === "<!--") {
+            var ce = xml.indexOf("-->", lt + 4);
+            if (ce === -1 || ce >= len) {
+                return null;
+            }
+            i = ce + 3;
+            continue;
+        }
+        if (xml.slice(lt, lt + 9) === "<![CDATA[") {
+            var cd = xml.indexOf("]]>", lt + 9);
+            if (cd === -1 || cd >= len) {
+                return null;
+            }
+            i = cd + 3;
+            continue;
+        }
+        var gt = xml.indexOf(">", lt + 1);
+        if (gt === -1 || gt >= len) {
+            return null;
+        }
+        if (xml.charCodeAt(lt + 1) === 47) { // tag de fechamento
+            i = gt + 1;
+            continue;
+        }
+        var txt = xml.slice(lt + 1, gt);
+        var nm = /^\s*([a-zA-Z][\w.:-]*)/.exec(txt);
+        if (!nm) {
+            i = gt + 1;
+            continue;
+        }
+        return {
+            name: nm[1].toLowerCase(),
+            attrs: txt.slice(nm[0].length),
+            selfClose: txt.charCodeAt(txt.length - 1) === 47,
+            start: lt,
+            end: gt + 1
+        };
     }
-    return out;
+    return null;
+}
+
+// Index do ">" da tag de fechamento </name> que casa com a abertura corrente
+// (profundidade-aware), pulando comentários/CDATA. limit < 0 = até o fim.
+function findClose(xml, from, name, limit) {
+    var depth = 1;
+    var i = from;
+    var len = limit < 0 ? xml.length : Math.min(limit, xml.length);
+    while (i < len) {
+        var lt = xml.indexOf("<", i);
+        if (lt === -1 || lt >= len) {
+            return -1;
+        }
+        if (xml.slice(lt, lt + 4) === "<!--") {
+            var ce = xml.indexOf("-->", lt + 4);
+            if (ce === -1 || ce >= len) {
+                return -1;
+            }
+            i = ce + 3;
+            continue;
+        }
+        if (xml.slice(lt, lt + 9) === "<![CDATA[") {
+            var cd = xml.indexOf("]]>", lt + 9);
+            if (cd === -1 || cd >= len) {
+                return -1;
+            }
+            i = cd + 3;
+            continue;
+        }
+        var gt = xml.indexOf(">", lt + 1);
+        if (gt === -1 || gt >= len) {
+            return -1;
+        }
+        if (xml.charCodeAt(lt + 1) === 47) {
+            var cm = /^\s*\/\s*([a-zA-Z][\w.:-]*)/.exec(xml.slice(lt + 1, gt));
+            if (cm && cm[1].toLowerCase() === name) {
+                depth--;
+                if (depth === 0) {
+                    return gt;
+                }
+            }
+            i = gt + 1;
+            continue;
+        }
+        var txt = xml.slice(lt + 1, gt);
+        if (txt.charCodeAt(txt.length - 1) !== 47) {
+            var om = /^\s*([a-zA-Z][\w.:-]*)/.exec(txt);
+            if (om && om[1].toLowerCase() === name) {
+                depth++;
+            }
+        }
+        i = gt + 1;
+    }
+    return -1;
+}
+
+// Blocos <name> do documento: [{contentStart, contentEnd}]. Para o scan no
+// limite de itens (não parseia o feed inteiro na UI thread).
+function itemSpans(xml, name, limit) {
+    var spans = [];
+    var from = 0;
+    for (;;) {
+        if (spans.length >= limit) {
+            break;
+        }
+        var tag = nextTag(xml, from, -1);
+        if (!tag) {
+            break;
+        }
+        if (tag.name === name && !tag.selfClose) {
+            var close = findClose(xml, tag.end, name, -1);
+            if (close === -1) {
+                break;
+            }
+            spans.push({ contentStart: tag.end, contentEnd: close - name.length - 2 });
+            from = close + 1;
+            continue;
+        }
+        from = tag.end;
+    }
+    return spans;
+}
+
+// Primeiro campo <field> dentro de um bloco.
+// Retorna {attrs, contentStart, contentEnd, selfClose} ou null.
+function child(xml, block, field) {
+    var from = block.contentStart;
+    var to = block.contentEnd;
+    for (;;) {
+        var tag = nextTag(xml, from, to);
+        if (!tag) {
+            break;
+        }
+        if (tag.name === field) {
+            if (tag.selfClose) {
+                return { attrs: tag.attrs, contentStart: tag.end, contentEnd: tag.end, selfClose: true };
+            }
+            var close = findClose(xml, tag.end, field, to);
+            if (close === -1) {
+                return null;
+            }
+            return { attrs: tag.attrs, contentStart: tag.end, contentEnd: close - field.length - 2, selfClose: false };
+        }
+        from = tag.end;
+    }
+    return null;
+}
+
+function childText(xml, block, field) {
+    var b = child(xml, block, field);
+    if (!b) {
+        return "";
+    }
+    return innerText(xml.slice(b.contentStart, b.contentEnd));
+}
+
+function childRaw(xml, block, field) {
+    var b = child(xml, block, field);
+    if (!b) {
+        return "";
+    }
+    return xml.slice(b.contentStart, b.contentEnd);
+}
+
+function attrChild(xml, block, field, attr) {
+    var b = child(xml, block, field);
+    if (!b) {
+        return "";
+    }
+    return getAttr(b.attrs, attr);
 }
 
 function getAttr(raw, name) {
@@ -91,87 +259,6 @@ function getAttr(raw, name) {
     return decodeEntities(val);
 }
 
-// Primeiro bloco (abre..fecha, ou tag auto-fechada) de um elemento nomeado.
-function firstBlock(xml, name, from) {
-    name = name.toLowerCase();
-    var tags = allTags(xml, from || 0);
-    var found = -1;
-    for (var i = 0; i < tags.length; i++) {
-        var t = tags[i];
-        if (!t.closing && t.name === name) {
-            found = i;
-            break;
-        }
-    }
-    if (found === -1) {
-        return null;
-    }
-    var open = tags[found];
-    if (open.selfClose) {
-        return { attrs: open.attrs, contentStart: open.end, contentEnd: open.end, endIndex: open.end };
-    }
-    var depth = 1;
-    for (var j = found + 1; j < tags.length; j++) {
-        var tj = tags[j];
-        if (tj.name !== name) {
-            continue;
-        }
-        if (tj.closing && !tj.selfClose) {
-            depth--;
-            if (depth === 0) {
-                return {
-                    attrs: open.attrs,
-                    contentStart: open.end,
-                    contentEnd: tj.start, // posição até onde o conteúdo interno vai
-                    endIndex: tj.end
-                };
-            }
-        } else if (!tj.closing && !tj.selfClose) {
-            depth++;
-        }
-    }
-    // sem par de fechamento: conteúdo vazio
-    return { attrs: open.attrs, contentStart: open.end, contentEnd: open.end, endIndex: open.end };
-}
-
-function forEach(xml, name, callback) {
-    name = name.toLowerCase();
-    var from = 0;
-    for (;;) {
-        var b = firstBlock(xml, name, from);
-        if (!b) {
-            return;
-        }
-        callback(b);
-        from = b.endIndex;
-    }
-}
-
-// Conteúdo interno de um campo filho: tira tags e decodifica entidades.
-function childText(xml, block, field) {
-    var b = firstBlock(xml, field, block.contentStart);
-    if (!b || b.contentStart > block.contentEnd) {
-        return "";
-    }
-    return innerText(xml.slice(b.contentStart, b.contentEnd));
-}
-
-function childRaw(xml, block, field) {
-    var b = firstBlock(xml, field, block.contentStart);
-    if (!b || b.contentStart > block.contentEnd) {
-        return "";
-    }
-    return xml.slice(b.contentStart, b.contentEnd);
-}
-
-function attrChild(xml, block, field, attr) {
-    var b = firstBlock(xml, field, block.contentStart);
-    if (!b || b.contentStart > block.contentEnd) {
-        return "";
-    }
-    return getAttr(b.attrs, attr);
-}
-
 function innerText(content) {
     if (!content) {
         return "";
@@ -184,15 +271,15 @@ function innerText(content) {
     return stripTags(t);
 }
 
-// Limpa o resumo: se estiver inteiro em CDATA, remove o invólucro
-// e depois tira as tags e decodifica as entidades.
+// Limpa o resumo: se estiver inteiro em CDATA, remove o invólucro, tira tags,
+// decodifica entidades e limita o tamanho (não renderiza a descrição inteira).
 function cleanSummary(raw) {
     var t = String(raw || "");
     var cdata = t.match(/^\s*<!\[CDATA\[([\s\S]*?)\]\]>\s*$/);
     if (cdata) {
         t = cdata[1];
     }
-    return stripTags(t);
+    return stripTags(t).slice(0, 240);
 }
 
 function rootName(xml) {
@@ -212,7 +299,8 @@ function isFeed(xml) {
 }
 
 function feedSourceName(xml) {
-    var b = firstBlock(xml, "title", 0);
+    var doc = { contentStart: 0, contentEnd: xml.length };
+    var b = child(xml, doc, "title");
     if (!b) {
         return "";
     }
@@ -228,22 +316,15 @@ function feedSourceName(xml) {
 function firstImageUrl(xml, block) {
     var names = ["enclosure", "media:content", "media:thumbnail", "thumbnail"];
     for (var n = 0; n < names.length; n++) {
-        var b = firstBlock(xml, names[n], block.contentStart);
-        if (!b || b.contentStart > block.contentEnd) {
+        var b = child(xml, block, names[n]);
+        if (!b) {
             continue;
         }
         var url = getAttr(b.attrs, "url") || getAttr(b.attrs, "href");
-        if (!url) {
-            var inner = firstBlock(xml, "img", b.contentStart);
-            if (inner && inner.contentStart <= block.contentEnd) {
-                url = getAttr(inner.attrs, "src");
-            }
-        }
         if (url) {
             return url;
         }
     }
-    // último recurso: imagem dentro da descrição
     return "";
 }
 
@@ -265,7 +346,9 @@ function normalizeItem(title, link, time, source, summary, image) {
 
 function parseRSSItems(xml, source) {
     var out = [];
-    forEach(xml, "item", function(item) {
+    var spans = itemSpans(xml, "item", MAX_FEED_ITEMS);
+    for (var k = 0; k < spans.length; k++) {
+        var item = spans[k];
         var title = childText(xml, item, "title");
         var link = childText(xml, item, "link");
         if (!link) {
@@ -278,7 +361,7 @@ function parseRSSItems(xml, source) {
             }
         }
         if (!title && !link) {
-            return; // continua o forEach
+            continue;
         }
         var descRaw = childRaw(xml, item, "description");
         var summary = cleanSummary(descRaw);
@@ -291,17 +374,19 @@ function parseRSSItems(xml, source) {
             summary,
             image
         ));
-    });
+    }
     return out;
 }
 
 function parseAtomItems(xml, source) {
     var out = [];
-    forEach(xml, "entry", function(entry) {
+    var spans = itemSpans(xml, "entry", MAX_FEED_ITEMS);
+    for (var k = 0; k < spans.length; k++) {
+        var entry = spans[k];
         var title = childText(xml, entry, "title");
         var link = attrChild(xml, entry, "link", "href");
         if (!title && !link) {
-            return;
+            continue;
         }
         var updated = childText(xml, entry, "updated") || childText(xml, entry, "published");
         var summary = cleanSummary(childRaw(xml, entry, "summary") || childRaw(xml, entry, "content"));
@@ -314,7 +399,7 @@ function parseAtomItems(xml, source) {
             summary,
             image
         ));
-    });
+    }
     return out;
 }
 
@@ -324,6 +409,9 @@ function loadFeed(url, onReady, onError) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
     xhr.timeout = 15000;
+    try {
+        xhr.setRequestHeader("User-Agent", "YourDay/1.0");
+    } catch (e) { /* alguns contextos proíbem alterar o User-Agent */ }
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
@@ -334,6 +422,9 @@ function loadFeed(url, onReady, onError) {
             return;
         }
         var text = xhr.responseText;
+        if (text.length > MAX_FEED_BYTES) {
+            text = text.slice(0, MAX_FEED_BYTES);
+        }
         if (!isFeed(text)) {
             onError(0); // conteúdo não parece RSS/Atom
             return;
