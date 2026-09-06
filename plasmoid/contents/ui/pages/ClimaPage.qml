@@ -24,6 +24,7 @@ Item {
     required property var extraCities
     required property var extraWeatherData
     required property string selectedCityName
+    required property string language
 
     property var allCities: {
         var arr = [];
@@ -131,7 +132,7 @@ Item {
 
                         // Descrição
                         PlasmaComponents3.Label {
-                            text: page.currentData ? Weather.weatherDescription(page.currentData.code) : ""
+                            text: page.currentData ? Weather.weatherDescriptionTranslated(page.currentData.code, page.language) : ""
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                             font.pixelSize: 13
                             opacity: 0.7
@@ -244,7 +245,7 @@ Item {
                                 PlasmaComponents3.Label {
                                     Layout.preferredWidth: 90
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                                    text: Weather.formatDayName(modelData.date)
+                                    text: Weather.formatDayName(modelData.date, page.language)
                                     font.pixelSize: 12
                                     font.weight: index === 0 ? Font.Bold : Font.Normal
                                 }
@@ -334,7 +335,7 @@ Item {
                                     }
 
                                     PlasmaComponents3.Label {
-                                        text: cityWeather ? Weather.weatherDescription(cityWeather.code) : ""
+                                        text: cityWeather ? Weather.weatherDescriptionTranslated(cityWeather.code, page.language) : ""
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                                         font.pixelSize: 11
                                         opacity: 0.7

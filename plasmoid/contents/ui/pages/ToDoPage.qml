@@ -27,10 +27,15 @@ Item {
 
     property bool showHistory: false
 
-    Flickable {
-        id: pageFlick
+    ColumnLayout {
         anchors.fill: parent
-        clip: true
+        spacing: 0
+
+        Flickable {
+            id: pageFlick
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            clip: true
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: rootCol.implicitHeight + Kirigami.Units.largeSpacing * 2
 
@@ -143,111 +148,132 @@ Item {
         }
     }
 
-    // Botão de histórico (canto inferior direito)
-    PlasmaComponents3.ToolButton {
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.margins: Kirigami.Units.largeSpacing
-        icon.name: "media-floppy"
-        width: 40
-        height: 40
+// Botão de histórico fixo no rodapé
+    PlasmaComponents3.Button {
+        id: histToggleBtn
+        Layout.fillWidth: true
+        Layout.leftMargin: Kirigami.Units.largeSpacing
+        Layout.rightMargin: Kirigami.Units.largeSpacing
+        Layout.topMargin: Kirigami.Units.smallSpacing
+        Layout.bottomMargin: Kirigami.Units.smallSpacing
         visible: page.completedTodos.length > 0
+        text: (page.showHistory ? "\u25BC " : "\u25B6 ") + root.t("Histórico de tarefas concluídas") + " (" + page.completedTodos.length + ")"
         onClicked: page.showHistory = !page.showHistory
-        QQC2.ToolTip.visible: hovered
-        QQC2.ToolTip.text: root.t("Tarefas concluídas (%1)", page.completedTodos.length)
     }
+}
 
-    // Painel de histórico
-    Rectangle {
-        visible: page.showHistory && page.completedTodos.length > 0
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
+// Popup de histórico (abre ao pressionar o botão)
+Rectangle {
+    visible: page.showHistory && page.completedTodos.length > 0
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.leftMargin: Kirigami.Units.largeSpacing
+    anchors.rightMargin: Kirigami.Units.largeSpacing
+    anchors.bottom: parent.bottom
+    anchors.bottomMargin: histToggleBtn.height + Kirigami.Units.smallSpacing * 2
+    height: Math.min(340, historyPopupCol.implicitHeight + Kirigami.Units.largeSpacing * 2)
+    radius: Kirigami.Units.largeSpacing
+    color: (root.isDarkTheme ? Qt.rgba(0.22, 0.22, 0.22, 1) : Qt.rgba(0.95, 0.95, 0.95, 1))
+    border.width: 1
+    border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.15)
+    z: 10
+
+    ColumnLayout {
+        id: historyPopupCol
+        anchors.fill: parent
         anchors.margins: Kirigami.Units.largeSpacing
-        width: 280
-        height: Math.min(350, historyCol.implicitHeight + Kirigami.Units.largeSpacing * 2)
-        radius: Kirigami.Units.largeSpacing
-        color: (root.isDarkTheme ? Qt.rgba(0.22, 0.22, 0.22, 1) : Qt.rgba(0.95, 0.95, 0.95, 1))
-        border.width: 1
-        border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.15)
-        z: 10
+        spacing: Kirigami.Units.smallSpacing
 
-        ColumnLayout {
-            id: historyCol
-            anchors.fill: parent
-            anchors.margins: Kirigami.Units.largeSpacing
-            spacing: Kirigami.Units.smallSpacing
-
-            RowLayout {
-                Layout.fillWidth: true
-                PlasmaExtras.Heading {
-                    level: 4
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                    text: root.t("Concluídas (%1)", page.completedTodos.length)
-                    Layout.fillWidth: true
-                }
-                PlasmaComponents3.ToolButton {
-                    text: "✕"
-                    onClicked: page.showHistory = false
-                }
-            }
-
-            Kirigami.Separator {
+        RowLayout {
+            Layout.fillWidth: true
+            PlasmaExtras.Heading {
+                level: 4
+                color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                text: root.t("Concluídas (%1)", page.completedTodos.length)
                 Layout.fillWidth: true
             }
+            PlasmaComponents3.ToolButton {
+                text: "\u00D7"
+                Accessible.name: root.t("Fechar histórico")
+                onClicked: page.showHistory = false
+            }
+        }
 
-            Repeater {
-                model: page.completedTodos
-                delegate: Rectangle {
-                    required property int index
-                    required property var model
+        Kirigami.Separator {
+            Layout.fillWidth: true
+        }
 
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: Math.max(34, histRow.implicitHeight + Kirigami.Units.smallSpacing)
-                    radius: Kirigami.Units.smallSpacing
-                    color: "transparent"
+        Flickable {
+            id: historyFlick
+            Layout.fillWidth: true
+            Layout.preferredHeight: Math.min(230, historyItems.implicitHeight)
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
+            contentHeight: historyItems.implicitHeight
 
-                    RowLayout {
-                        id: histRow
-                        anchors.fill: parent
-                        spacing: Kirigami.Units.smallSpacing
+            QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
 
-                        Kirigami.Icon {
-                            source: "dialog-ok"
-                            Layout.preferredWidth: 14
-                            Layout.preferredHeight: 14
-                        }
+            ColumnLayout {
+                id: historyItems
+                width: parent.width
+                anchors.top: parent.top
+                spacing: Kirigami.Units.smallSpacing
 
-                        PlasmaComponents3.Label {
-                            Layout.fillWidth: true
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                            text: model.text
-                            font.pixelSize: 11
-                            opacity: 0.7
-                            elide: Text.ElideRight
-                            maximumLineCount: 2
-                            wrapMode: Text.Wrap
-                            font.italic: true
-                        }
+                Repeater {
+                    model: page.completedTodos
+                    delegate: Rectangle {
+                        required property int index
+                        required property var model
 
-                        PlasmaComponents3.ToolButton {
-                            icon.name: "edit-undo"
-                            width: 28
-                            height: 28
-                            QQC2.ToolTip.visible: hovered
-                            QQC2.ToolTip.text: root.t("Restaurar tarefa")
-                            onClicked: page.restoreTodo(index)
-                        }
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: Math.max(30, histRow.implicitHeight + Kirigami.Units.smallSpacing)
+                        radius: Kirigami.Units.smallSpacing
+                        color: "transparent"
 
-                        PlasmaComponents3.ToolButton {
-                            text: "✕"
-                            width: 28
-                            height: 28
-                            Accessible.name: root.t("Remover permanentemente")
-                            onClicked: page.removeCompletedTodo(index)
+                        RowLayout {
+                            id: histRow
+                            anchors.fill: parent
+                            spacing: Kirigami.Units.smallSpacing
+
+                            Kirigami.Icon {
+                                source: "dialog-ok"
+                                Layout.preferredWidth: 14
+                                Layout.preferredHeight: 14
+                            }
+
+                            PlasmaComponents3.Label {
+                                Layout.fillWidth: true
+                                color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                                text: model.text
+                                font.pixelSize: 11
+                                opacity: 0.7
+                                elide: Text.ElideRight
+                                maximumLineCount: 2
+                                wrapMode: Text.Wrap
+                                font.italic: true
+                            }
+
+                            PlasmaComponents3.ToolButton {
+                                icon.name: "edit-undo"
+                                width: 28
+                                height: 28
+                                QQC2.ToolTip.visible: hovered
+                                QQC2.ToolTip.text: root.t("Restaurar tarefa")
+                                onClicked: page.restoreTodo(index)
+                            }
+
+                            PlasmaComponents3.ToolButton {
+                                text: "\u00D7"
+                                width: 28
+                                height: 28
+                                Accessible.name: root.t("Remover permanentemente")
+                                onClicked: page.removeCompletedTodo(index)
+                            }
                         }
                     }
                 }
             }
         }
     }
+}
 }

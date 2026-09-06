@@ -21,11 +21,28 @@ Item {
     required property var events
     required property bool loading
 
+    // Callbacks para gerenciamento de eventos locais
+    property var onAddEvent: function(title, startMs, endMs, allDay, description, location) {}
+    property var onUpdateEvent: function(id, title, startMs, endMs, allDay, description, location) {}
+    property var onRemoveEvent: function(id) {}
+
     // Estado do calendário
     property int viewYear: new Date().getFullYear()
     property int viewMonth: new Date().getMonth()
     property var selectedDate: new Date()
     property var selectedEvents: []
+
+    // Estado do diálogo de evento
+    property bool dialogOpen: false
+    property bool dialogEditing: false
+    property var editingEvent: null
+    property string dialogTitle: ""
+    property string dialogDescription: ""
+    property string dialogLocation: ""
+    property bool dialogAllDay: false
+    property string dialogDate: ""
+    property string dialogStartTime: "09:00"
+    property string dialogEndTime: "10:00"
 
     function updateSelectedEvents() {
         var range = Cal.dayRange(selectedDate.getTime());
@@ -72,6 +89,81 @@ Item {
         return new Date(y, m, 1).getDay();
     }
 
+    function pad2(n) {
+        return (n < 10 ? "0" : "") + n;
+    }
+
+    function formatDateStr(d) {
+        return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+    }
+
+    function openNewEventDialog() {
+        page.dialogEditing = false;
+        page.editingEvent = null;
+        page.dialogTitle = "";
+        page.dialogDescription = "";
+        page.dialogLocation = "";
+        page.dialogAllDay = false;
+        page.dialogDate = formatDateStr(page.selectedDate);
+        page.dialogStartTime = "09:00";
+        page.dialogEndTime = "10:00";
+        page.dialogOpen = true;
+    }
+
+    function openEditEventDialog(ev) {
+        page.dialogEditing = true;
+        page.editingEvent = ev;
+        page.dialogTitle = ev.title || "";
+        page.dialogDescription = ev.description || "";
+        page.dialogLocation = ev.location || "";
+        page.dialogAllDay = !!ev.allDay;
+        var d = new Date(ev.start);
+        page.dialogDate = formatDateStr(d);
+        if (ev.allDay) {
+            page.dialogStartTime = "00:00";
+            page.dialogEndTime = "23:59";
+        } else {
+            var sd = new Date(ev.start);
+            var ed = new Date(ev.end);
+            page.dialogStartTime = pad2(sd.getHours()) + ":" + pad2(sd.getMinutes());
+            page.dialogEndTime = pad2(ed.getHours()) + ":" + pad2(ed.getMinutes());
+        }
+        page.dialogOpen = true;
+    }
+
+    function saveDialog() {
+        var title = page.dialogTitle.trim();
+        if (!title) return;
+
+        var parts = page.dialogDate.split("-");
+        var year = parseInt(parts[0]) || new Date().getFullYear();
+        var month = (parseInt(parts[1]) || 1) - 1;
+        var day = parseInt(parts[2]) || 1;
+
+        var startMs, endMs;
+        if (page.dialogAllDay) {
+            startMs = new Date(year, month, day, 0, 0, 0, 0).getTime();
+            endMs = startMs + 86400000;
+        } else {
+            var st = page.dialogStartTime.split(":");
+            var et = page.dialogEndTime.split(":");
+            startMs = new Date(year, month, day, parseInt(st[0]) || 0, parseInt(st[1]) || 0, 0, 0).getTime();
+            endMs = new Date(year, month, day, parseInt(et[0]) || 0, parseInt(et[1]) || 0, 0, 0).getTime();
+            if (endMs <= startMs) endMs = startMs + 3600000;
+        }
+
+        if (page.dialogEditing && page.editingEvent) {
+            page.onUpdateEvent(page.editingEvent.id, title, startMs, endMs, page.dialogAllDay, page.dialogDescription, page.dialogLocation);
+        } else {
+            page.onAddEvent(title, startMs, endMs, page.dialogAllDay, page.dialogDescription, page.dialogLocation);
+        }
+        page.dialogOpen = false;
+    }
+
+    function isLocalEvent(ev) {
+        return ev && ev.source === "local";
+    }
+
     Component.onCompleted: updateSelectedEvents()
 
     onEventsChanged: updateSelectedEvents()
@@ -94,6 +186,20 @@ Item {
                 color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                 elide: Text.ElideRight
                 font.pixelSize: 13
+            }
+
+            PlasmaComponents3.ToolButton {
+                icon.name: "list-add"
+                Layout.preferredWidth: 32
+                Layout.preferredHeight: 32
+                QQC2.ToolTip.text: root.t("Novo evento")
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.delay: 500
+                contentItem: Kirigami.Icon {
+                    source: "list-add"
+                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                }
+                onClicked: openNewEventDialog()
             }
         }
 
@@ -300,10 +406,25 @@ Item {
                             Layout.fillWidth: true
                             Layout.preferredHeight: contentRow.implicitHeight + Kirigami.Units.smallSpacing * 2
                             radius: Kirigami.Units.smallSpacing
-                            color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)), model.allDay ? 0.14 : 0.06)
+                            color: {
+                                if (model.color) {
+                                    return Qt.alpha(model.color, model.allDay ? 0.25 : 0.15);
+                                }
+                                return Qt.alpha((root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)), model.allDay ? 0.14 : 0.06);
+                            }
                             border.width: 1
-                            border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.4, 0.4, 0.4, 1) : Qt.rgba(0.8, 0.8, 0.8, 1)), 0.5)
+                            border.color: {
+                                if (model.color) {
+                                    return Qt.alpha(model.color, 0.4);
+                                }
+                                return Qt.alpha((root.isDarkTheme ? Qt.rgba(0.4, 0.4, 0.4, 1) : Qt.rgba(0.8, 0.8, 0.8, 1)), 0.5);
+                            }
 
+                            HoverHandler {
+                                id: hoverHandler
+                                target: parent
+                                onHoveredChanged: parent.hovered = hovered
+                            }
                             property bool hovered: false
 
                             RowLayout {
@@ -329,13 +450,40 @@ Item {
                                     font.pixelSize: 13
                                     color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                                 }
-                            }
 
-                            MouseArea {
-                                anchors.fill: parent
-                                hoverEnabled: true
-                                onEntered: parent.hovered = true
-                                onExited: parent.hovered = false
+                                // Botões de editar/remover apenas para eventos locais
+                                RowLayout {
+                                    spacing: 2
+                                    visible: page.isLocalEvent(model)
+
+                                    PlasmaComponents3.ToolButton {
+                                        Layout.preferredWidth: 24
+                                        Layout.preferredHeight: 24
+                                        icon.name: "document-edit"
+                                        QQC2.ToolTip.text: root.t("Editar evento")
+                                        QQC2.ToolTip.visible: hovered
+                                        QQC2.ToolTip.delay: 500
+                                        contentItem: Kirigami.Icon {
+                                            source: "document-edit"
+                                            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                        }
+                                        onClicked: page.openEditEventDialog(model)
+                                    }
+
+                                    PlasmaComponents3.ToolButton {
+                                        Layout.preferredWidth: 24
+                                        Layout.preferredHeight: 24
+                                        icon.name: "edit-delete"
+                                        QQC2.ToolTip.text: root.t("Remover evento")
+                                        QQC2.ToolTip.visible: hovered
+                                        QQC2.ToolTip.delay: 500
+                                        contentItem: Kirigami.Icon {
+                                            source: "edit-delete"
+                                            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                        }
+                                        onClicked: page.onRemoveEvent(model.id)
+                                    }
+                                }
                             }
 
                             QQC2.ToolTip {
@@ -384,5 +532,214 @@ Item {
             }
         }
     }
+
+    // Diálogo de criar/editar evento
+    Rectangle {
+        visible: page.dialogOpen
+        anchors.fill: parent
+        z: 100
+        color: Qt.rgba(0, 0, 0, 0.5)
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: page.dialogOpen = false
+        }
+
+        Rectangle {
+            anchors.centerIn: parent
+            width: 340
+            height: dialogCol.implicitHeight + 32
+            radius: 8
+            color: root.isDarkTheme ? Qt.rgba(0.2, 0.2, 0.2, 1) : Qt.rgba(0.96, 0.96, 0.96, 1)
+            border.width: 1
+            border.color: root.isDarkTheme ? Qt.rgba(0.4, 0.4, 0.4, 1) : Qt.rgba(0.8, 0.8, 0.8, 1)
+
+            ColumnLayout {
+                id: dialogCol
+                anchors.fill: parent
+                anchors.margins: 16
+                spacing: 12
+
+                PlasmaExtras.Heading {
+                    level: 4
+                    text: page.dialogEditing ? root.t("Editar evento") : root.t("Novo evento")
+                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                    font.pixelSize: 15
+                    Layout.fillWidth: true
+                }
+
+                // Título
+                QQC2.TextField {
+                    id: titleField
+                    Layout.fillWidth: true
+                    placeholderText: root.t("Título do evento")
+                    text: page.dialogTitle
+                    onTextChanged: page.dialogTitle = text
+                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                    background: Rectangle {
+                        radius: 4
+                        color: "transparent"
+                        border.width: 1
+                        border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                    }
+                }
+
+                // Dia todo
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 8
+                    QQC2.CheckBox {
+                        id: allDayCheck
+                        text: root.t("Dia todo")
+                        checked: page.dialogAllDay
+                        onCheckedChanged: page.dialogAllDay = checked
+                        QQC2.Label {
+                            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                        }
+                    }
+                }
+
+                // Data
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 8
+                    QQC2.Label {
+                        text: root.t("Data:")
+                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                        font.pixelSize: 12
+                    }
+                    QQC2.TextField {
+                        id: dateField
+                        Layout.fillWidth: true
+                        text: page.dialogDate
+                        onTextChanged: page.dialogDate = text
+                        placeholderText: "YYYY-MM-DD"
+                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                        background: Rectangle {
+                            radius: 4
+                            color: "transparent"
+                            border.width: 1
+                            border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                        }
+                    }
+                }
+
+                // Horários (oculto se dia todo)
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 8
+                    visible: !page.dialogAllDay
+                    QQC2.Label {
+                        text: root.t("Início:")
+                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                        font.pixelSize: 12
+                    }
+                    QQC2.TextField {
+                        id: startTimeField
+                        Layout.preferredWidth: 70
+                        text: page.dialogStartTime
+                        onTextChanged: page.dialogStartTime = text
+                        placeholderText: "HH:MM"
+                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                        background: Rectangle {
+                            radius: 4
+                            color: "transparent"
+                            border.width: 1
+                            border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                        }
+                    }
+                    QQC2.Label {
+                        text: root.t("Fim:")
+                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                        font.pixelSize: 12
+                    }
+                    QQC2.TextField {
+                        id: endTimeField
+                        Layout.preferredWidth: 70
+                        text: page.dialogEndTime
+                        onTextChanged: page.dialogEndTime = text
+                        placeholderText: "HH:MM"
+                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                        background: Rectangle {
+                            radius: 4
+                            color: "transparent"
+                            border.width: 1
+                            border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                        }
+                    }
+                }
+
+                // Local
+                QQC2.TextField {
+                    Layout.fillWidth: true
+                    placeholderText: root.t("Local (opcional)")
+                    text: page.dialogLocation
+                    onTextChanged: page.dialogLocation = text
+                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                    background: Rectangle {
+                        radius: 4
+                        color: "transparent"
+                        border.width: 1
+                        border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                    }
+                }
+
+                // Descrição
+                QQC2.TextArea {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 60
+                    placeholderText: root.t("Descrição (opcional)")
+                    text: page.dialogDescription
+                    onTextChanged: page.dialogDescription = text
+                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                    background: Rectangle {
+                        radius: 4
+                        color: "transparent"
+                        border.width: 1
+                        border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                    }
+                }
+
+                // Botões
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 8
+                    Layout.topMargin: 4
+
+                    Item { Layout.fillWidth: true }
+
+                    PlasmaComponents3.ToolButton {
+                        text: root.t("Cancelar")
+                        contentItem: Text {
+                            text: root.t("Cancelar")
+                            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                            font.pixelSize: 12
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        onClicked: page.dialogOpen = false
+                    }
+
+                    PlasmaComponents3.ToolButton {
+                        text: root.t("Salvar")
+                        contentItem: Text {
+                            text: root.t("Salvar")
+                            color: "#ffffff"
+                            font.pixelSize: 12
+                            font.weight: Font.Bold
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        background: Rectangle {
+                            radius: 4
+                            color: Qt.rgba(0.15, 0.5, 0.85, 1)
+                        }
+                        onClicked: page.saveDialog()
+                    }
+                }
+            }
+        }
+    }
 }
 }
+

@@ -6,23 +6,110 @@
     Geocoding + previsão atual + máxima/mínima + probabilidade de chuva.
 */
 
+.pragma library
+
+.import "i18n.js" as I18n
+
+var _iconTable = {
+    0: "clear", 1: "clear", 2: "clouds", 3: "clouds",
+    45: "fog", 48: "fog",
+    51: "showers", 53: "showers", 55: "showers",
+    56: "showers", 57: "showers",
+    61: "showers", 63: "showers", 65: "showers",
+    66: "showers", 67: "showers",
+    71: "snow", 73: "snow", 75: "snow", 77: "snow",
+    80: "showers", 81: "showers", 82: "showers",
+    85: "snow", 86: "snow",
+    95: "storm", 96: "storm", 99: "storm"
+};
+
+var _nightIcons = {
+    clear: "weather-clear-night",
+    clouds: "weather-clouds-night"
+};
+
+var _dayIcons = {
+    clear: "weather-clear",
+    clouds: "weather-clouds",
+    fog: "weather-fog",
+    showers: "weather-showers",
+    snow: "weather-snow",
+    storm: "weather-storm"
+};
+
+var _descTable = {
+    0: "Céu limpo", 1: "Maiormente limpo", 2: "Parcialmente nublado", 3: "Nublado",
+    45: "Nevoeiro", 48: "Nevoeiro",
+    51: "Garoa", 53: "Garoa", 55: "Garoa",
+    56: "Garoa gelada", 57: "Garoa gelada",
+    61: "Chuva", 63: "Chuva", 65: "Chuva forte",
+    66: "Chuva gelada", 67: "Chuva gelada",
+    71: "Neve", 73: "Neve", 75: "Neve", 77: "Granizo",
+    80: "Pancadas de chuva", 81: "Pancadas de chuva", 82: "Pancadas de chuva",
+    85: "Pancadas de neve", 86: "Pancadas de neve",
+    95: "Trovoada", 96: "Trovoada com granizo", 99: "Trovoada com granizo"
+};
+
+var _dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+var _dayNamesEn = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+var _dayNamesEs = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+var _dayNamesFr = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
+var _dayNamesDe = ["Son", "Mon", "Die", "Don", "Fre", "Sam", "Son"];
+var _dayNamesIt = ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"];
+var _dayNamesJa = ["日", "月", "火", "水", "木", "金", "土"];
+var _dayNamesZh = ["日", "一", "二", "三", "四", "五", "六"];
+var _dayNamesRu = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+var _dayNamesHe = ["א'", "ב'", "ג'", "ד'", "ה'", "ו'", "ש'"];
+
+var _monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+var _monthNamesEn = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var _monthNamesEs = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+var _monthNamesFr = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
+var _monthNamesDe = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+var _monthNamesIt = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
+var _monthNamesJa = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+var _monthNamesZh = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+var _monthNamesRu = ["янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
+var _monthNamesHe = ["ינו", "פבר", "מרץ", "אפר", "מאי", "יונ", "יול", "אוג", "ספט", "אוק", "נוב", "דצ"];
+
+function _getDayNames(lang) {
+    if (!lang) return _dayNames;
+    var base = lang.split("_")[0];
+    switch (base) {
+        case "en": return _dayNamesEn;
+        case "es": return _dayNamesEs;
+        case "fr": return _dayNamesFr;
+        case "de": return _dayNamesDe;
+        case "it": return _dayNamesIt;
+        case "ja": return _dayNamesJa;
+        case "zh": return _dayNamesZh;
+        case "ru": return _dayNamesRu;
+        case "he": return _dayNamesHe;
+        default: return _dayNames;
+    }
+}
+
+function _getMonthNames(lang) {
+    if (!lang) return _monthNames;
+    var base = lang.split("_")[0];
+    switch (base) {
+        case "en": return _monthNamesEn;
+        case "es": return _monthNamesEs;
+        case "fr": return _monthNamesFr;
+        case "de": return _monthNamesDe;
+        case "it": return _monthNamesIt;
+        case "ja": return _monthNamesJa;
+        case "zh": return _monthNamesZh;
+        case "ru": return _monthNamesRu;
+        case "he": return _monthNamesHe;
+        default: return _monthNames;
+    }
+}
+
 function weatherIcon(code, isNight) {
-    if (code === 0) return isNight ? "weather-clear-night" : "weather-clear";
-    if (code === 1) return isNight ? "weather-clear-night" : "weather-clear";
-    if (code === 2) return isNight ? "weather-clouds-night" : "weather-clouds";
-    if (code === 3) return "weather-clouds";
-    if (code === 45 || code === 48) return "weather-fog";
-    if (code >= 51 && code <= 55) return "weather-showers";
-    if (code === 56 || code === 57) return "weather-showers";
-    if (code >= 61 && code <= 65) return "weather-showers";
-    if (code === 66 || code === 67) return "weather-showers";
-    if (code >= 71 && code <= 75) return "weather-snow";
-    if (code === 77) return "weather-snow";
-    if (code >= 80 && code <= 82) return "weather-showers";
-    if (code >= 85 && code <= 86) return "weather-snow";
-    if (code === 95) return "weather-storm";
-    if (code === 96 || code === 99) return "weather-storm";
-    return isNight ? "weather-clouds-night" : "weather-clouds";
+    var key = _iconTable[code] || "clouds";
+    if (isNight && _nightIcons[key]) return _nightIcons[key];
+    return _dayIcons[key] || "weather-clouds";
 }
 
 function weatherIconWithRain(code, isNight, rain, showers) {
@@ -31,38 +118,32 @@ function weatherIconWithRain(code, isNight, rain, showers) {
 }
 
 function weatherDescription(code) {
-    if (code === 0) return "Céu limpo";
-    if (code === 1) return "Maiormente limpo";
-    if (code === 2) return "Parcialmente nublado";
-    if (code === 3) return "Nublado";
-    if (code === 45 || code === 48) return "Nevoeiro";
-    if (code >= 51 && code <= 55) return "Garoa";
-    if (code === 56 || code === 57) return "Garoa gelada";
-    if (code >= 61 && code <= 63) return "Chuva";
-    if (code === 65) return "Chuva forte";
-    if (code === 66 || code === 67) return "Chuva gelada";
-    if (code >= 71 && code <= 75) return "Neve";
-    if (code === 77) return "Granizo";
-    if (code >= 80 && code <= 82) return "Pancadas de chuva";
-    if (code >= 85 && code <= 86) return "Pancadas de neve";
-    if (code === 95) return "Trovoada";
-    if (code === 96 || code === 99) return "Trovoada com granizo";
-    return "Sem dados";
+    return _descTable[code] || "Sem dados";
 }
 
-function formatDayName(dateStr) {
-    var days = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-    var months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+function weatherDescriptionTranslated(code, lang) {
+    var pt = _descTable[code] || "Sem dados";
+    if (!lang || lang === "pt_BR" || lang === "pt") return pt;
+    return I18n.translate(pt, lang);
+}
+
+function formatDayName(dateStr, lang) {
     var d = new Date(dateStr + "T12:00:00");
     var now = new Date();
-    if (d.toDateString() === now.toDateString()) return "Hoje";
+    if (d.toDateString() === now.toDateString()) {
+        return I18n.translate("Hoje", lang || "");
+    }
+    var days = _getDayNames(lang);
+    var months = _getMonthNames(lang);
     return days[d.getDay()] + ", " + d.getDate() + " " + months[d.getMonth()];
 }
 
 function formatTime(isoStr) {
     if (!isoStr) return "";
     var d = new Date(isoStr);
-    return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    var h = d.getHours();
+    var m = d.getMinutes();
+    return (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
 }
 
 function fetchWeather(lat, lon, onReady, onError) {

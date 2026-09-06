@@ -22,12 +22,37 @@ Item {
     signal addItem(int listIndex, string text)
     signal removeItem(int listIndex, int itemIndex)
     signal toggleItem(int listIndex, int itemIndex)
+    signal setDone(int listIndex, bool done)
 
     property int expandedList: -1
+    property int refreshKey: 0
+    property bool showHistory: false
+    property var activeLists: page.filterLists(page.lists, false)
+    property var doneLists: page.filterLists(page.lists, true)
+    property int activeCount: page.activeLists.length
 
-    Flickable {
+    function filterLists(arr, done) {
+        var out = [];
+        if (!arr) return out;
+        for (var i = 0; i < arr.length; i++) {
+            if (!!arr[i].done === done) out.push(arr[i]);
+        }
+        return out;
+    }
+
+    function forceRefresh() {
+        refreshKey++;
+    }
+
+    ColumnLayout {
         anchors.fill: parent
-        clip: true
+        spacing: 0
+
+        Flickable {
+            id: listFlick
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            clip: true
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: mainCol.implicitHeight + Kirigami.Units.largeSpacing * 2
 
@@ -42,7 +67,6 @@ Item {
             anchors.topMargin: Kirigami.Units.smallSpacing
             spacing: 0
 
-            // Header
             RowLayout {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 48
@@ -66,7 +90,6 @@ Item {
                 opacity: 0.15
             }
 
-            // Entrada para nova lista
             RowLayout {
                 Layout.fillWidth: true
                 Layout.topMargin: Kirigami.Units.smallSpacing
@@ -97,11 +120,11 @@ Item {
                 }
             }
 
-            // Listas
             Repeater {
-                model: page.lists
+                model: page.activeLists
 
                 delegate: Rectangle {
+                    id: listDelegate
                     required property var modelData
                     required property int index
                     Layout.fillWidth: true
@@ -120,113 +143,173 @@ Item {
                         anchors.margins: Kirigami.Units.largeSpacing
                         spacing: Kirigami.Units.smallSpacing
 
-                        // Header da lista
                         RowLayout {
                             Layout.fillWidth: true
                             spacing: Kirigami.Units.smallSpacing
 
+                            PlasmaComponents3.ToolButton {
+                                text: listDelegate.isExpanded ? "\u25B2" : "\u25BC"
+                                font.pixelSize: 10
+                                contentItem: Text {
+                                    text: listDelegate.isExpanded ? "\u25B2" : "\u25BC"
+                                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                    font.pixelSize: 10
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                }
+                                onClicked: page.expandedList = listDelegate.isExpanded ? -1 : listDelegate.index
+                            }
+
                             PlasmaComponents3.Label {
                                 Layout.fillWidth: true
-                                text: modelData.name
+                                text: listDelegate.modelData.name
                                 font.bold: true
                                 font.pixelSize: 13
                                 color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                             }
 
                             PlasmaComponents3.Label {
-                                text: modelData.items.length + " " + root.t("itens")
+                                text: listDelegate.modelData.itemsModel.count + " " + root.t("itens")
                                 font.pixelSize: 11
                                 color: root.isDarkTheme ? Qt.rgba(0.6, 0.6, 0.6, 1) : Qt.rgba(0.5, 0.5, 0.5, 1)
                             }
 
                             PlasmaComponents3.ToolButton {
-                                text: isExpanded ? "▲" : "▼"
-                                font.pixelSize: 10
+                                text: "\u2713"
+                                font.pixelSize: 12
+                                QQC2.ToolTip.visible: hovered
+                                QQC2.ToolTip.text: root.t("Finalizar lista")
                                 contentItem: Text {
-                                    text: isExpanded ? "▲" : "▼"
+                                    text: "\u2713"
                                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                                    font.pixelSize: 10
+                                    font.pixelSize: 12
                                     horizontalAlignment: Text.AlignHCenter
                                     verticalAlignment: Text.AlignVCenter
                                 }
-                                onClicked: page.expandedList = isExpanded ? -1 : index
+                                onClicked: page.setDone(listDelegate.index, true)
                             }
 
                             PlasmaComponents3.ToolButton {
-                                text: "×"
+                                text: "+"
+                                font.pixelSize: 12
+                                contentItem: Text {
+                                    text: "+"
+                                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                    font.pixelSize: 12
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                }
+                                onClicked: {
+                                    page.expandedList = listDelegate.index;
+                                    Qt.callLater(function() {
+                                        if (itemInput) {
+                                            var pt = itemInput.mapToItem(listFlick.contentItem, 0, 0);
+                                            listFlick.contentY = Math.max(0, pt.y - listFlick.height + itemInput.height + Kirigami.Units.largeSpacing * 2);
+                                            itemInput.forceActiveFocus();
+                                        }
+                                    });
+                                }
+                            }
+
+                            PlasmaComponents3.ToolButton {
+                                text: "\u00D7"
                                 font.pixelSize: 14
                                 contentItem: Text {
-                                    text: "×"
+                                    text: "\u00D7"
                                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                                     font.pixelSize: 14
                                     horizontalAlignment: Text.AlignHCenter
                                     verticalAlignment: Text.AlignVCenter
                                 }
-                                onClicked: page.removeList(index)
+                                onClicked: page.removeList(listDelegate.index)
                             }
                         }
 
-                        // Itens da lista (quando expandida)
-                        ColumnLayout {
-                            visible: isExpanded
-                            spacing: Kirigami.Units.smallSpacing
+                        Item {
+                            Layout.fillWidth: true
+                            property bool isExpanded: listDelegate.isExpanded
+                            implicitHeight: expandedContent.active && expandedContent.item ? expandedContent.item.implicitHeight : 0
 
-                            Kirigami.Separator {
-                                Layout.fillWidth: true
-                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                                opacity: 0.15
-                            }
+                            Loader {
+                                id: expandedContent
+                                anchors.fill: parent
+                                active: parent.isExpanded
+                                sourceComponent: Component {
+                                    ColumnLayout {
+                                        width: parent.width
+                                        spacing: Kirigami.Units.smallSpacing
 
-                            Repeater {
-                                model: modelData.items
-
-                                delegate: RowLayout {
-                                    required property var modelData
-                                    required property int index
-                                    Layout.fillWidth: true
-                                    spacing: Kirigami.Units.smallSpacing
-
-                                    QQC2.CheckBox {
-                                        checked: modelData.done
-                                        onToggled: page.toggleItem(model.index, index)
-                                    }
-
-                                    PlasmaComponents3.Label {
-                                        Layout.fillWidth: true
-                                        text: modelData.text
-                                        font.pixelSize: 12
-                                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                                        opacity: modelData.done ? 0.5 : 1.0
-                                        font.italic: modelData.done
-                                    }
-
-                                    PlasmaComponents3.ToolButton {
-                                        text: "×"
-                                        font.pixelSize: 10
-                                        contentItem: Text {
-                                            text: "×"
+                                        Kirigami.Separator {
+                                            Layout.fillWidth: true
                                             color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                                            font.pixelSize: 10
-                                            horizontalAlignment: Text.AlignHCenter
-                                            verticalAlignment: Text.AlignVCenter
+                                            opacity: 0.15
                                         }
-                                        onClicked: page.removeItem(model.index, index)
-                                    }
-                                }
-                            }
 
-                            // Adicionar item
+                            Flickable {
+                                            id: itemScroller
+                                            Layout.fillWidth: true
+                                            Layout.preferredHeight: Math.min(240, itemCol.implicitHeight)
+                                            clip: true
+                                            contentHeight: itemCol.height
+                                            boundsBehavior: Flickable.StopAtBounds
+                                            QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
+
+                                            ColumnLayout {
+                                                id: itemCol
+                                                width: parent.width
+                                                spacing: Kirigami.Units.smallSpacing
+
+                                                Repeater {
+                                                    model: listDelegate.modelData.itemsModel
+
+                                                    delegate: RowLayout {
+                                                        id: itemDelegate
+                                                        Layout.fillWidth: true
+                                                        spacing: Kirigami.Units.smallSpacing
+
+                                                        QQC2.CheckBox {
+                                                            checked: model.done
+                                                            onToggled: page.toggleItem(listDelegate.index, index)
+                                                        }
+
+                                                        PlasmaComponents3.Label {
+                                                            Layout.fillWidth: true
+                                                            text: model.text
+                                                            font.pixelSize: 12
+                                                            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                                            opacity: model.done ? 0.5 : 1.0
+                                                            font.italic: model.done
+                                                        }
+
+                                                        PlasmaComponents3.ToolButton {
+                                                            text: "\u00D7"
+                                                            font.pixelSize: 10
+                                                            contentItem: Text {
+                                                                text: "\u00D7"
+                                                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                                                font.pixelSize: 10
+                                                                horizontalAlignment: Text.AlignHCenter
+                                                                verticalAlignment: Text.AlignVCenter
+                                                            }
+                                                            onClicked: page.removeItem(listDelegate.index, index)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
                             RowLayout {
                                 Layout.fillWidth: true
                                 spacing: Kirigami.Units.smallSpacing
 
                                 QQC2.TextField {
+                                    id: itemInput
                                     Layout.fillWidth: true
                                     placeholderText: root.t("Novo item...")
                                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                                     onAccepted: {
                                         if (text.trim().length > 0) {
-                                            page.addItem(index, text.trim());
+                                            page.addItem(listDelegate.index, text.trim());
                                             text = "";
                                         }
                                     }
@@ -235,17 +318,113 @@ Item {
                                 QQC2.Button {
                                     text: "+"
                                     implicitWidth: 36
-                                    property var inputField: parent.children[0]
                                     onClicked: {
-                                        if (inputField.text.trim().length > 0) {
-                                            page.addItem(index, inputField.text.trim());
-                                            inputField.text = "";
+                                        if (itemInput.text.trim().length > 0) {
+                                            page.addItem(listDelegate.index, itemInput.text.trim());
+                                            itemInput.text = "";
                                         }
                                     }
                                 }
                             }
+                            }
+                                }
+                            }
                         }
                     }
+                }
+            }
+
+            Repeater {
+                model: page.showHistory ? page.doneLists : []
+
+                delegate: Rectangle {
+                    id: doneDelegate
+                    required property var modelData
+                    required property int index
+                    Layout.fillWidth: true
+                    radius: Kirigami.Units.largeSpacing
+                    color: "transparent"
+                    border.width: 1
+                    border.color: root.isDarkTheme ? Qt.rgba(0.4, 0.4, 0.4, 1) : Qt.rgba(0.8, 0.8, 0.8, 1)
+                    implicitHeight: doneCol.implicitHeight + Kirigami.Units.largeSpacing * 2
+                    Layout.topMargin: Kirigami.Units.smallSpacing
+
+                    ColumnLayout {
+                        id: doneCol
+                        anchors.fill: parent
+                        anchors.margins: Kirigami.Units.largeSpacing
+                        spacing: Kirigami.Units.smallSpacing
+
+                        RowLayout {
+                            Layout.fillWidth: true
+                            spacing: Kirigami.Units.smallSpacing
+
+                            PlasmaComponents3.Label {
+                                Layout.fillWidth: true
+                                text: doneDelegate.modelData.name
+                                font.italic: true
+                                font.pixelSize: 12
+                                opacity: 0.6
+                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                            }
+
+                            PlasmaComponents3.Label {
+                                text: doneDelegate.modelData.itemsModel.count + " " + root.t("itens")
+                                font.pixelSize: 11
+                                opacity: 0.6
+                                color: root.isDarkTheme ? Qt.rgba(0.6, 0.6, 0.6, 1) : Qt.rgba(0.5, 0.5, 0.5, 1)
+                            }
+
+                            PlasmaComponents3.ToolButton {
+                                text: "\u21BA"
+                                font.pixelSize: 12
+                                QQC2.ToolTip.visible: hovered
+                                QQC2.ToolTip.text: root.t("Restaurar lista")
+                                contentItem: Text {
+                                    text: "\u21BA"
+                                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                    font.pixelSize: 12
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                }
+                                onClicked: page.setDone(page.activeCount + doneDelegate.index, false)
+                            }
+
+                            PlasmaComponents3.ToolButton {
+                                text: "\u00D7"
+                                font.pixelSize: 14
+                                QQC2.ToolTip.visible: hovered
+                                QQC2.ToolTip.text: root.t("Excluir permanentemente")
+                                contentItem: Text {
+                                    text: "\u00D7"
+                                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                    font.pixelSize: 14
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                }
+                                onClicked: page.removeList(page.activeCount + doneDelegate.index)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        }
+
+        PlasmaComponents3.Button {
+            Layout.fillWidth: true
+            Layout.leftMargin: Kirigami.Units.largeSpacing
+            Layout.rightMargin: Kirigami.Units.largeSpacing
+            Layout.topMargin: Kirigami.Units.smallSpacing
+            Layout.bottomMargin: Kirigami.Units.smallSpacing
+            visible: page.doneLists.length > 0
+            text: (page.showHistory ? "\u25BC " : "\u25B6 ") + root.t("Histórico de listas finalizadas") + " (" + page.doneLists.length + ")"
+            onClicked: {
+                page.showHistory = !page.showHistory;
+                if (page.showHistory) {
+                    Qt.callLater(function() {
+                        listFlick.contentY = Math.max(0, listFlick.contentHeight - listFlick.height);
+                    });
                 }
             }
         }

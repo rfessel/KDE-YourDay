@@ -17,6 +17,7 @@ import "js/feeds.js" as FeedParser
 import "js/calendar.js" as Cal
 import "js/weather.js" as Weather
 import "js/i18n.js" as I18n
+import "js/googleCalendar.js" as GCal
 import "pages"
 
 PlasmoidItem {
@@ -45,10 +46,12 @@ PlasmoidItem {
 
     // -------- agenda e to-dos do dia --------------------------------
     property var agendaEvents: []
+    property var localEvents: []
     property var todoList: []
     property var completedList: []
     property var notesList: []
     property var listsList: []
+
     property bool agendaLoading: false
     property int currentTab: 0   // 0=Resumo, 1=Agenda, 2=Tarefas, 3=Clima, 4=Notas, 5=Listas, 6=Notícias
 
@@ -545,41 +548,54 @@ PlasmoidItem {
         root.notesList = root.notesList.slice();
     }
 
+    function newItemsModel() {
+        return Qt.createQmlObject("import QtQuick; ListModel {}", root, "listItemsModel");
+    }
+
     function saveLists() {
         var raw = [];
         for (var i = 0; i < root.listsList.length; i++) {
+            var m = root.listsList[i].itemsModel;
             var items = [];
-            for (var j = 0; j < root.listsList[i].items.length; j++) {
-                items.push((root.listsList[i].items[j].done ? "1" : "0") + "|" + root.listsList[i].items[j].text);
+            for (var j = 0; j < m.count; j++) {
+                var row = m.get(j);
+                items.push((row.done ? "1" : "0") + "|" + row.text);
             }
-            raw.push(root.listsList[i].name + "|" + items.join(";"));
+            raw.push(root.listsList[i].name + "|" + (root.listsList[i].done ? "1" : "0") + "|" + items.join(";"));
         }
         Plasmoid.configuration.lists = raw;
     }
 
     function loadLists() {
+        root.listsList = [];
         var raw = Plasmoid.configuration.lists;
-        var out = [];
         if (raw) {
             for (var i = 0; i < raw.length; i++) {
                 var parts = raw[i].split("|");
                 var name = parts[0];
-                var items = [];
-                if (parts[1]) {
-                    var itemParts = parts[1].split(";");
+                var done = false;
+                var itemsPart = "";
+                if (parts.length >= 3) {
+                    done = parts[1] === "1";
+                    itemsPart = parts[2];
+                } else {
+                    itemsPart = parts[1] || "";
+                }
+                var m = root.newItemsModel();
+                if (itemsPart) {
+                    var itemParts = itemsPart.split(";");
                     for (var j = 0; j < itemParts.length; j++) {
                         var ip = itemParts[j].split("|");
-                        items.push({ text: ip[1] || "", done: ip[0] === "1" });
+                        m.append({ text: ip[1] || "", done: ip[0] === "1" });
                     }
                 }
-                out.push({ name: name, items: items });
+                root.listsList.push({ name: name, done: done, itemsModel: m });
             }
         }
-        root.listsList = out;
     }
 
     function addList(name) {
-        root.listsList.push({ name: name, items: [] });
+        root.listsList.push({ name: name, done: false, itemsModel: root.newItemsModel() });
         root.saveLists();
         root.listsList = root.listsList.slice();
     }
@@ -588,42 +604,58 @@ PlasmoidItem {
         if (index < 0 || index >= root.listsList.length) {
             return;
         }
-        root.listsList.splice(index, 1);
+        root.listsList = root.listsList.slice(0, index).concat(root.listsList.slice(index + 1));
         root.saveLists();
+    }
+
+    function setListDone(listIndex, done) {
+        if (listIndex < 0 || listIndex >= root.listsList.length) {
+            return;
+        }
+        root.listsList[listIndex].done = done;
+        root.listsList.sort(function(a, b) {
+            var da = a.done ? 1 : 0;
+            var db = b.done ? 1 : 0;
+            return da - db;
+        });
         root.listsList = root.listsList.slice();
+        root.saveLists();
+        if (listasPage) {
+            listasPage.expandedList = -1;
+            listasPage.showHistory = done;
+        }
     }
 
     function addListItem(listIndex, text) {
         if (listIndex < 0 || listIndex >= root.listsList.length) {
             return;
         }
-        root.listsList[listIndex].items.push({ text: text, done: false });
+        root.listsList[listIndex].itemsModel.append({ text: text, done: false });
         root.saveLists();
-        root.listsList = root.listsList.slice();
     }
 
     function removeListItem(listIndex, itemIndex) {
         if (listIndex < 0 || listIndex >= root.listsList.length) {
             return;
         }
-        if (itemIndex < 0 || itemIndex >= root.listsList[listIndex].items.length) {
+        var m = root.listsList[listIndex].itemsModel;
+        if (itemIndex < 0 || itemIndex >= m.count) {
             return;
         }
-        root.listsList[listIndex].items.splice(itemIndex, 1);
+        m.remove(itemIndex);
         root.saveLists();
-        root.listsList = root.listsList.slice();
     }
 
     function toggleListItem(listIndex, itemIndex) {
         if (listIndex < 0 || listIndex >= root.listsList.length) {
             return;
         }
-        if (itemIndex < 0 || itemIndex >= root.listsList[listIndex].items.length) {
+        var m = root.listsList[listIndex].itemsModel;
+        if (itemIndex < 0 || itemIndex >= m.count) {
             return;
         }
-        root.listsList[listIndex].items[itemIndex].done = !root.listsList[listIndex].items[itemIndex].done;
+        m.setProperty(itemIndex, "done", !m.get(itemIndex).done);
         root.saveLists();
-        root.listsList = root.listsList.slice();
     }
 
     function agendaSources() {
@@ -639,18 +671,88 @@ PlasmoidItem {
         var sources = root.agendaSources();
         root.agendaLoading = true;
 
-        if (sources.length === 0) {
-            root.agendaEvents = [];
+        // Inclui eventos locais
+        var all = root.localEvents.slice();
+
+        // Busca eventos do Google Calendar via Apps Script
+        var gcalPending = 0;
+        function gcalDone() {
+            gcalPending--;
+            if (gcalPending <= 0 && pendingCount <= 0) {
+                all.sort(function(a, b) { return (a.start - b.start); });
+                root.agendaEvents = all;
+                root.agendaLoading = false;
+            }
+        }
+
+        if (root.isGCalAuthenticated()) {
+            var scriptUrl = Plasmoid.configuration.gcalClientId;
+            var now = new Date();
+            var weekAgo = new Date(now.getTime() - 7 * 86400000);
+            var weekAhead = new Date(now.getTime() + 30 * 86400000);
+            var selectedCals = (Plasmoid.configuration.gcalSelectedCalendars || "").split(",").filter(function(s) { return s; });
+            if (selectedCals.length === 0) selectedCals = ["primary"];
+
+            gcalPending = selectedCals.length;
+            for (var c = 0; c < selectedCals.length; c++) {
+                (function(calId) {
+                    var url = scriptUrl + "?action=list&calendarId=" + encodeURIComponent(calId) + "&timeMin=" + encodeURIComponent(weekAgo.toISOString()) + "&timeMax=" + encodeURIComponent(weekAhead.toISOString());
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", url, true);
+                    xhr.timeout = 15000;
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState !== XMLHttpRequest.DONE) {
+                            gcalDone();
+                            return;
+                        }
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            try {
+                                var data = JSON.parse(xhr.responseText);
+                                if (Array.isArray(data)) {
+                                    var savedColors = {};
+                                    try { savedColors = JSON.parse(Plasmoid.configuration.gcalCalendarColors || "{}"); } catch(e) {}
+                                    for (var i = 0; i < data.length; i++) {
+                                        var ev = data[i];
+                                        all.push({
+                                            title: ev.title || "(sem título)",
+                                            start: Number(ev.start),
+                                            end: Number(ev.end),
+                                            allDay: !!ev.allDay,
+                                            description: ev.description || "",
+                                            location: ev.location || "",
+                                            source: "google",
+                                            googleId: ev.id,
+                                            calendarId: calId,
+                                            color: savedColors[calId] || "#4285f4"
+                                        });
+                                    }
+                                }
+                            } catch (e) {
+                                console.warn("[yourday] erro parse Google Calendar:", e);
+                            }
+                        }
+                        gcalDone();
+                    };
+                    xhr.onerror = function() { gcalDone(); };
+                    xhr.ontimeout = function() { gcalDone(); };
+                    xhr.send(null);
+                })(selectedCals[c]);
+            }
+        }
+
+        if (sources.length === 0 && gcalPending === 0) {
+            root.agendaEvents = all;
             root.agendaLoading = false;
             return;
         }
 
-        var all = [];
         var pendingCount = sources.length;
 
         function pendingDone() {
             pendingCount--;
-            if (pendingCount <= 0) {
+            if (pendingCount <= 0 && gcalPending <= 0) {
+                all.sort(function(a, b) { return (a.start - b.start); });
                 root.agendaEvents = all;
                 root.agendaLoading = false;
             }
@@ -693,6 +795,197 @@ PlasmoidItem {
         }
     }
 
+    // -------- eventos locais (agenda) --------------------------------
+    function parseLocalEvents() {
+        var raw = Plasmoid.configuration.localEvents;
+        if (typeof raw === "undefined" || raw === null) {
+            raw = [];
+        }
+        var out = [];
+        for (var i = 0; i < raw.length; i++) {
+            try {
+                var ev = JSON.parse(String(raw[i]));
+                if (ev && ev.title && ev.start) {
+                    out.push({
+                        id: ev.id || String(Date.now()) + "_" + i,
+                        title: ev.title,
+                        start: Number(ev.start),
+                        end: Number(ev.end) || Number(ev.start) + 3600000,
+                        allDay: !!ev.allDay,
+                        description: ev.description || "",
+                        location: ev.location || "",
+                        source: "local",
+                        googleId: ev.googleId || null
+                    });
+                }
+            } catch (e) {
+                // ignora entrada inválida
+            }
+        }
+        root.localEvents = out;
+    }
+
+    function saveLocalEvents() {
+        var raw = [];
+        for (var i = 0; i < root.localEvents.length; i++) {
+            var ev = root.localEvents[i];
+            raw.push(JSON.stringify({
+                id: ev.id,
+                title: ev.title,
+                start: ev.start,
+                end: ev.end,
+                allDay: ev.allDay,
+                description: ev.description,
+                location: ev.location,
+                googleId: ev.googleId || null
+            }));
+        }
+        Plasmoid.configuration.localEvents = raw;
+    }
+
+    function isGCalAuthenticated() {
+        var scriptUrl = Plasmoid.configuration.gcalClientId;
+        return scriptUrl && scriptUrl.indexOf("script.google.com") !== -1;
+    }
+
+    function syncToGoogle(event, callback) {
+        if (!isGCalAuthenticated()) {
+            if (callback) callback();
+            return;
+        }
+        var scriptUrl = Plasmoid.configuration.gcalClientId;
+        var calId = Plasmoid.configuration.gcalCalendarId || "primary";
+        var action = event.googleId ? "update" : "create";
+        var url = scriptUrl + "?action=" + action
+            + "&calendarId=" + encodeURIComponent(calId)
+            + "&title=" + encodeURIComponent(event.title)
+            + "&start=" + event.start
+            + "&end=" + event.end
+            + "&description=" + encodeURIComponent(event.description || "")
+            + "&location=" + encodeURIComponent(event.location || "");
+
+        if (event.googleId) {
+            url += "&id=" + encodeURIComponent(event.googleId);
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.timeout = 15000;
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== XMLHttpRequest.DONE) return;
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    var data = JSON.parse(xhr.responseText);
+                    if (callback) callback(data.id || event.googleId);
+                } catch (e) {
+                    if (callback) callback(null);
+                }
+            } else {
+                console.warn("[yourday] erro sync Google:", xhr.status);
+                if (callback) callback(null);
+            }
+        };
+        xhr.onerror = function() { if (callback) callback(null); };
+        xhr.ontimeout = function() { if (callback) callback(null); };
+        xhr.send(null);
+    }
+
+    function deleteFromGoogle(googleId) {
+        if (!isGCalAuthenticated() || !googleId) return;
+        var scriptUrl = Plasmoid.configuration.gcalClientId;
+        var url = scriptUrl + "?action=delete&id=" + encodeURIComponent(googleId);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.timeout = 15000;
+        xhr.onreadystatechange = function() {};
+        xhr.onerror = function() {};
+        xhr.ontimeout = function() {};
+        xhr.send(null);
+    }
+
+    function addLocalEvent(title, startMs, endMs, allDay, description, location) {
+        var id = String(Date.now()) + "_" + Math.random().toString(36).substr(2, 6);
+        var ev = {
+            id: id,
+            title: title,
+            start: startMs,
+            end: endMs || startMs + (allDay ? 86400000 : 3600000),
+            allDay: !!allDay,
+            description: description || "",
+            location: location || "",
+            source: "local",
+            googleId: null
+        };
+        root.localEvents.push(ev);
+        root.saveLocalEvents();
+        root.localEvents = root.localEvents.slice();
+
+        // Sincroniza com Google Calendar
+        syncToGoogle(ev, function(googleId) {
+            if (googleId) {
+                ev.googleId = googleId;
+                root.saveLocalEvents();
+                root.localEvents = root.localEvents.slice();
+            }
+            root.refreshAgenda();
+        });
+
+        root.refreshAgenda();
+    }
+
+    function updateLocalEvent(id, title, startMs, endMs, allDay, description, location) {
+        var ev = null;
+        for (var i = 0; i < root.localEvents.length; i++) {
+            if (root.localEvents[i].id === id) {
+                root.localEvents[i].title = title;
+                root.localEvents[i].start = startMs;
+                root.localEvents[i].end = endMs || startMs + (allDay ? 86400000 : 3600000);
+                root.localEvents[i].allDay = !!allDay;
+                root.localEvents[i].description = description || "";
+                root.localEvents[i].location = location || "";
+                ev = root.localEvents[i];
+                break;
+            }
+        }
+        root.saveLocalEvents();
+        root.localEvents = root.localEvents.slice();
+
+        // Sincroniza com Google Calendar
+        if (ev) {
+            syncToGoogle(ev, function(googleId) {
+                if (googleId && !ev.googleId) {
+                    ev.googleId = googleId;
+                    root.saveLocalEvents();
+                    root.localEvents = root.localEvents.slice();
+                }
+                root.refreshAgenda();
+            });
+        }
+
+        root.refreshAgenda();
+    }
+
+    function removeLocalEvent(id) {
+        var ev = null;
+        for (var i = root.localEvents.length - 1; i >= 0; i--) {
+            if (root.localEvents[i].id === id) {
+                ev = root.localEvents[i];
+                root.localEvents.splice(i, 1);
+                break;
+            }
+        }
+        root.saveLocalEvents();
+        root.localEvents = root.localEvents.slice();
+
+        // Remove do Google Calendar
+        if (ev && ev.googleId) {
+            deleteFromGoogle(ev.googleId);
+        }
+
+        root.refreshAgenda();
+    }
+
     function gotoAgenda() { root.currentTab = 1; }
     function gotoTodos() { root.currentTab = 2; }
     function gotoClima() { root.currentTab = 3; }
@@ -729,6 +1022,7 @@ PlasmoidItem {
         Plasmoid.icon = root.chosenIcon;
         root.loadNewsCache();
         loadAll();
+        parseLocalEvents();
         refreshAgenda();
         parseTodos();
         parseNotes();
@@ -759,7 +1053,6 @@ PlasmoidItem {
         target: Plasmoid
         function onActivated() {
             root.currentTab = Plasmoid.configuration.defaultTab || 0;
-            root.loadAll();
             root.refreshAgenda();
             root.parseTodos();
             root.refreshWeather();
@@ -1071,55 +1364,82 @@ PlasmoidItem {
                     onToggleTodoId: function(index) { root.toggleTodo(index); }
                 }
 
-                AgendaPage {
-                    events: root.agendaEvents
-                    loading: root.agendaLoading
+                Loader {
+                    active: root.currentTab === 1
+                    sourceComponent: Component {
+                        AgendaPage {
+                            events: root.agendaEvents
+                            loading: root.agendaLoading
+                            onAddEvent: function(title, startMs, endMs, allDay, description, location) { root.addLocalEvent(title, startMs, endMs, allDay, description, location); }
+                            onUpdateEvent: function(id, title, startMs, endMs, allDay, description, location) { root.updateLocalEvent(id, title, startMs, endMs, allDay, description, location); }
+                            onRemoveEvent: function(id) { root.removeLocalEvent(id); }
+                        }
+                    }
                 }
 
-                ToDoPage {
-                    todos: root.todoList
-                    completedTodos: root.completedList
-                    onAddTodo: function(text) { root.addTodo(text); }
-                    onToggleTodo: function(index) { root.toggleTodo(index); }
-                    onRemoveTodo: function(index) { root.removeTodo(index); }
-                    onRestoreTodo: function(index) { root.restoreTodo(index); }
-                    onRemoveCompletedTodo: function(index) { root.removeCompletedTodo(index); }
+                Loader {
+                    active: root.currentTab === 2
+                    sourceComponent: Component {
+                        ToDoPage {
+                            todos: root.todoList
+                            completedTodos: root.completedList
+                            onAddTodo: function(text) { root.addTodo(text); }
+                            onToggleTodo: function(index) { root.toggleTodo(index); }
+                            onRemoveTodo: function(index) { root.removeTodo(index); }
+                            onRestoreTodo: function(index) { root.restoreTodo(index); }
+                            onRemoveCompletedTodo: function(index) { root.removeCompletedTodo(index); }
+                        }
+                    }
                 }
 
-                ClimaPage {
-                    weatherData: root.weatherData
-                    weatherLoading: root.weatherLoading
-                    weatherCity: Plasmoid.configuration.weatherCity || ""
-                    extraCities: root.extraCities
-                    extraWeatherData: root.extraWeatherData
-                    selectedCityName: root.selectedCityName
+                Loader {
+                    active: root.currentTab === 3
+                    sourceComponent: Component {
+                        ClimaPage {
+                            weatherData: root.weatherData
+                            weatherLoading: root.weatherLoading
+                            weatherCity: Plasmoid.configuration.weatherCity || ""
+                            extraCities: root.extraCities
+                            extraWeatherData: root.extraWeatherData
+                            selectedCityName: root.selectedCityName
+                            language: Plasmoid.configuration.language || ""
+                        }
+                    }
                 }
 
                 // Página de Notas
-                NotasPage {
-                    notes: root.notesList
-                    onAddNote: function(text, color) { root.addNote(text, color); }
-                    onRemoveNote: function(index) { root.removeNote(index); }
-                    onUpdateNoteColor: function(index, color) { root.updateNoteColor(index, color); }
-                    onUpdateNoteText: function(index, text) { root.updateNoteText(index, text); }
+                Loader {
+                    active: root.currentTab === 4
+                    sourceComponent: Component {
+                        NotasPage {
+                            notes: root.notesList
+                            onAddNote: function(text, color) { root.addNote(text, color); }
+                            onRemoveNote: function(index) { root.removeNote(index); }
+                            onUpdateNoteColor: function(index, color) { root.updateNoteColor(index, color); }
+                            onUpdateNoteText: function(index, text) { root.updateNoteText(index, text); }
+                        }
+                    }
                 }
 
                 // Página de Listas
                 ListasPage {
+                    id: listasPage
                     lists: root.listsList
                     onAddList: function(name) { root.addList(name); }
                     onRemoveList: function(index) { root.removeList(index); }
                     onAddItem: function(listIndex, text) { root.addListItem(listIndex, text); }
                     onRemoveItem: function(listIndex, itemIndex) { root.removeListItem(listIndex, itemIndex); }
                     onToggleItem: function(listIndex, itemIndex) { root.toggleListItem(listIndex, itemIndex); }
+                    onSetDone: function(listIndex, done) { root.setListDone(listIndex, done); }
                 }
 
                 // Página de Notícias (corpo original das notícias)
-                ColumnLayout {
-                    id: bodyItem
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    spacing: 0
+                Loader {
+                    active: root.currentTab === 6
+                    sourceComponent: Component {
+                        ColumnLayout {
+                            anchors.fill: parent
+                            spacing: 0
 
                     // Header fixo
                     RowLayout {
@@ -1248,6 +1568,8 @@ PlasmoidItem {
                     }
                 }
             }
+                    }
+                }
         }
 
         // ---------------- Rodapé (apenas na aba Notícias)
