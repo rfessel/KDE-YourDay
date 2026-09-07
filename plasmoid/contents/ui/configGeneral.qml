@@ -26,7 +26,7 @@ KCM.SimpleKCM {
 
     property var tabNames: {
         var _ = _lang;
-        return [t("Resumo"), t("Agenda"), t("Tarefas"), t("Clima"), t("Notas"), t("Notícias")];
+        return [t("Resumo"), t("Agenda"), t("Tarefas"), t("Clima"), t("Notas"), t("Listas"), t("Notícias")];
     }
 
     readonly property string currentIcon: {

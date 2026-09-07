@@ -20,10 +20,6 @@
       <label>Número de linhas exibidas do resumo (chamada) de cada notícia.</label>
       <default>2</default>
     </entry>
-    <entry name="columns" type="Int">
-      <default>1</default>
-      <label>Número de colunas de notícias exibidas no widget.</label>
-    </entry>
     <entry name="refreshMinutes" type="Int">
       <default>10</default>
       <label>Intervalo (em minutos) de atualização automática dos feeds; 0 = somente manual.</label>
@@ -69,11 +65,11 @@
     </entry>
     <entry name="cachedNews" type="String">
       <default></default>
-      <label>JSON array de notícias cacheadas para uso offline.</label>
+      <label>Obsoleto: cache antigo de notícias, migrado para o banco SQLite local ao abrir.</label>
     </entry>
     <entry name="defaultTab" type="Int">
       <default>0</default>
-      <label>Aba padrão ao abrir o widget (0=Resumo, 1=Agenda, 2=Tarefas, 3=Clima, 4=Notas, 5=Notícias).</label>
+      <label>Aba padrão ao abrir o widget (0=Resumo, 1=Agenda, 2=Tarefas, 3=Clima, 4=Notas, 5=Listas, 6=Notícias).</label>
     </entry>
     <entry name="themeMode" type="Int">
       <default>2</default>
