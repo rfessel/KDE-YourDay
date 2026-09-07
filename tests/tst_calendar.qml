@@ -110,5 +110,78 @@ Item {
             verify(big.length > 2 * 1024 * 1024, "fixture não passou de 2 MB: " + big.length);
             verify(!Cal.withinIcsCap(big), "ics acima de 2 MB recusado");
         }
+
+        function test_2000_vevents_semRecorrencia_janelaDe1Mes() {
+            // 2000 VEVENTs avulsos espalhados por 2 anos (mês = i%24). Só os
+            // de 2026-08/09/10 podem aparecer: um loop ingênuo por ano inteiro
+            // traria os ~2000 (e era a regressão do "agenda anos inteiros").
+            var evts = [];
+            for (var i = 0; i < 2000; i++) {
+                var month = String((i % 12) + 1);
+                if (month.length < 2) month = "0" + month;
+                var day = i % 26 + 1;
+                var dayStr = String(day);
+                if (dayStr.length < 2) dayStr = "0" + dayStr;
+                var year = 2025 + Math.floor((i % 24) / 12);
+                evts.push(root.vevent([
+                    "UID:f" + i,
+                    "DTSTART;VALUE=DATE:" + year + month + dayStr,
+                    "SUMMARY:Avulso " + i
+                ]));
+            }
+            var ics = root.wrap(evts);
+            var t0 = Date.now();
+            var evs = Cal.allEvents(ics, "src", root.fromMs, root.toMs);
+            var dt = Date.now() - t0;
+
+            compare(evs.length, 249, "esperava 249 eventos na janela de 1 mês, veio " + evs.length);
+            verify(dt < 1000, "parse de 2000 avulsos demorou " + dt + "ms");
+            for (var k = 0; k < evs.length; k++) {
+                verify(evs[k].end > root.fromMs && evs[k].start < root.toMs, "evento fora da janela vazou");
+            }
+        }
+    }
+
+    TestCase {
+        name: "completer"
+
+        function test_gate_readyStatesRepetidos_naoZeramPendingCedo() {
+            // Mock do Google Calendar: um handler dispara em vários readyStates
+            // intermediários e chama gate.next() em cada um, mas só o DONE é
+            // que realmente conclui. O finalize precisa rodar exatamente uma vez.
+            var calls = 0;
+            var gate = Cal.makeCompleter(1, function() { calls++; });
+            gate.next();
+            gate.next();
+            gate.next();
+            compare(calls, 1, "finalize rodou " + calls + " vezes (qualquer coisa != 1 é o bug do pending zerado cedo)");
+            verify(gate.isDone(), "gate deveria estar concluído");
+            compare(gate.remaining(), 0);
+        }
+
+        function test_gate_esperaTodosOsPeers() {
+            var calls = [];
+            var gate = Cal.makeCompleter(2, function() { calls.push("done"); });
+            compare(gate.isDone(), false);
+            verify(gate.remaining() === 2, "deveria faltar 2 peers");
+            gate.next();
+            compare(calls.length, 0, "ainda falta 1 peer, não pode publicar");
+            compare(gate.isDone(), false);
+            gate.next();
+            compare(calls.length, 1);
+            // Chamadas extras depois da conclusão são no-ops
+            gate.next();
+            compare(calls.length, 1, "next() pós-conclusão re-disparou o finalize");
+            verify(gate.isDone(), true);
+        }
+
+        function test_gate_zero_publicaImediatamente() {
+            var calls = [];
+            var g0 = Cal.makeCompleter(0, function() { calls.push("x"); });
+            compare(calls.length, 1, "sem fontes, finalize roda na construção");
+            verify(g0.isDone(), true);
+            g0.next();
+            compare(calls.length, 1);
+        }
     }
 }
