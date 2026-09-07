@@ -133,8 +133,8 @@ Item {
 
                     // Max/min/chuva
                     PlasmaComponents3.Label {
-                        text: {
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                        text: {
                             if (!page.weatherData) return "";
                             var s = "Max " + Math.round(page.weatherData.maxTemp) + "°  Min " + Math.round(page.weatherData.minTemp) + "°";
                             if (page.weatherData.rainChance !== undefined && page.weatherData.rainChance !== null) {
@@ -272,8 +272,8 @@ Item {
                     }
 
                     PlasmaComponents3.Label {
-                        text: {
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                        text: {
                             var d = new Date(model.start);
                             var now = new Date();
                             var diff = Math.floor((d - now) / 86400000);
