@@ -23,6 +23,9 @@ import "pages"
 PlasmoidItem {
     id: root
 
+    // Sem fundo/realce do painel (hover/pressionado) sobre o compacto.
+    Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
+
     property var allItems: []
     property var feedGroups: []
     property var feedFailures: []
