@@ -753,7 +753,7 @@ msgstr "Нет задач на сегодня"
 msgid "Dia"
 msgstr "День"
 
-#: contents/ui/pages/ResumoPage.qml
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Amanhã"
 msgstr "Завтра"
 
@@ -761,13 +761,21 @@ msgstr "Завтра"
 msgid "Incluído em"
 msgstr "Добавлено"
 
-#: contents/ui/pages/ResumoPage.qml
-msgid "Concluir tarefa"
-msgstr "Выполнить задачу"
-
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
 msgstr "Новая задача…"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Prazo: %1"
+msgstr "Срок: %1"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Prazo"
+msgstr "Срок"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Remover prazo"
+msgstr "Убрать срок"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Tarefas de hoje"
@@ -800,6 +808,9 @@ msgstr "Восстановить задачу"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "Удалить безвозвратно"
+
+#~ msgid "Concluir tarefa"
+#~ msgstr "Выполнить задачу"
 
 #~ msgid "Ver agenda"
 #~ msgstr "Показать календарь"

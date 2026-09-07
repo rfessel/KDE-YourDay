@@ -752,7 +752,7 @@ msgstr "אין משימות להיום"
 msgid "Dia"
 msgstr "יום"
 
-#: contents/ui/pages/ResumoPage.qml
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Amanhã"
 msgstr "מחר"
 
@@ -760,13 +760,21 @@ msgstr "מחר"
 msgid "Incluído em"
 msgstr "נוסף ב"
 
-#: contents/ui/pages/ResumoPage.qml
-msgid "Concluir tarefa"
-msgstr "השלמת משימה"
-
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
 msgstr "משימה חדשה…"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Prazo: %1"
+msgstr "מועד: %1"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Prazo"
+msgstr "מועד"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Remover prazo"
+msgstr "הסר מועד"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Tarefas de hoje"
@@ -799,6 +807,9 @@ msgstr "שחזר משימה"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "הסר לצמיתות"
+
+#~ msgid "Concluir tarefa"
+#~ msgstr "השלמת משימה"
 
 #~ msgid "Ver agenda"
 #~ msgstr "הצג לוח שנה"

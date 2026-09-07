@@ -751,7 +751,7 @@ msgstr "今天没有任务"
 msgid "Dia"
 msgstr "日"
 
-#: contents/ui/pages/ResumoPage.qml
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Amanhã"
 msgstr "明天"
 
@@ -759,13 +759,21 @@ msgstr "明天"
 msgid "Incluído em"
 msgstr "添加于"
 
-#: contents/ui/pages/ResumoPage.qml
-msgid "Concluir tarefa"
-msgstr "完成任务"
-
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
 msgstr "新任务…"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Prazo: %1"
+msgstr "截止：%1"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Prazo"
+msgstr "截止日期"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Remover prazo"
+msgstr "移除截止日期"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Tarefas de hoje"
@@ -798,6 +806,9 @@ msgstr "恢复任务"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "永久删除"
+
+#~ msgid "Concluir tarefa"
+#~ msgstr "完成任务"
 
 #~ msgid "Ver agenda"
 #~ msgstr "查看日历"

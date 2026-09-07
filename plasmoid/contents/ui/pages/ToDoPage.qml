@@ -13,19 +13,21 @@ import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kirigami as Kirigami
+import org.kde.kirigamiaddons.dateandtime as DateAndTime
 
 Item {
     id: page
 
     required property var todos
     required property var completedTodos
-    signal addTodo(string text)
+    signal addTodo(string text, var dueDate)
     signal toggleTodo(int index)
     signal removeTodo(int index)
     signal restoreTodo(int index)
     signal removeCompletedTodo(int index)
 
     property bool showHistory: false
+    property var newDueDate: 0
 
     function createdDateText(ms) {
         if (!ms) return "";
@@ -35,6 +37,18 @@ Item {
             return i18n("Hoje");
         }
         return d.toLocaleString(Qt.locale(), "dd/MM");
+    }
+
+    function dueDateText(ms) {
+        if (!ms) return "";
+        var d = new Date(ms);
+        var now = new Date();
+        var t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        var d0 = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+        var diffDays = Math.round((d0 - t0) / 86400000);
+        if (diffDays === 0) return i18n("Hoje");
+        if (diffDays === 1) return i18n("Amanhã");
+        return d.toLocaleString(Qt.locale(), "dd/MM/yyyy");
     }
 
     ColumnLayout {
@@ -69,21 +83,45 @@ Item {
                     placeholderText: i18n("Nova tarefa…")
                     onAccepted: {
                         if (text.trim() !== "") {
-                            page.addTodo(text);
+                            page.addTodo(text, page.newDueDate);
                             text = "";
+                            page.newDueDate = 0;
                         }
                     }
+                }
+
+                PlasmaComponents3.Button {
+                    Layout.preferredWidth: Math.max(96, implicitWidth)
+                    text: page.newDueDate > 0 ? i18n("Prazo: %1", page.dueDateText(page.newDueDate)) : i18n("Prazo")
+                    icon.name: "view-calendar-day"
+                    onClicked: duePicker.open()
+                }
+
+                PlasmaComponents3.ToolButton {
+                    visible: page.newDueDate > 0
+                    text: "\u00D7"
+                    Accessible.name: i18n("Remover prazo")
+                    onClicked: page.newDueDate = 0
                 }
 
                 PlasmaComponents3.Button {
                     text: i18n("Adicionar")
                     onClicked: {
                         if (newTodoField.text.trim() !== "") {
-                            page.addTodo(newTodoField.text);
+                            page.addTodo(newTodoField.text, page.newDueDate);
                             newTodoField.text = "";
+                            page.newDueDate = 0;
                         }
                     }
                 }
+            }
+
+            // Popup de escolha de data do prazo
+            DateAndTime.DatePopup {
+                id: duePicker
+                value: page.newDueDate > 0 ? new Date(page.newDueDate) : new Date()
+                minimumDate: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+                onAccepted: page.newDueDate = duePicker.value.getTime()
             }
 
             // Cabeçalho
@@ -167,6 +205,27 @@ Item {
                     wrapMode: Text.Wrap
                     font.pixelSize: 13
                     color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                }
+
+                // Prazo de término (quando definido)
+                Rectangle {
+                    visible: model.dueDate > 0
+                    Layout.preferredHeight: 22
+                    Layout.preferredWidth: Math.max(dueText.implicitWidth + Kirigami.Units.smallSpacing * 2, 34)
+                    radius: 11
+                    color: Qt.alpha("#e05c10", 0.18)
+                    border.width: 1
+                    border.color: Qt.alpha("#e05c10", 0.35)
+
+                    PlasmaComponents3.Label {
+                        id: dueText
+                        anchors.centerIn: parent
+                        text: page.dueDateText(model.dueDate)
+                        font.pixelSize: 10
+                        font.weight: Font.DemiBold
+                        color: "#e05c10"
+                        horizontalAlignment: Text.AlignHCenter
+                    }
                 }
 
                 PlasmaComponents3.ToolButton {

@@ -752,7 +752,7 @@ msgstr "Aucune tâche pour aujourd'hui"
 msgid "Dia"
 msgstr "Jour"
 
-#: contents/ui/pages/ResumoPage.qml
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Amanhã"
 msgstr "Demain"
 
@@ -760,13 +760,21 @@ msgstr "Demain"
 msgid "Incluído em"
 msgstr "Ajouté le"
 
-#: contents/ui/pages/ResumoPage.qml
-msgid "Concluir tarefa"
-msgstr "Terminer la tâche"
-
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
 msgstr "Nouvelle tâche…"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Prazo: %1"
+msgstr "Échéance : %1"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Prazo"
+msgstr "Échéance"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Remover prazo"
+msgstr "Retirer le délai"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Tarefas de hoje"
@@ -799,6 +807,9 @@ msgstr "Restaurer la tâche"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "Supprimer définitivement"
+
+#~ msgid "Concluir tarefa"
+#~ msgstr "Terminer la tâche"
 
 #~ msgid "Ver agenda"
 #~ msgstr "Voir l'agenda"

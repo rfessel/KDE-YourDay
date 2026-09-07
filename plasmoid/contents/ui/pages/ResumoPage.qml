@@ -77,6 +77,18 @@ Item {
         return d.toLocaleString(Qt.locale(), "dd/MM");
     }
 
+    function dueDateText(ms) {
+        if (!ms) return "";
+        var d = new Date(ms);
+        var now = new Date();
+        var t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        var d0 = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+        var diffDays = Math.round((d0 - t0) / 86400000);
+        if (diffDays === 0) return i18n("Hoje");
+        if (diffDays === 1) return i18n("Amanhã");
+        return d.toLocaleString(Qt.locale(), "dd/MM/yyyy");
+    }
+
     Flickable {
         id: pageFlick
         anchors.fill: parent
@@ -350,6 +362,27 @@ Item {
                     wrapMode: Text.Wrap
                     font.pixelSize: 13
                     font.strikeout: model.done
+                }
+
+                // Prazo de término (quando definido) — visual igual à aba Tarefas
+                Rectangle {
+                    visible: model.dueDate > 0
+                    Layout.preferredHeight: 22
+                    Layout.preferredWidth: Math.max(dueText.implicitWidth + Kirigami.Units.smallSpacing * 2, 34)
+                    radius: 11
+                    color: Qt.alpha("#e05c10", 0.18)
+                    border.width: 1
+                    border.color: Qt.alpha("#e05c10", 0.35)
+
+                    PlasmaComponents3.Label {
+                        id: dueText
+                        anchors.centerIn: parent
+                        text: page.dueDateText(model.dueDate)
+                        font.pixelSize: 10
+                        font.weight: Font.DemiBold
+                        color: "#e05c10"
+                        horizontalAlignment: Text.AlignHCenter
+                    }
                 }
             }
         }

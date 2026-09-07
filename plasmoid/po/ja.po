@@ -752,7 +752,7 @@ msgstr "今日のタスクはありません"
 msgid "Dia"
 msgstr "日"
 
-#: contents/ui/pages/ResumoPage.qml
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Amanhã"
 msgstr "明日"
 
@@ -760,13 +760,21 @@ msgstr "明日"
 msgid "Incluído em"
 msgstr "追加日"
 
-#: contents/ui/pages/ResumoPage.qml
-msgid "Concluir tarefa"
-msgstr "タスクを完了"
-
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
 msgstr "新しいタスク…"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Prazo: %1"
+msgstr "期限: %1"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Prazo"
+msgstr "期限"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Remover prazo"
+msgstr "期限を削除"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Tarefas de hoje"
@@ -799,6 +807,9 @@ msgstr "タスクを復元"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "完全に削除"
+
+#~ msgid "Concluir tarefa"
+#~ msgstr "タスクを完了"
 
 #~ msgid "Ver agenda"
 #~ msgstr "カレンダーを表示"
