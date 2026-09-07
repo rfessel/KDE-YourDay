@@ -126,6 +126,7 @@ Item {
             }
             Rectangle {
                 Layout.fillWidth: true
+                Layout.preferredHeight: heroRow.implicitHeight + Kirigami.Units.largeSpacing * 2
                 radius: Kirigami.Units.largeSpacing
                 color: "transparent"
                 gradient: Gradient {
@@ -134,10 +135,10 @@ Item {
                 }
 
                 RowLayout {
+                    id: heroRow
                     anchors.fill: parent
-                    Layout.fillWidth: true
-                    spacing: Kirigami.Units.largeSpacing
                     anchors.margins: Kirigami.Units.largeSpacing
+                    spacing: Kirigami.Units.largeSpacing
 
                     // Saudação à esquerda
                     ColumnLayout {
@@ -167,7 +168,6 @@ Item {
                             Layout.preferredWidth: 46
                             Layout.preferredHeight: 46
                             Layout.alignment: Qt.AlignHCenter
-
                             readonly property real fraction: page.dayProgress
                             onFractionChanged: requestPaint()
 

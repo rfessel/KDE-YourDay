@@ -72,6 +72,30 @@ Item {
             anchors.topMargin: Kirigami.Units.smallSpacing
             spacing: Kirigami.Units.smallSpacing
 
+            // Header (mesmo padrão da Agenda)
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 48
+                spacing: Kirigami.Units.smallSpacing
+
+                PlasmaExtras.Heading {
+                    level: 4
+                    Layout.fillWidth: true
+                    text: i18n("Estas são suas tarefas que precisa completar")
+                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                    elide: Text.ElideRight
+                    font.pixelSize: 13
+                }
+            }
+
+            Kirigami.Separator {
+                Layout.fillWidth: true
+                Layout.topMargin: Kirigami.Units.smallSpacing
+                Layout.bottomMargin: Kirigami.Units.smallSpacing
+                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                opacity: 0.15
+            }
+
             // Entrada para nova tarefa
             RowLayout {
                 Layout.fillWidth: true
@@ -125,13 +149,6 @@ Item {
             }
 
             // Cabeçalho
-            PlasmaExtras.Heading {
-                level: 4
-                Layout.fillWidth: true
-                text: i18n("Tarefas de hoje")
-                color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-            }
-
             PlasmaComponents3.Label {
                 Layout.fillWidth: true
                 visible: page.todos.length > 0
