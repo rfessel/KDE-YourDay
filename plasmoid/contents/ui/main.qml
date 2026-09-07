@@ -186,10 +186,10 @@ PlasmoidItem {
     property string errorText: ""
     property string lastUpdated: ""
 
-    Layout.minimumWidth: Kirigami.Units.gridUnit * 60
-    Layout.minimumHeight: Kirigami.Units.gridUnit * 50
-    Layout.preferredWidth: Kirigami.Units.gridUnit * 81
-    Layout.preferredHeight: Kirigami.Units.gridUnit * 80
+    Layout.minimumWidth: Kirigami.Units.gridUnit * 20
+    Layout.minimumHeight: Kirigami.Units.gridUnit * 16
+    Layout.preferredWidth: Kirigami.Units.gridUnit * 36
+    Layout.preferredHeight: Kirigami.Units.gridUnit * 34
     Layout.maximumWidth: Kirigami.Units.gridUnit * 120
     Layout.maximumHeight: Kirigami.Units.gridUnit * 100
 
