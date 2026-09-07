@@ -52,7 +52,7 @@ Item {
             PlasmaExtras.Heading {
                 level: 4
                 Layout.fillWidth: true
-                text: root.t("Suas listas, compras ou qualquer coisa que precise organizar...")
+                text: i18n("Suas listas, compras ou qualquer coisa que precise organizar...")
                 color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                 elide: Text.ElideRight
                 font.pixelSize: 13
@@ -79,7 +79,7 @@ Item {
             QQC2.TextField {
                 id: newListField
                 Layout.fillWidth: true
-                placeholderText: root.t("Nome da nova lista...")
+                placeholderText: i18n("Nome da nova lista...")
                 color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                 onAccepted: {
                     if (text.trim().length > 0) {
@@ -125,7 +125,7 @@ Item {
             Layout.topMargin: Kirigami.Units.smallSpacing
             Layout.bottomMargin: Kirigami.Units.smallSpacing
             visible: page.doneLists.length > 0
-            text: (page.showHistory ? "\u25BC " : "\u25B6 ") + root.t("Histórico de listas finalizadas") + " (" + page.doneLists.length + ")"
+            text: (page.showHistory ? "\u25BC " : "\u25B6 ") + i18n("Histórico de listas finalizadas") + " (" + page.doneLists.length + ")"
             onClicked: page.showHistory = !page.showHistory
         }
     }
@@ -178,7 +178,7 @@ Item {
                     }
 
                     PlasmaComponents3.Label {
-                        text: listCard.modelData.itemsModel.count + " " + root.t("itens")
+                        text: listCard.modelData.itemsModel.count + " " + i18n("itens")
                         font.pixelSize: 11
                         color: root.isDarkTheme ? Qt.rgba(0.6, 0.6, 0.6, 1) : Qt.rgba(0.5, 0.5, 0.5, 1)
                     }
@@ -187,7 +187,7 @@ Item {
                         text: "\u2713"
                         font.pixelSize: 12
                         QQC2.ToolTip.visible: hovered
-                        QQC2.ToolTip.text: root.t("Finalizar lista")
+                        QQC2.ToolTip.text: i18n("Finalizar lista")
                         contentItem: Text {
                             text: "\u2713"
                             color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
@@ -202,7 +202,7 @@ Item {
                         text: "+"
                         font.pixelSize: 12
                         QQC2.ToolTip.visible: hovered
-                        QQC2.ToolTip.text: root.t("Adicionar item")
+                        QQC2.ToolTip.text: i18n("Adicionar item")
                         contentItem: Text {
                             text: "+"
                             color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
@@ -222,7 +222,7 @@ Item {
                         text: "\u00D7"
                         font.pixelSize: 14
                         QQC2.ToolTip.visible: hovered
-                        QQC2.ToolTip.text: root.t("Excluir lista")
+                        QQC2.ToolTip.text: i18n("Excluir lista")
                         contentItem: Text {
                             text: "\u00D7"
                             color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
@@ -296,7 +296,7 @@ Item {
                                     QQC2.TextField {
                                         id: itemInput
                                         Layout.fillWidth: true
-                                        placeholderText: root.t("Novo item...")
+                                        placeholderText: i18n("Novo item...")
                                         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                                         onAccepted: {
                                             if (text.trim().length > 0) {
@@ -352,12 +352,12 @@ Item {
                 PlasmaExtras.Heading {
                     level: 4
                     color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                    text: root.t("Finalizadas (%1)").arg(page.doneLists.length)
+                    text: i18n("Finalizadas (%1)", page.doneLists.length)
                     Layout.fillWidth: true
                 }
                 PlasmaComponents3.ToolButton {
                     text: "\u00D7"
-                    Accessible.name: root.t("Fechar histórico")
+                    Accessible.name: i18n("Fechar histórico")
                     onClicked: page.showHistory = false
                 }
             }
@@ -413,7 +413,7 @@ Item {
 
                     PlasmaComponents3.Label {
                         Layout.fillWidth: true
-                        text: modelData.itemsModel.count + " " + root.t("itens")
+                        text: modelData.itemsModel.count + " " + i18n("itens")
                         font.pixelSize: 10
                         opacity: 0.6
                         elide: Text.ElideRight
@@ -426,7 +426,7 @@ Item {
                     implicitWidth: 28
                     implicitHeight: 28
                     QQC2.ToolTip.visible: hovered
-                    QQC2.ToolTip.text: root.t("Restaurar lista")
+                    QQC2.ToolTip.text: i18n("Restaurar lista")
                     onClicked: page.setDone(modelData.id, false)
                 }
 
@@ -434,7 +434,7 @@ Item {
                     text: "\u00D7"
                     implicitWidth: 28
                     implicitHeight: 28
-                    Accessible.name: root.t("Excluir permanentemente")
+                    Accessible.name: i18n("Excluir permanentemente")
                     onClicked: page.removeList(modelData.id)
                 }
             }

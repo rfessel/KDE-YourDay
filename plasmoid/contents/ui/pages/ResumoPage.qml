@@ -67,7 +67,7 @@ Item {
             var raw = "Boa noite";
             if (h >= 5 && h < 12) raw = "Bom dia";
             else if (h >= 12 && h < 18) raw = "Boa tarde";
-            return root.t(raw);
+            return i18n(raw);
         }
     })
 
@@ -103,7 +103,7 @@ Item {
                         text: (page.timeTick, rootGreeting.capFirst(rootGreeting.greeting()) + ", " + rootGreeting.capFirst(kuserInfo.loginName))
                     }
                     PlasmaComponents3.Label {
-                        text: (page.timeTick, new Date().toLocaleString(root.tLocale(), "dddd, dd MMMM"))
+                        text: (page.timeTick, new Date().toLocaleString(Qt.locale(), "dddd, dd MMMM"))
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                         opacity: 0.6
                         font.pixelSize: 11
@@ -168,7 +168,7 @@ Item {
                 PlasmaComponents3.Label {
                     visible: page.weatherCity !== "" && !page.weatherLoading && page.weatherData === null
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                    text: root.t("Toque para atualizar")
+                    text: i18n("Toque para atualizar")
                     font.pixelSize: 10
                     opacity: 0.4
                     MouseArea {
@@ -193,12 +193,12 @@ Item {
                 PlasmaExtras.Heading {
                     level: 4
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                    text: root.t("Próximos compromissos")
+                    text: i18n("Próximos compromissos")
                     Layout.fillWidth: true
                 }
                 PlasmaComponents3.ToolButton {
                     text: "›"
-                    Accessible.name: root.t("Ver agenda")
+                    Accessible.name: i18n("Ver agenda")
                     onClicked: page.gotoAgenda()
                 }
             }
@@ -212,7 +212,7 @@ Item {
             Kirigami.PlaceholderMessage {
                 visible: !page.loading && page.nextEvents.length === 0
                 Layout.fillWidth: true
-                text: root.t("Nenhum compromisso próximo")
+                text: i18n("Nenhum compromisso próximo")
                 icon.name: "view-calendar-day"
             }
 
@@ -228,12 +228,12 @@ Item {
                 PlasmaExtras.Heading {
                     level: 4
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                    text: root.t("Tarefas do dia")
+                    text: i18n("Tarefas do dia")
                     Layout.fillWidth: true
                 }
                 PlasmaComponents3.ToolButton {
                     text: "›"
-                    Accessible.name: root.t("Ver to-dos")
+                    Accessible.name: i18n("Ver to-dos")
                     onClicked: page.gotoTodos()
                 }
             }
@@ -241,7 +241,7 @@ Item {
             Kirigami.PlaceholderMessage {
                 visible: page.todos.length === 0
                 Layout.fillWidth: true
-                text: root.t("Nenhuma tarefa para hoje")
+                text: i18n("Nenhuma tarefa para hoje")
                 icon.name: "task-new"
             }
 
@@ -274,7 +274,7 @@ Item {
                     Layout.preferredWidth: 52
 
                     PlasmaComponents3.Label {
-                        text: model.allDay ? root.t("Dia") : Cal.formatTime(model.start, model.allDay)
+                        text: model.allDay ? i18n("Dia") : Cal.formatTime(model.start, model.allDay)
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                         font.pixelSize: 12
                         font.weight: Font.DemiBold
@@ -286,9 +286,9 @@ Item {
                             var d = new Date(model.start);
                             var now = new Date();
                             var diff = Math.floor((d - now) / 86400000);
-                            if (diff === 0) return root.t("Hoje");
-                            if (diff === 1) return root.t("Amanhã");
-                            return d.toLocaleString(root.tLocale(), "dd/MM");
+                            if (diff === 0) return i18n("Hoje");
+                            if (diff === 1) return i18n("Amanhã");
+                            return d.toLocaleString(Qt.locale(), "dd/MM");
                         }
                         font.pixelSize: 9
                         opacity: 0.5

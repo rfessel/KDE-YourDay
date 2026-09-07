@@ -18,7 +18,6 @@ import org.kde.kirigami as Kirigami
 import "js/feeds.js" as FeedParser
 import "js/calendar.js" as Cal
 import "js/weather.js" as Weather
-import "js/i18n.js" as I18n
 import "pages"
 
 PlasmoidItem {
@@ -88,19 +87,7 @@ PlasmoidItem {
         }
     }
 
-    // -------- tradução forçada --------------------
-    function t(text) {
-        var lang = Plasmoid.configuration.language || "";
-        if (!lang) return text;
-        return I18n.translate(text, lang);
-    }
-
-    function tLocale() {
-        var lang = Plasmoid.configuration.language || "";
-        if (!lang) return Qt.locale();
-        var loc = Qt.locale(lang);
-        return loc && loc.language !== 0 ? loc : Qt.locale();
-    }
+    // -------- tradução: i18n() do Plasma (follows system locale) ---------
 
     // -------- clima --------------------------------
     property var weatherData: null
@@ -244,17 +231,17 @@ PlasmoidItem {
     function feedErrorText(url, code) {
         var why;
         if (code === -2) {
-            why = root.t("tempo esgotado");
+            why = i18n("tempo esgotado");
         } else if (code === -1) {
-            why = root.t("falha de conexão");
+            why = i18n("falha de conexão");
         } else if (code === 0) {
-            why = root.t("resposta inválida (não é RSS) ou servidor inacessível");
+            why = i18n("resposta inválida (não é RSS) ou servidor inacessível");
         } else if (code === -3) {
-            why = root.t("abortado");
+            why = i18n("abortado");
         } else {
-            why = root.t("HTTP %1").arg(code);
+            why = i18n("HTTP %1", code);
         }
-        return root.t("%1 — %2").arg(url).arg(why);
+        return i18n("%1 — %2", url, why);
     }
 
     // -------- cache de notícias (SQLite, fora do appletsrc) --------
@@ -946,7 +933,7 @@ PlasmoidItem {
                             if (url.length > 60) {
                                 shortUrl = url.slice(0, 57) + "...";
                             }
-                            root.agendaNotice = root.t("Agenda ignorada: arquivo acima de 2 MB (%1)").arg(shortUrl);
+                            root.agendaNotice = i18n("Agenda ignorada: arquivo acima de 2 MB (%1)", shortUrl);
                             console.warn("[yourday] agenda recusada por tamanho:", url, String(text.length));
                             gate.next();
                             return;
@@ -1208,11 +1195,6 @@ PlasmoidItem {
     }
 
     Component.onCompleted: {
-        // Forçar idioma se configurado
-        var forcedLang = Plasmoid.configuration.language;
-        if (forcedLang && forcedLang !== "") {
-            Qt.locale(forcedLang);
-        }
         Plasmoid.icon = root.chosenIcon;
         // Síncrono/barato primeiro (mostra Resumo na hora, sem rede).
         root.loadNewsCache();
@@ -1539,13 +1521,13 @@ PlasmoidItem {
 
                 Repeater {
                     model: [
-                        { label: root.t("Resumo"), icon: "view-calendar-day" },
-                        { label: root.t("Agenda"), icon: "view-calendar" },
-                        { label: root.t("Tarefas"), icon: "task-new" },
-                        { label: root.t("Clima"), icon: "weather-clear" },
-                        { label: root.t("Notas"), icon: "note" },
-                        { label: root.t("Listas"), icon: "view-list" },
-                        { label: root.t("Notícias"), icon: root.iconResolvedName }
+                        { label: i18n("Resumo"), icon: "view-calendar-day" },
+                        { label: i18n("Agenda"), icon: "view-calendar" },
+                        { label: i18n("Tarefas"), icon: "task-new" },
+                        { label: i18n("Clima"), icon: "weather-clear" },
+                        { label: i18n("Notas"), icon: "note" },
+                        { label: i18n("Listas"), icon: "view-list" },
+                        { label: i18n("Notícias"), icon: root.iconResolvedName }
                     ]
                     delegate: navButton
                 }
@@ -1620,7 +1602,6 @@ PlasmoidItem {
                             extraCities: root.extraCities
                             extraWeatherData: root.extraWeatherData
                             selectedCityName: root.selectedCityName
-                            language: Plasmoid.configuration.language || ""
                         }
                     }
                 }
@@ -1677,7 +1658,7 @@ PlasmoidItem {
                         PlasmaExtras.Heading {
                             level: 4
                             Layout.fillWidth: true
-                            text: root.t("Aqui estão as principais notícias de seu interesse")
+                            text: i18n("Aqui estão as principais notícias de seu interesse")
                             elide: Text.ElideRight
                             font.pixelSize: 13
                             color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
@@ -1687,7 +1668,7 @@ PlasmoidItem {
                             id: newsRefreshBtn
                             onClicked: root.loadAll()
                             QQC2.ToolTip.visible: hovered
-                            QQC2.ToolTip.text: root.t("Atualizar notícias")
+                            QQC2.ToolTip.text: i18n("Atualizar notícias")
 
                             contentItem: Item {
                                 implicitWidth: 36
@@ -1760,13 +1741,13 @@ PlasmoidItem {
                             icon.name: root.iconResolvedName
                             icon.source: root.iconResolvedSource
                             text: root.currentFeeds().length === 0
-                                  ? root.t("Nenhum feed configurado.\nAdicione feeds RSS nas Configurações.")
+                                  ? i18n("Nenhum feed configurado.\nAdicione feeds RSS nas Configurações.")
                                   : (root.errorText === ""
-                                     ? root.t("Nenhuma notícia encontrada")
-                                     : root.t("Nenhuma notícia carregada. Veja os detalhes abaixo."))
+                                     ? i18n("Nenhuma notícia encontrada")
+                                     : i18n("Nenhuma notícia carregada. Veja os detalhes abaixo."))
 
                             helpfulAction: Kirigami.Action {
-                                text: root.currentFeeds().length === 0 ? root.t("Abrir configurações") : root.t("Tentar novamente")
+                                text: root.currentFeeds().length === 0 ? i18n("Abrir configurações") : i18n("Tentar novamente")
                                 icon.name: root.currentFeeds().length === 0 ? "configure" : "view-refresh"
                                 onTriggered: root.currentFeeds().length === 0 ? root.openConfig() : root.loadAll()
                             }
@@ -1792,7 +1773,7 @@ PlasmoidItem {
                 Layout.fillWidth: true
                 visible: root.errorText !== ""
                 type: Kirigami.MessageType.Warning
-                text: root.t("Alguns feeds não carregaram:") + "\n" + root.errorText
+                text: i18n("Alguns feeds não carregaram:") + "\n" + root.errorText
                 showCloseButton: true
                 onVisibleChanged: if (!visible) root.errorText = ""
             }
@@ -1802,7 +1783,7 @@ PlasmoidItem {
                 horizontalAlignment: Text.AlignRight
                 text: root.lastUpdated === ""
                       ? ""
-                      : root.t("Atualizado às %1").arg(root.lastUpdated)
+                      : i18n("Atualizado às %1", root.lastUpdated)
                 opacity: 0.55
                 font.pixelSize: 10
             }

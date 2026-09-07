@@ -10,19 +10,12 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kcmutils as KCM
-import "js/i18n.js" as I18n
 
 import "js/weather.js" as Weather
 
 KCM.SimpleKCM {
     id: page
 
-    property string _lang: Plasmoid.configuration.language || ""
-
-    function t(text) {
-        if (!_lang) return text;
-        return I18n.translate(text, _lang);
-    }
 
     property var cityResults: []
     property var extraCities: []
@@ -69,7 +62,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: t("Busque uma cidade e escolha se ela será a principal ou adicional.")
+            text: i18n("Busque uma cidade e escolha se ela será a principal ou adicional.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -82,13 +75,13 @@ KCM.SimpleKCM {
             QQC2.TextField {
                 id: citySearchField
                 Layout.fillWidth: true
-                placeholderText: t("Buscar cidade...")
+                placeholderText: i18n("Buscar cidade...")
                 onAccepted: citySearchButton.clicked()
             }
 
             QQC2.Button {
                 id: citySearchButton
-                text: t("Buscar")
+                text: i18n("Buscar")
                 icon.name: "edit-find"
                 onClicked: {
                     var q = citySearchField.text.trim();
@@ -101,7 +94,7 @@ KCM.SimpleKCM {
             }
 
             QQC2.Button {
-                text: page.geoLoading ? t("Obtendo localização...") : t("Minha localização")
+                text: page.geoLoading ? i18n("Obtendo localização...") : i18n("Minha localização")
                 icon.name: page.geoLoading ? "view-refresh" : "geo-location"
                 enabled: !page.geoLoading
                 onClicked: {
@@ -140,7 +133,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "go-home"
-                    Accessible.name: t("Definir como principal")
+                    Accessible.name: i18n("Definir como principal")
                     onClicked: {
                         page.setAsMain(modelData);
                         page.cityResults = [];
@@ -150,7 +143,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "list-add"
-                    Accessible.name: t("Adicionar como adicional")
+                    Accessible.name: i18n("Adicionar como adicional")
                     onClicked: {
                         page.addExtraCity(modelData);
                         page.cityResults = [];
@@ -163,14 +156,14 @@ KCM.SimpleKCM {
         PlasmaComponents3.Label {
             visible: Plasmoid.configuration.weatherCity !== ""
             Layout.fillWidth: true
-            text: t("Cidade principal: %1").arg(Plasmoid.configuration.weatherCity)
+            text: i18n("Cidade principal: %1", Plasmoid.configuration.weatherCity)
             opacity: 0.6
             font.pixelSize: 11
         }
 
         QQC2.Button {
             visible: Plasmoid.configuration.weatherCity !== ""
-            text: t("Limpar principal")
+            text: i18n("Limpar principal")
             icon.name: "edit-clear"
             onClicked: {
                 Plasmoid.configuration.weatherCity = "";
@@ -187,7 +180,7 @@ KCM.SimpleKCM {
         QQC2.Label {
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: t("Cidades adicionais:")
+            text: i18n("Cidades adicionais:")
             font.pixelSize: 12
             font.bold: true
         }
@@ -214,7 +207,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "list-remove"
-                    Accessible.name: t("Remover")
+                    Accessible.name: i18n("Remover")
                     onClicked: page.removeExtraCity(index)
                 }
             }
@@ -225,7 +218,7 @@ KCM.SimpleKCM {
             Layout.fillWidth: true
             opacity: 0.5
             font.pixelSize: 11
-            text: t("Nenhuma cidade adicional.")
+            text: i18n("Nenhuma cidade adicional.")
         }
     }
 }

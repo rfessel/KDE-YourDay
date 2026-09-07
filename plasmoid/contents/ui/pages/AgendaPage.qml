@@ -97,13 +97,13 @@ Item {
         for (var i = 0; i < 7; i++) {
             var d = new Date(base);
             d.setDate(base.getDate() + i);
-            out.push(d.toLocaleString(root.tLocale(), "ddd"));
+            out.push(d.toLocaleString(Qt.locale(), "ddd"));
         }
         return out;
     }
 
     function monthName(m) {
-        return new Date(2020, m, 15).toLocaleString(root.tLocale(), "MMMM");
+        return new Date(2020, m, 15).toLocaleString(Qt.locale(), "MMMM");
     }
 
     function pad2(n) {
@@ -199,7 +199,7 @@ Item {
             PlasmaExtras.Heading {
                 level: 4
                 Layout.fillWidth: true
-                text: root.t("Estes são os seus compromissos para esta data...")
+                text: i18n("Estes são os seus compromissos para esta data...")
                 color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                 elide: Text.ElideRight
                 font.pixelSize: 13
@@ -209,7 +209,7 @@ Item {
                 icon.name: "list-add"
                 Layout.preferredWidth: 32
                 Layout.preferredHeight: 32
-                QQC2.ToolTip.text: root.t("Novo evento")
+                QQC2.ToolTip.text: i18n("Novo evento")
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: 500
                 contentItem: Kirigami.Icon {
@@ -282,11 +282,11 @@ Item {
             RowLayout {
                 Layout.fillWidth: true
                 PlasmaComponents3.ToolButton {
-                    text: root.t("Hoje")
+                    text: i18n("Hoje")
                     font.pixelSize: 10
                     Layout.fillWidth: true
                     contentItem: Text {
-                        text: root.t("Hoje")
+                        text: i18n("Hoje")
                         font.pixelSize: 10
                         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                         horizontalAlignment: Text.AlignHCenter
@@ -408,7 +408,7 @@ Item {
             Kirigami.PlaceholderMessage {
                 visible: !page.loading && page.selectedEvents.length === 0
                 Layout.fillWidth: true
-                text: root.t("Nenhum compromisso neste dia")
+                text: i18n("Nenhum compromisso neste dia")
                 icon.name: "view-calendar-day"
             }
 
@@ -460,7 +460,7 @@ Item {
 
                                 PlasmaComponents3.Label {
                                     Layout.preferredWidth: 50
-                                    text: model.allDay ? root.t("Dia todo") : Cal.formatTime(model.start, model.allDay)
+                                    text: model.allDay ? i18n("Dia todo") : Cal.formatTime(model.start, model.allDay)
                                     font.pixelSize: 12
                                     font.weight: Font.DemiBold
                                     color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
@@ -485,7 +485,7 @@ Item {
                                         Layout.preferredWidth: 24
                                         Layout.preferredHeight: 24
                                         icon.name: "document-edit"
-                                        QQC2.ToolTip.text: root.t("Editar evento")
+                                        QQC2.ToolTip.text: i18n("Editar evento")
                                         QQC2.ToolTip.visible: hovered
                                         QQC2.ToolTip.delay: 500
                                         contentItem: Kirigami.Icon {
@@ -499,7 +499,7 @@ Item {
                                         Layout.preferredWidth: 24
                                         Layout.preferredHeight: 24
                                         icon.name: "edit-delete"
-                                        QQC2.ToolTip.text: root.t("Remover evento")
+                                        QQC2.ToolTip.text: i18n("Remover evento")
                                         QQC2.ToolTip.visible: hovered
                                         QQC2.ToolTip.delay: 500
                                         contentItem: Kirigami.Icon {
@@ -587,7 +587,7 @@ Item {
 
                 PlasmaExtras.Heading {
                     level: 4
-                    text: page.dialogEditing ? root.t("Editar evento") : root.t("Novo evento")
+                    text: page.dialogEditing ? i18n("Editar evento") : i18n("Novo evento")
                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                     font.pixelSize: 15
                     Layout.fillWidth: true
@@ -597,7 +597,7 @@ Item {
                 QQC2.TextField {
                     id: titleField
                     Layout.fillWidth: true
-                    placeholderText: root.t("Título do evento")
+                    placeholderText: i18n("Título do evento")
                     text: page.dialogTitle
                     onTextChanged: page.dialogTitle = text
                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
@@ -615,7 +615,7 @@ Item {
                     spacing: 8
                     QQC2.CheckBox {
                         id: allDayCheck
-                        text: root.t("Dia todo")
+                        text: i18n("Dia todo")
                         checked: page.dialogAllDay
                         onCheckedChanged: page.dialogAllDay = checked
                         QQC2.Label {
@@ -629,7 +629,7 @@ Item {
                     Layout.fillWidth: true
                     spacing: 8
                     QQC2.Label {
-                        text: root.t("Data:")
+                        text: i18n("Data:")
                         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                         font.pixelSize: 12
                     }
@@ -655,7 +655,7 @@ Item {
                     spacing: 8
                     visible: !page.dialogAllDay
                     QQC2.Label {
-                        text: root.t("Início:")
+                        text: i18n("Início:")
                         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                         font.pixelSize: 12
                     }
@@ -674,7 +674,7 @@ Item {
                         }
                     }
                     QQC2.Label {
-                        text: root.t("Fim:")
+                        text: i18n("Fim:")
                         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                         font.pixelSize: 12
                     }
@@ -697,7 +697,7 @@ Item {
                 // Local
                 QQC2.TextField {
                     Layout.fillWidth: true
-                    placeholderText: root.t("Local (opcional)")
+                    placeholderText: i18n("Local (opcional)")
                     text: page.dialogLocation
                     onTextChanged: page.dialogLocation = text
                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
@@ -713,7 +713,7 @@ Item {
                 QQC2.TextArea {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 60
-                    placeholderText: root.t("Descrição (opcional)")
+                    placeholderText: i18n("Descrição (opcional)")
                     text: page.dialogDescription
                     onTextChanged: page.dialogDescription = text
                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
@@ -734,9 +734,9 @@ Item {
                     Item { Layout.fillWidth: true }
 
                     PlasmaComponents3.ToolButton {
-                        text: root.t("Cancelar")
+                        text: i18n("Cancelar")
                         contentItem: Text {
-                            text: root.t("Cancelar")
+                            text: i18n("Cancelar")
                             color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                             font.pixelSize: 12
                             horizontalAlignment: Text.AlignHCenter
@@ -746,9 +746,9 @@ Item {
                     }
 
                     PlasmaComponents3.ToolButton {
-                        text: root.t("Salvar")
+                        text: i18n("Salvar")
                         contentItem: Text {
-                            text: root.t("Salvar")
+                            text: i18n("Salvar")
                             color: "#ffffff"
                             font.pixelSize: 12
                             font.weight: Font.Bold

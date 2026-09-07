@@ -8,8 +8,6 @@
 
 .pragma library
 
-.import "i18n.js" as I18n
-
 var _iconTable = {
     0: "clear", 1: "clear", 2: "clouds", 3: "clouds",
     45: "fog", 48: "fog",
@@ -50,62 +48,6 @@ var _descTable = {
     95: "Trovoada", 96: "Trovoada com granizo", 99: "Trovoada com granizo"
 };
 
-var _dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-var _dayNamesEn = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-var _dayNamesEs = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
-var _dayNamesFr = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
-var _dayNamesDe = ["Son", "Mon", "Die", "Don", "Fre", "Sam", "Son"];
-var _dayNamesIt = ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"];
-var _dayNamesJa = ["日", "月", "火", "水", "木", "金", "土"];
-var _dayNamesZh = ["日", "一", "二", "三", "四", "五", "六"];
-var _dayNamesRu = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
-var _dayNamesHe = ["א'", "ב'", "ג'", "ד'", "ה'", "ו'", "ש'"];
-
-var _monthNames = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-var _monthNamesEn = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-var _monthNamesEs = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
-var _monthNamesFr = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
-var _monthNamesDe = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
-var _monthNamesIt = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
-var _monthNamesJa = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
-var _monthNamesZh = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
-var _monthNamesRu = ["янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
-var _monthNamesHe = ["ינו", "פבר", "מרץ", "אפר", "מאי", "יונ", "יול", "אוג", "ספט", "אוק", "נוב", "דצ"];
-
-function _getDayNames(lang) {
-    if (!lang) return _dayNames;
-    var base = lang.split("_")[0];
-    switch (base) {
-        case "en": return _dayNamesEn;
-        case "es": return _dayNamesEs;
-        case "fr": return _dayNamesFr;
-        case "de": return _dayNamesDe;
-        case "it": return _dayNamesIt;
-        case "ja": return _dayNamesJa;
-        case "zh": return _dayNamesZh;
-        case "ru": return _dayNamesRu;
-        case "he": return _dayNamesHe;
-        default: return _dayNames;
-    }
-}
-
-function _getMonthNames(lang) {
-    if (!lang) return _monthNames;
-    var base = lang.split("_")[0];
-    switch (base) {
-        case "en": return _monthNamesEn;
-        case "es": return _monthNamesEs;
-        case "fr": return _monthNamesFr;
-        case "de": return _monthNamesDe;
-        case "it": return _monthNamesIt;
-        case "ja": return _monthNamesJa;
-        case "zh": return _monthNamesZh;
-        case "ru": return _monthNamesRu;
-        case "he": return _monthNamesHe;
-        default: return _monthNames;
-    }
-}
-
 function weatherIcon(code, isNight) {
     var key = _iconTable[code] || "clouds";
     if (isNight && _nightIcons[key]) return _nightIcons[key];
@@ -119,23 +61,6 @@ function weatherIconWithRain(code, isNight, rain, showers) {
 
 function weatherDescription(code) {
     return _descTable[code] || "Sem dados";
-}
-
-function weatherDescriptionTranslated(code, lang) {
-    var pt = _descTable[code] || "Sem dados";
-    if (!lang || lang === "pt_BR" || lang === "pt") return pt;
-    return I18n.translate(pt, lang);
-}
-
-function formatDayName(dateStr, lang) {
-    var d = new Date(dateStr + "T12:00:00");
-    var now = new Date();
-    if (d.toDateString() === now.toDateString()) {
-        return I18n.translate("Hoje", lang || "");
-    }
-    var days = _getDayNames(lang);
-    var months = _getMonthNames(lang);
-    return days[d.getDay()] + ", " + d.getDate() + " " + months[d.getMonth()];
 }
 
 function formatTime(isoStr) {

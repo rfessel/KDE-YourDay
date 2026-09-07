@@ -9,19 +9,12 @@ import QtQuick.Controls as QQC2
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid 2.0
 import org.kde.kcmutils as KCM
-import "js/i18n.js" as I18n
 
 import "js/feeds.js" as FeedParser
 
 KCM.SimpleKCM {
     id: page
 
-    property string _lang: Plasmoid.configuration.language || ""
-
-    function t(text) {
-        if (!_lang) return text;
-        return I18n.translate(text, _lang);
-    }
 
     function feeds() {
         var f = Plasmoid.configuration.feeds;
@@ -66,11 +59,11 @@ KCM.SimpleKCM {
     function tryAddFeed(url) {
         var u = (url || "").trim();
         if (!u || (u.indexOf("http://") !== 0 && u.indexOf("https://") !== 0)) {
-            return t("Informe uma URL válida (ex.: https://exemplo.com/feed.xml).");
+            return i18n("Informe uma URL válida (ex.: https://exemplo.com/feed.xml).");
         }
         var list = feeds().slice();
         if (list.indexOf(u) !== -1) {
-            return t("Esse feed já foi adicionado.");
+            return i18n("Esse feed já foi adicionado.");
         }
         list.push(u);
         var l = limits().slice();
@@ -122,7 +115,7 @@ KCM.SimpleKCM {
         if (page.testingUrl) return;
         var u = (text || "").trim();
         if (!u || (u.indexOf("http://") !== 0 && u.indexOf("https://") !== 0)) {
-            page.testResultText = t("Informe uma URL válida.");
+            page.testResultText = i18n("Informe uma URL válida.");
             page.testResultKind = Kirigami.MessageType.Warning;
             return;
         }
@@ -146,7 +139,7 @@ KCM.SimpleKCM {
             if (token !== page.testToken) return;
             testTimer.stop();
             page.testingUrl = false;
-            page.testResultText = t("Falha ao testar: ") + String(e);
+            page.testResultText = i18n("Falha ao testar: ") + String(e);
             page.testResultKind = Kirigami.MessageType.Negative;
         }
     }
@@ -155,28 +148,28 @@ KCM.SimpleKCM {
         testTimer.stop();
         page.testingUrl = false;
         if (ok) {
-            page.testResultText = t("Endereço válido — %1 notícia(s) carregada(s).").arg(codeOrCount);
+            page.testResultText = i18n("Endereço válido — %1 notícia(s) carregada(s).", codeOrCount);
             page.testResultKind = Kirigami.MessageType.Positive;
         } else {
             var why;
             switch (codeOrCount) {
-            case -2: why = t("Tempo esgotado."); break;
-            case -1: why = t("Falha de conexão."); break;
-            case 0:  why = t("Resposta inválida."); break;
-            default: why = t("Erro HTTP %1.").arg(codeOrCount); break;
+            case -2: why = i18n("Tempo esgotado."); break;
+            case -1: why = i18n("Falha de conexão."); break;
+            case 0:  why = i18n("Resposta inválida."); break;
+            default: why = i18n("Erro HTTP %1.", codeOrCount); break;
             }
-            page.testResultText = t("Endereço inválido: ") + why;
+            page.testResultText = i18n("Endereço inválido: ") + why;
             page.testResultKind = Kirigami.MessageType.Negative;
         }
     }
 
     property var refreshOptions: [
-        { v: 5,  t: t("A cada 5 minutos") },
-        { v: 10, t: t("A cada 10 minutos") },
-        { v: 15, t: t("A cada 15 minutos") },
-        { v: 30, t: t("A cada 30 minutos") },
-        { v: 60, t: t("A cada 1 hora") },
-        { v: 0,  t: t("Atualizar manualmente") }
+        { v: 5,  t: i18n("A cada 5 minutos") },
+        { v: 10, t: i18n("A cada 10 minutos") },
+        { v: 15, t: i18n("A cada 15 minutos") },
+        { v: 30, t: i18n("A cada 30 minutos") },
+        { v: 60, t: i18n("A cada 1 hora") },
+        { v: 0,  t: i18n("Atualizar manualmente") }
     ]
 
     function refreshIndexFor(m) {
@@ -200,14 +193,14 @@ KCM.SimpleKCM {
         Kirigami.Heading {
             level: 3
             Layout.fillWidth: true
-            text: t("Adicionar feed RSS")
+            text: i18n("Adicionar feed RSS")
             textFormat: Text.PlainText
         }
 
         QQC2.TextField {
             id: urlField
             Layout.fillWidth: true
-            placeholderText: t("URL do feed (RSS ou Atom)...")
+            placeholderText: i18n("URL do feed (RSS ou Atom)…")
             onAccepted: clickAdd.clicked()
         }
 
@@ -227,7 +220,7 @@ KCM.SimpleKCM {
             Item { Layout.fillWidth: true }
 
             QQC2.Button {
-                text: t("Limpar")
+                text: i18n("Limpar")
                 icon.name: "edit-clear"
                 onClicked: {
                     urlField.text = "";
@@ -237,7 +230,7 @@ KCM.SimpleKCM {
 
             QQC2.Button {
                 id: clickAdd
-                text: t("Adicionar")
+                text: i18n("Adicionar")
                 icon.name: "list-add"
                 onClicked: {
                     var err = page.tryAddFeed(urlField.text);
@@ -247,7 +240,7 @@ KCM.SimpleKCM {
             }
 
             QQC2.Button {
-                text: page.testingUrl ? t("Testando...") : t("Testar")
+                text: page.testingUrl ? i18n("Testando…") : i18n("Testar")
                 icon.name: "system-run"
                 onClicked: page.startTest(urlField.text)
             }
@@ -276,7 +269,7 @@ KCM.SimpleKCM {
             level: 3
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: t("Seus feeds (%1)").arg(page.feedListModel.count)
+            text: i18n("Seus feeds (%1)", page.feedListModel.count)
             textFormat: Text.PlainText
         }
 
@@ -300,7 +293,7 @@ KCM.SimpleKCM {
 
                     QQC2.ToolButton {
                         icon.name: "list-remove"
-                        Accessible.name: t("Remover feed")
+                        Accessible.name: i18n("Remover feed")
                         onClicked: page.removeFeed(index)
                     }
                 }
@@ -310,7 +303,7 @@ KCM.SimpleKCM {
                     spacing: Kirigami.Units.smallSpacing
 
                     QQC2.Label {
-                        text: t("Limite:")
+                        text: i18n("Limite:")
                         font.pixelSize: 11
                         opacity: 0.7
                     }
@@ -324,7 +317,7 @@ KCM.SimpleKCM {
                     }
 
                     QQC2.Label {
-                        text: t("notícias")
+                        text: i18n("notícias")
                         font.pixelSize: 11
                         opacity: 0.6
                     }
@@ -343,7 +336,7 @@ KCM.SimpleKCM {
             level: 3
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: t("Exibição")
+            text: i18n("Exibição")
             textFormat: Text.PlainText
         }
 
@@ -351,7 +344,7 @@ KCM.SimpleKCM {
             Layout.fillWidth: true
             spacing: Kirigami.Units.smallSpacing
 
-            QQC2.Label { text: t("Máximo total de notícias:") }
+            QQC2.Label { text: i18n("Máximo total de notícias:") }
 
             QQC2.SpinBox {
                 from: 1
@@ -368,7 +361,7 @@ KCM.SimpleKCM {
             Layout.fillWidth: true
             spacing: Kirigami.Units.smallSpacing
 
-            QQC2.Label { text: t("Linhas da chamada:") }
+            QQC2.Label { text: i18n("Linhas da chamada:") }
 
             QQC2.SpinBox {
                 from: 1
@@ -378,7 +371,7 @@ KCM.SimpleKCM {
                 onValueModified: Plasmoid.configuration.headlineLines = value
             }
 
-            QQC2.Label { text: t("linhas por notícia"); opacity: 0.6 }
+            QQC2.Label { text: i18n("linhas por notícia"); opacity: 0.6 }
 
             Item { Layout.fillWidth: true }
         }
@@ -387,7 +380,7 @@ KCM.SimpleKCM {
             Layout.fillWidth: true
             spacing: Kirigami.Units.smallSpacing
 
-            QQC2.Label { text: t("Atualizar:") }
+            QQC2.Label { text: i18n("Atualizar:") }
 
             QQC2.ComboBox {
                 model: page.refreshOptions

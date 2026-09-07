@@ -11,17 +11,10 @@ import QtQuick.Dialogs
 
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid 2.0
-import "js/i18n.js" as I18n
 
 ColumnLayout {
     id: page
 
-    property string _lang: Plasmoid.configuration.language || ""
-
-    function t(text) {
-        if (!_lang) return text;
-        return I18n.translate(text, _lang);
-    }
 
     property var listsData: {
         var raw = Plasmoid.configuration.lists;
@@ -51,12 +44,12 @@ ColumnLayout {
 
     Kirigami.Heading {
         level: 2
-        text: t("Listas")
+        text: i18n("Listas")
         Layout.fillWidth: true
     }
 
     QQC2.Label {
-        text: t("Exportar suas listas para arquivo.")
+        text: i18n("Exportar suas listas para arquivo.")
         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
         opacity: 0.7
         Layout.fillWidth: true
@@ -67,14 +60,14 @@ ColumnLayout {
     }
 
     QQC2.Label {
-        text: t("Listas disponíveis: %1").arg(listsData.length)
+        text: i18n("Listas disponíveis: %1", listsData.length)
         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
         Layout.fillWidth: true
     }
 
     // Exportar como TXT
     QQC2.Button {
-        text: t("Exportar como TXT")
+        text: i18n("Exportar como TXT")
         icon.name: "document-export"
         Layout.fillWidth: true
         onClicked: {
@@ -87,7 +80,7 @@ ColumnLayout {
 
     // Exportar como CSV
     QQC2.Button {
-        text: t("Exportar como CSV (Planilha)")
+        text: i18n("Exportar como CSV (Planilha)")
         icon.name: "document-export"
         Layout.fillWidth: true
         onClicked: {
@@ -130,9 +123,9 @@ ColumnLayout {
 
     FileDialog {
         id: txtFileDialog
-        title: t("Salvar como TXT")
+        title: i18n("Salvar como TXT")
         fileMode: FileDialog.SaveFile
-        nameFilters: [t("Arquivo de texto (*.txt)")]
+        nameFilters: [i18n("Arquivo de texto (*.txt)")]
         onAccepted: {
             saveFile(selectedFile, exportContent);
         }
@@ -140,9 +133,9 @@ ColumnLayout {
 
     FileDialog {
         id: csvFileDialog
-        title: t("Salvar como CSV")
+        title: i18n("Salvar como CSV")
         fileMode: FileDialog.SaveFile
-        nameFilters: [t("Arquivo CSV (*.csv)")]
+        nameFilters: [i18n("Arquivo CSV (*.csv)")]
         onAccepted: {
             saveFile(selectedFile, exportContent);
         }
