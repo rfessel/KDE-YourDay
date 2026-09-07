@@ -47,6 +47,8 @@ PlasmoidItem {
     property var visitedTabs: [true, false, false, false, false, false, false]
     // Tick do relógio: força a saudação/data a re-renderizar a cada minuto.
     property int clockTick: 0
+    // Relógio em tempo real para o tooltip (data/hora sempre atuais).
+    property date now: new Date()
     // Cache de notícias em SQLite (QtQuick.LocalStorage).
     property var newsDbHandle: null
     // Cache antigo (migração do KConfig).
@@ -173,6 +175,34 @@ PlasmoidItem {
         var luminance = 0.299 * bg.r + 0.587 * bg.g + 0.114 * bg.b;
         return luminance < 0.5;
     }
+
+    // ---------- tooltip (data completa, clima e hora) ---------------------
+    readonly property string tooltipDateText: Qt.formatDate(root.now, Qt.DefaultLocaleLongDate)
+    readonly property string tooltipTimeText: Qt.formatTime(root.now, "HH:mm")
+
+    function tooltipWeatherLine() {
+        var city = (Plasmoid.configuration.weatherCity || "").trim();
+        var w = root.weatherData;
+        if (!w) {
+            return city || "";
+        }
+        var desc = Weather.weatherDescription(w.code);
+        if (desc === "Sem dados") {
+            desc = "";
+        }
+        var parts = [];
+        if (city) parts.push(city);
+        parts.push(Math.round(w.temp) + "°C");
+        if (desc) parts.push(i18n(desc));
+        return parts.join(" · ");
+    }
+
+    readonly property string tooltipMain: "<b>" + root.tooltipDateText + "</b>"
+    readonly property string tooltipSub: "<b>" + root.tooltipWeatherLine() + "</b><br/><b>" + root.tooltipTimeText + "</b>"
+
+    toolTipMainText: root.tooltipMain
+    toolTipSubText: root.tooltipSub
+    toolTipTextFormat: Text.RichText
 
     onChosenIconChanged: Plasmoid.icon = root.chosenIcon
     property string errorText: ""
@@ -1442,6 +1472,7 @@ PlasmoidItem {
         repeat: true
         running: true
         onTriggered: {
+            root.now = new Date();
             root.clockTick++;
         }
     }
