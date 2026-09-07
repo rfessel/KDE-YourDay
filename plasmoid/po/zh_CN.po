@@ -531,7 +531,7 @@ msgid "Novo evento"
 msgstr "新建事件"
 
 #: contents/ui/pages/AgendaPage.qml contents/ui/pages/ClimaPage.qml
-#: contents/ui/pages/ResumoPage.qml
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Hoje"
 msgstr "今天"
 
@@ -742,6 +742,10 @@ msgstr "日"
 #: contents/ui/pages/ResumoPage.qml
 msgid "Amanhã"
 msgstr "明天"
+
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
+msgid "Incluído em"
+msgstr "添加于"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Concluir tarefa"

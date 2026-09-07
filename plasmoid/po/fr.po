@@ -532,7 +532,7 @@ msgid "Novo evento"
 msgstr "Nouvel événement"
 
 #: contents/ui/pages/AgendaPage.qml contents/ui/pages/ClimaPage.qml
-#: contents/ui/pages/ResumoPage.qml
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Hoje"
 msgstr "Aujourd'hui"
 
@@ -743,6 +743,10 @@ msgstr "Jour"
 #: contents/ui/pages/ResumoPage.qml
 msgid "Amanhã"
 msgstr "Demain"
+
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
+msgid "Incluído em"
+msgstr "Ajouté le"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Concluir tarefa"

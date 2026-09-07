@@ -36,10 +36,10 @@
       <label>Lista de fontes da agenda: URLs .ics (CalDAV/Google export) ou caminhos de arquivo .ics locais.</label>
     </entry>
     <entry name="todos" type="StringList">
-      <label>Lista de tarefas do dia (to-dos), serializadas como "texto|1"(concluída) ou "texto|0".</label>
+      <label>Lista de tarefas do dia (to-dos), serializadas como "texto|1|timestampMs"(concluída) ou "texto|0|timestampMs".</label>
     </entry>
     <entry name="completedTodos" type="StringList">
-      <label>Lista de tarefas concluídas, serializadas como "texto".</label>
+      <label>Lista de tarefas concluídas, serializadas como "texto|timestampMs".</label>
     </entry>
     <entry name="notes" type="StringList">
       <label>Lista de notas (post-its), serializadas como "texto|cor".</label>

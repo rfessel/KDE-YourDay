@@ -71,6 +71,16 @@ Item {
         }
     })
 
+    function createdDateText(ms) {
+        if (!ms) return "";
+        var d = new Date(ms);
+        var now = new Date();
+        if (d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate()) {
+            return i18n("Hoje");
+        }
+        return d.toLocaleString(Qt.locale(), "dd/MM");
+    }
+
     Flickable {
         id: pageFlick
         anchors.fill: parent
@@ -324,6 +334,26 @@ Item {
                 anchors.fill: parent
                 anchors.margins: Kirigami.Units.smallSpacing
                 spacing: Kirigami.Units.smallSpacing
+
+                // Data de inclusão (como nos compromissos: rótulo + data embaixo)
+                ColumnLayout {
+                    spacing: 0
+                    Layout.preferredWidth: 62
+                    visible: model.createdAt > 0
+
+                    PlasmaComponents3.Label {
+                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                        text: i18n("Incluído em")
+                        font.pixelSize: 9
+                        opacity: 0.55
+                    }
+                    PlasmaComponents3.Label {
+                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                        text: page.createdDateText(model.createdAt)
+                        font.pixelSize: 10
+                        font.weight: Font.DemiBold
+                    }
+                }
 
                 PlasmaComponents3.Label {
                     Layout.fillWidth: true

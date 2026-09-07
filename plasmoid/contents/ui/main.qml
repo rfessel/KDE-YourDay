@@ -464,13 +464,19 @@ PlasmoidItem {
         }
         var out = [];
         for (var i = 0; i < raw.length; i++) {
-            var s = String(raw[i]);
-            var sep = s.lastIndexOf("|");
-            if (sep < 0) {
-                out.push({ text: s, done: false });
+            var text, done = false, created = 0;
+            var parts = String(raw[i]).split("|");
+            if (parts.length >= 3) {
+                done = parts[parts.length - 2] === "1";
+                created = parseInt(parts[parts.length - 1], 10) || 0;
+                text = parts.slice(0, parts.length - 2).join("|");
+            } else if (parts.length === 2) {
+                done = parts[1] === "1";
+                text = parts[0];
             } else {
-                out.push({ text: s.slice(0, sep), done: s.slice(sep + 1) === "1" });
+                text = String(raw[i]);
             }
+            out.push({ text: text, done: done, createdAt: created });
         }
         root.todoList = out;
 
@@ -481,7 +487,15 @@ PlasmoidItem {
         }
         var outC = [];
         for (var j = 0; j < rawC.length; j++) {
-            outC.push({ text: String(rawC[j]), done: true });
+            var cparts = String(rawC[j]).split("|");
+            var ctext, ccreated = 0;
+            if (cparts.length >= 2) {
+                ccreated = parseInt(cparts[cparts.length - 1], 10) || 0;
+                ctext = cparts.slice(0, cparts.length - 1).join("|");
+            } else {
+                ctext = String(rawC[j]);
+            }
+            outC.push({ text: ctext, done: true, createdAt: ccreated });
         }
         root.completedList = outC;
     }
@@ -489,7 +503,11 @@ PlasmoidItem {
     function saveTodos() {
         var raw = [];
         for (var i = 0; i < root.todoList.length; i++) {
-            raw.push(root.todoList[i].text + "|" + (root.todoList[i].done ? "1" : "0"));
+            var rec = root.todoList[i].text + "|" + (root.todoList[i].done ? "1" : "0");
+            if (root.todoList[i].createdAt) {
+                rec += "|" + root.todoList[i].createdAt;
+            }
+            raw.push(rec);
         }
         Plasmoid.configuration.todos = raw;
     }
@@ -497,13 +515,17 @@ PlasmoidItem {
     function saveCompletedTodos() {
         var raw = [];
         for (var i = 0; i < root.completedList.length; i++) {
-            raw.push(root.completedList[i].text);
+            var rec = root.completedList[i].text;
+            if (root.completedList[i].createdAt) {
+                rec += "|" + root.completedList[i].createdAt;
+            }
+            raw.push(rec);
         }
         Plasmoid.configuration.completedTodos = raw;
     }
 
     function addTodo(text) {
-        root.todoList.push({ text: text, done: false });
+        root.todoList.push({ text: text, done: false, createdAt: Date.now() });
         root.saveTodos();
         root.todoList = root.todoList.slice();
     }
@@ -516,7 +538,7 @@ PlasmoidItem {
         if (!item.done) {
             // Marcar como concluída: mover para completedList
             root.todoList.splice(index, 1);
-            root.completedList.push({ text: item.text, done: true });
+            root.completedList.push({ text: item.text, done: true, createdAt: item.createdAt || Date.now() });
             root.saveTodos();
             root.saveCompletedTodos();
             root.todoList = root.todoList.slice();
@@ -535,7 +557,7 @@ PlasmoidItem {
         }
         var item = root.completedList[index];
         root.completedList.splice(index, 1);
-        root.todoList.push({ text: item.text, done: false });
+        root.todoList.push({ text: item.text, done: false, createdAt: item.createdAt });
         root.saveCompletedTodos();
         root.saveTodos();
         root.completedList = root.completedList.slice();

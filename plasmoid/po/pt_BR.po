@@ -559,7 +559,7 @@ msgid "Novo evento"
 msgstr ""
 
 #: contents/ui/pages/AgendaPage.qml contents/ui/pages/ClimaPage.qml
-#: contents/ui/pages/ResumoPage.qml
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Hoje"
 msgstr ""
 
@@ -773,6 +773,10 @@ msgstr ""
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Amanhã"
+msgstr ""
+
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
+msgid "Incluído em"
 msgstr ""
 
 #: contents/ui/pages/ResumoPage.qml
