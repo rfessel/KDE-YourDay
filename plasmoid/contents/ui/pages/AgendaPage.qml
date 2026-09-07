@@ -635,49 +635,21 @@ Item {
                         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                     }
 
+                    Rectangle {
+                        id: calSwatch
+                        implicitWidth: 12
+                        implicitHeight: 12
+                        radius: 6
+                        color: page.calendarColor(page.dialogCalendar)
+                    }
+
                     QQC2.ComboBox {
                         id: calendarCombo
                         Layout.fillWidth: true
                         model: page.calendarTargets
                         textRole: "label"
+                        font.pixelSize: 12
                         onActivated: page.dialogCalendar = model[index].id
-
-                        contentItem: RowLayout {
-                            spacing: 6
-                            Rectangle {
-                                implicitWidth: 12
-                                implicitHeight: 12
-                                radius: 6
-                                color: page.calendarColor(page.dialogCalendar)
-                            }
-                            QQC2.Label {
-                                text: calendarCombo.displayText
-                                elide: Text.ElideRight
-                                Layout.fillWidth: true
-                                font.pixelSize: 12
-                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                            }
-                        }
-
-                        delegate: QQC2.ItemDelegate {
-                            required property var modelData
-                            width: calendarCombo.width
-                            contentItem: RowLayout {
-                                spacing: 6
-                                Rectangle {
-                                    implicitWidth: 12
-                                    implicitHeight: 12
-                                    radius: 6
-                                    color: page.calendarColor(modelData.id)
-                                }
-                                QQC2.Label {
-                                    text: modelData.label
-                                    elide: Text.ElideRight
-                                    Layout.fillWidth: true
-                                    font.pixelSize: 12
-                                }
-                            }
-                        }
                     }
                 }
 
