@@ -63,6 +63,20 @@ function parseDate(value) {
 var MAX_FEED_BYTES = 512000;   // feeds maiores que 512 KB são cortados
 var MAX_FEED_ITEMS = 30;       // para o scan no N-ésimo item por feed
 
+// Corta o texto no teto de bytes (a versão antiga rescanava o documento
+// inteiro e o plasmashell travava com feeds de MBs). Cortar nunca é fatal:
+// a varredura para no N-ésimo <item>, que aparece bem antes do corte.
+function capFeed(text) {
+    if (!text) {
+        return "";
+    }
+    text = String(text);
+    if (text.length > MAX_FEED_BYTES) {
+        return text.slice(0, MAX_FEED_BYTES);
+    }
+    return text;
+}
+
 // Próxima tag de ABERTURA em [from, to). to < 0 = até o fim.
 // Retorna {name, attrs, selfClose, start, end} ou null.
 function nextTag(xml, from, to) {
@@ -456,10 +470,7 @@ function loadFeed(url, onReady, onError) {
             finish(xhr.status);
             return;
         }
-        var text = xhr.responseText;
-        if (text.length > MAX_FEED_BYTES) {
-            text = text.slice(0, MAX_FEED_BYTES);
-        }
+        var text = capFeed(xhr.responseText);
         if (!isFeed(text)) {
             finish(0, []); // conteúdo não parece RSS/Atom
             return;
@@ -481,24 +492,58 @@ function loadFeed(url, onReady, onError) {
 // ------------------------------------------------- mesclagem com limites
 
 // Grupos: [{items, cap}]. cap <= 0 = sem limite por feed.
-// totalLimit <= 0 = sem limite global. Ordena do mais recente para o mais antigo.
+// totalLimit <= 0 = sem limite global.
+// Ordena do mais recente para o mais antigo.
+//
+// IMPORTANTE: a ordem por grupo é aplicada ANTES do cap. A versão antiga
+// cortava "os primeiro N itens crus do feed" e depois ordenava — se o feed
+// viesse em ordem cronológica invertida (mais antigo primeiro), o post mais
+// novo caía fora do cap e era descartado mesmo sendo o mais relevante.
 function applyLimits(groups, totalLimit) {
-    var out = [];
+    var pooled = [];
     for (var g = 0; g < groups.length; g++) {
         var grp = groups[g];
-        var n = grp.items.length;
-        if (grp.cap > 0 && n > grp.cap) {
-            n = grp.cap;
+        var sorted = grp.items.slice();
+        sorted.sort(function(a, b) { return b.time - a.time; });
+        var keep = sorted.length;
+        if (grp.cap > 0 && keep > grp.cap) {
+            keep = grp.cap;
         }
-        for (var i = 0; i < n; i++) {
-            out.push(grp.items[i]);
+        for (var i = 0; i < keep; i++) {
+            pooled.push(sorted[i]);
         }
     }
-    out.sort(function(a, b) { return b.time - a.time; });
-    if (totalLimit > 0 && out.length > totalLimit) {
-        out.length = totalLimit;
+    pooled.sort(function(a, b) { return b.time - a.time; });
+    if (totalLimit > 0 && pooled.length > totalLimit) {
+        pooled.length = totalLimit;
     }
-    return out;
+    return pooled;
+}
+
+// Estado do auto-refresh de notícias. rules:
+//   refreshMinutes = 0  => desligado (running=false) — a versão que
+//                          ficou travando fazia running=true sempre e
+//                          virava um busy loop com intervalo 0.
+//   intervalo = minutos * 60000, sempre > 0 quando ativo.
+function newsRefreshState(minutes, hasFeeds) {
+    var m = parseInt(minutes, 10);
+    if (isNaN(m) || m < 0) {
+        m = 0;
+    }
+    return {
+        running: m > 0 && !!hasFeeds,
+        interval: m > 0 ? m * 60000 : 0
+    };
+}
+
+// Valida o índice da aba de abertura (0=Resumo .. 6=Notícias). A aba 6
+// (Notícias) é o default no main.xml; um clamp errado aqui abriria Listas (5).
+function clampDefaultTab(v) {
+    var t = parseInt(v, 10);
+    if (isNaN(t) || t < 0 || t > 6) {
+        return 0;
+    }
+    return t;
 }
 
 // ----------------------------------------------------------- tempo relativo

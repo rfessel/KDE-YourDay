@@ -68,7 +68,7 @@
       <label>Obsoleto: cache antigo de notícias, migrado para o banco SQLite local ao abrir.</label>
     </entry>
     <entry name="defaultTab" type="Int">
-      <default>0</default>
+      <default>6</default>
       <label>Aba padrão ao abrir o widget (0=Resumo, 1=Agenda, 2=Tarefas, 3=Clima, 4=Notas, 5=Listas, 6=Notícias).</label>
     </entry>
     <entry name="themeMode" type="Int">
