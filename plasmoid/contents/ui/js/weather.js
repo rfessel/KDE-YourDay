@@ -156,7 +156,7 @@ function fetchWeather(lat, lon, onReady, onError) {
             + "&forecast_days=7";
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
-    xhr.timeout = 15000;
+    xhr.timeout = 10000;
     xhr.onreadystatechange = function() {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
         if (!(xhr.status >= 200 && xhr.status < 300)) {

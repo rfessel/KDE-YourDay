@@ -405,20 +405,55 @@ function parseAtomItems(xml, source) {
 
 // ---------------------------------------------------------------- carregador
 
+var _activeXhr = [];
+
+function abortAllNews() {
+    // Segurança do watchdog: libera as conexões pendentes (os callbacks
+    // de erro então contabilizam cada URL uma única vez).
+    while (_activeXhr.length > 0) {
+        var x = _activeXhr.pop();
+        try {
+            x.abort();
+        } catch (e) { /* já encerrado */ }
+    }
+}
+
 function loadFeed(url, onReady, onError) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
-    xhr.timeout = 15000;
+    xhr.timeout = 10000;
     try {
         xhr.setRequestHeader("User-Agent", "YourDay/1.0");
     } catch (e) { /* alguns contextos proíbem alterar o User-Agent */ }
+
+    var settled = false;
+    function finish(code, items) {
+        if (settled) {
+            return;
+        }
+        settled = true;
+        var idx = _activeXhr.indexOf(xhr);
+        if (idx !== -1) {
+            _activeXhr.splice(idx, 1);
+        }
+        if (code === 0) {
+            onReady(items);
+        } else {
+            onError(code);
+        }
+    }
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
+        if (_activeXhr.indexOf(xhr) === -1) {
+            // Removido da lista: foi abortado pelo watchdog.
+            finish(-3);
+            return;
+        }
         if (!(xhr.status >= 200 && xhr.status < 300)) {
-            onError(xhr.status);
+            finish(xhr.status);
             return;
         }
         var text = xhr.responseText;
@@ -426,20 +461,21 @@ function loadFeed(url, onReady, onError) {
             text = text.slice(0, MAX_FEED_BYTES);
         }
         if (!isFeed(text)) {
-            onError(0); // conteúdo não parece RSS/Atom
+            finish(0, []); // conteúdo não parece RSS/Atom
             return;
         }
         var source = feedSourceName(text);
         var items = isAtom(text) ? parseAtomItems(text, source) : parseRSSItems(text, source);
-        onReady(items);
+        finish(0, items);
     };
     xhr.onerror = function() {
-        onError(-1);
+        finish(-1);
     };
     xhr.ontimeout = function() {
-        onError(-2);
+        finish(-2);
     };
     xhr.send(null);
+    _activeXhr.push(xhr);
 }
 
 // ------------------------------------------------- mesclagem com limites

@@ -368,7 +368,7 @@ function withinIcsCap(text) {
 function loadUrl(url, onReady, onError) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", url, true);
-    xhr.timeout = 15000;
+    xhr.timeout = 10000;
     xhr.onreadystatechange = function() {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
