@@ -186,7 +186,7 @@ PlasmoidItem {
     }
 
     readonly property string tooltipDateText: root.fullDateText()
-    readonly property string tooltipTimeText: Qt.formatTime(root.now, "HH:mm")
+    readonly property string tooltipTimeText: Qt.formatTime(root.now, "HH:mm:ss")
 
     function tooltipWeatherLine() {
         var city = (Plasmoid.configuration.weatherCity || "").trim();
@@ -205,7 +205,7 @@ PlasmoidItem {
         return parts.join(" · ");
     }
 
-    readonly property string tooltipMain: "<b>" + root.tooltipDateText + "</b>"
+    readonly property string tooltipMain: root.tooltipDateText
     readonly property string tooltipSub: "<b>" + root.tooltipWeatherLine() + "</b><br/><b>" + root.tooltipTimeText + "</b>"
 
     toolTipMainText: root.tooltipMain
@@ -1476,7 +1476,7 @@ PlasmoidItem {
 
     Timer {
         id: clockTimer
-        interval: 60000
+        interval: 1000
         repeat: true
         running: true
         onTriggered: {
