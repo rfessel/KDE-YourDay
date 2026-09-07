@@ -114,6 +114,21 @@ for dirpath, _, fns in sorted(os.walk(ROOT)):
             if rel not in entries[key]:
                 entries[key].append(rel)
 
+# Strings integradas dinamicamente (não aparecem como literais de i18n()):
+# greeting da saudação e descrições de clima (traduzidas via i18n(strVariável)).
+manual = [
+    'Bom dia', 'Boa tarde', 'Boa noite',
+    'Céu limpo', 'Maiormente limpo', 'Parcialmente nublado', 'Nublado',
+    'Nevoeiro', 'Garoa', 'Garoa gelada', 'Chuva', 'Chuva forte',
+    'Chuva gelada', 'Neve', 'Granizo', 'Pancadas de chuva',
+    'Pancadas de neve', 'Trovoada', 'Trovoada com granizo', 'Sem dados',
+]
+for g in manual:
+    key = ('', g)
+    if key not in entries:
+        entries[key] = ['<dinamico>']
+        order.append(key)
+
 out = sys.stdout
 out.write('# SOME DESCRIPTIVE TITLE.\n# Copyright (C) YEAR Seu Dia... contributors\n# This file is distributed under the same license as the widget.\n# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.\n#\n'
           'msgid ""\nmsgstr ""\n"Project-Id-Version: Seu Dia... 1.0\\n"\n"MIME-Version: 1.0\\n"\n"Content-Type: text/plain; charset=UTF-8\\n"\n"Content-Transfer-Encoding: 8bit\\n"\n\n')
@@ -129,25 +144,4 @@ for key in order:
     elif ctxt.startswith('d:'):
         out.write('#. (domain %s)\n' % ctxt[2:])
     out.write('msgid "%s"\n' % msgid.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n'))
-    out.write('msgstr ""\n\n')
-
-# Strings integradas dinamicamente (não aparecem como literais de i18n()):
-# greeting da saudação e descrições de clima (traduzidas via i18n(strVariável)).
-manual = [
-    'Bom dia', 'Boa tarde', 'Boa noite',
-    'Céu limpo', 'Maiormente limpo', 'Parcialmente nublado', 'Nublado',
-    'Nevoeiro', 'Garoa', 'Garoa gelada', 'Chuva', 'Chuva forte',
-    'Chuva gelada', 'Neve', 'Granizo', 'Pancadas de chuva',
-    'Pancadas de neve', 'Trovoada', 'Trovoada com granizo', 'Sem dados',
-]
-for g in manual:
-    key = ('', g)
-    if key not in entries:
-        entries[key] = ['<dinamico>']
-        order.append(key)
-for g in manual:
-    if ('', g) in entries:
-        continue
-    out.write('#: <dinamico>\n')
-    out.write('msgid "%s"\n' % g.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n'))
     out.write('msgstr ""\n\n')

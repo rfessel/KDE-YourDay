@@ -740,6 +740,18 @@ msgstr "Supprimer"
 msgid "Fechar"
 msgstr "Fermer"
 
+#: contents/ui/pages/ResumoPage.qml
+msgid "Bom dia"
+msgstr "Bonjour"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa tarde"
+msgstr "Bon après-midi"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa noite"
+msgstr "Bonsoir"
+
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Amanhã"
 msgstr "Demain"
@@ -820,6 +832,70 @@ msgstr "Restaurer la tâche"
 msgid "Remover permanentemente"
 msgstr "Supprimer définitivement"
 
+#: <dinamico>
+msgid "Céu limpo"
+msgstr "Ciel dégagé"
+
+#: <dinamico>
+msgid "Maiormente limpo"
+msgstr "Plutôt dégagé"
+
+#: <dinamico>
+msgid "Parcialmente nublado"
+msgstr "Partiellement nuageux"
+
+#: <dinamico>
+msgid "Nublado"
+msgstr "Nuageux"
+
+#: <dinamico>
+msgid "Nevoeiro"
+msgstr "Brouillard"
+
+#: <dinamico>
+msgid "Garoa"
+msgstr "Bruine"
+
+#: <dinamico>
+msgid "Garoa gelada"
+msgstr "Bruine verglaçante"
+
+#: <dinamico>
+msgid "Chuva forte"
+msgstr "Pluie forte"
+
+#: <dinamico>
+msgid "Chuva gelada"
+msgstr "Pluie verglaçante"
+
+#: <dinamico>
+msgid "Neve"
+msgstr "Neige"
+
+#: <dinamico>
+msgid "Granizo"
+msgstr "Grêle"
+
+#: <dinamico>
+msgid "Pancadas de chuva"
+msgstr "Averses de pluie"
+
+#: <dinamico>
+msgid "Pancadas de neve"
+msgstr "Averses de neige"
+
+#: <dinamico>
+msgid "Trovoada"
+msgstr "Orage"
+
+#: <dinamico>
+msgid "Trovoada com granizo"
+msgstr "Orage avec grêle"
+
+#: <dinamico>
+msgid "Sem dados"
+msgstr "Pas de données"
+
 #~ msgid "Tarefas de hoje"
 #~ msgstr "Tâches du jour"
 
@@ -834,15 +910,6 @@ msgstr "Supprimer définitivement"
 
 #~ msgid "Falha em %1 (%2)"
 #~ msgstr "Échec sur %1 (%2)"
-
-#~ msgid "Bom dia"
-#~ msgstr "Bonjour"
-
-#~ msgid "Boa tarde"
-#~ msgstr "Bon après-midi"
-
-#~ msgid "Boa noite"
-#~ msgstr "Bonsoir"
 
 #~ msgid "Atualização automática dos feeds"
 #~ msgstr "Mise à jour automatique des flux"

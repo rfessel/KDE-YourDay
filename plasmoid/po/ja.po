@@ -740,6 +740,18 @@ msgstr "削除"
 msgid "Fechar"
 msgstr "閉じる"
 
+#: contents/ui/pages/ResumoPage.qml
+msgid "Bom dia"
+msgstr "おはようございます"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa tarde"
+msgstr "こんにちは"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa noite"
+msgstr "こんばんは"
+
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Amanhã"
 msgstr "明日"
@@ -820,6 +832,70 @@ msgstr "タスクを復元"
 msgid "Remover permanentemente"
 msgstr "完全に削除"
 
+#: <dinamico>
+msgid "Céu limpo"
+msgstr "快晴"
+
+#: <dinamico>
+msgid "Maiormente limpo"
+msgstr "概ね晴れ"
+
+#: <dinamico>
+msgid "Parcialmente nublado"
+msgstr "曇りがち"
+
+#: <dinamico>
+msgid "Nublado"
+msgstr "曇り"
+
+#: <dinamico>
+msgid "Nevoeiro"
+msgstr "霧"
+
+#: <dinamico>
+msgid "Garoa"
+msgstr "霧雨"
+
+#: <dinamico>
+msgid "Garoa gelada"
+msgstr "着氷性霧雨"
+
+#: <dinamico>
+msgid "Chuva forte"
+msgstr "大雨"
+
+#: <dinamico>
+msgid "Chuva gelada"
+msgstr "着氷性雨"
+
+#: <dinamico>
+msgid "Neve"
+msgstr "雪"
+
+#: <dinamico>
+msgid "Granizo"
+msgstr "ひょう"
+
+#: <dinamico>
+msgid "Pancadas de chuva"
+msgstr "にわか雨"
+
+#: <dinamico>
+msgid "Pancadas de neve"
+msgstr "にわか雪"
+
+#: <dinamico>
+msgid "Trovoada"
+msgstr "雷雨"
+
+#: <dinamico>
+msgid "Trovoada com granizo"
+msgstr "ひょうを伴う雷雨"
+
+#: <dinamico>
+msgid "Sem dados"
+msgstr "データなし"
+
 #~ msgid "Tarefas de hoje"
 #~ msgstr "今日のタスク"
 
@@ -834,15 +910,6 @@ msgstr "完全に削除"
 
 #~ msgid "Falha em %1 (%2)"
 #~ msgstr "%1 でエラー (%2)"
-
-#~ msgid "Bom dia"
-#~ msgstr "おはようございます"
-
-#~ msgid "Boa tarde"
-#~ msgstr "こんにちは"
-
-#~ msgid "Boa noite"
-#~ msgstr "こんばんは"
 
 #~ msgid "Atualização automática dos feeds"
 #~ msgstr "フィードの自動更新"

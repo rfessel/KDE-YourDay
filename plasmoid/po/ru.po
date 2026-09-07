@@ -741,6 +741,18 @@ msgstr "Удалить"
 msgid "Fechar"
 msgstr "Закрыть"
 
+#: contents/ui/pages/ResumoPage.qml
+msgid "Bom dia"
+msgstr "Доброе утро"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa tarde"
+msgstr "Добрый день"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa noite"
+msgstr "Добрый вечер"
+
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Amanhã"
 msgstr "Завтра"
@@ -821,6 +833,70 @@ msgstr "Восстановить задачу"
 msgid "Remover permanentemente"
 msgstr "Удалить безвозвратно"
 
+#: <dinamico>
+msgid "Céu limpo"
+msgstr "Ясное небо"
+
+#: <dinamico>
+msgid "Maiormente limpo"
+msgstr "Преимущественно ясно"
+
+#: <dinamico>
+msgid "Parcialmente nublado"
+msgstr "Переменная облачность"
+
+#: <dinamico>
+msgid "Nublado"
+msgstr "Облачно"
+
+#: <dinamico>
+msgid "Nevoeiro"
+msgstr "Туман"
+
+#: <dinamico>
+msgid "Garoa"
+msgstr "Морось"
+
+#: <dinamico>
+msgid "Garoa gelada"
+msgstr "Ледяная морось"
+
+#: <dinamico>
+msgid "Chuva forte"
+msgstr "Сильный дождь"
+
+#: <dinamico>
+msgid "Chuva gelada"
+msgstr "Ледяной дождь"
+
+#: <dinamico>
+msgid "Neve"
+msgstr "Снег"
+
+#: <dinamico>
+msgid "Granizo"
+msgstr "Град"
+
+#: <dinamico>
+msgid "Pancadas de chuva"
+msgstr "Ливень"
+
+#: <dinamico>
+msgid "Pancadas de neve"
+msgstr "Снежный ливень"
+
+#: <dinamico>
+msgid "Trovoada"
+msgstr "Гроза"
+
+#: <dinamico>
+msgid "Trovoada com granizo"
+msgstr "Гроза с градом"
+
+#: <dinamico>
+msgid "Sem dados"
+msgstr "Нет данных"
+
 #~ msgid "Tarefas de hoje"
 #~ msgstr "Задачи на сегодня"
 
@@ -835,15 +911,6 @@ msgstr "Удалить безвозвратно"
 
 #~ msgid "Falha em %1 (%2)"
 #~ msgstr "Ошибка в %1 (%2)"
-
-#~ msgid "Bom dia"
-#~ msgstr "Доброе утро"
-
-#~ msgid "Boa tarde"
-#~ msgstr "Добрый день"
-
-#~ msgid "Boa noite"
-#~ msgstr "Добрый вечер"
 
 #~ msgid "Atualização automática dos feeds"
 #~ msgstr "Автоматическое обновление каналов"

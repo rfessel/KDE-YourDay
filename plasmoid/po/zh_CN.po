@@ -300,7 +300,7 @@ msgstr "新闻"
 
 #: contents/ui/configGeneral.qml
 msgid "Padrão (sistema)"
-msgstr ""
+msgstr "默认（系统）"
 
 #: contents/ui/configGeneral.qml
 msgid "Escolher ícone"
@@ -344,11 +344,11 @@ msgstr "设置小部件的视觉主题。"
 
 #: contents/ui/configGeneral.qml
 msgid "Cor de destaque:"
-msgstr ""
+msgstr "强调色："
 
 #: contents/ui/configGeneral.qml
 msgid "Cor usada nos destaques do widget. Vazio = cor de destaque do sistema."
-msgstr ""
+msgstr "用于部件高亮的颜色。留空 = 系统强调色。"
 
 #: contents/ui/configGeneral.qml
 msgid "Aparência no painel:"
@@ -739,6 +739,18 @@ msgstr "删除"
 msgid "Fechar"
 msgstr "关闭"
 
+#: contents/ui/pages/ResumoPage.qml
+msgid "Bom dia"
+msgstr "早上好"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa tarde"
+msgstr "下午好"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa noite"
+msgstr "晚上好"
+
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Amanhã"
 msgstr "明天"
@@ -773,7 +785,7 @@ msgstr "添加于"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Estas são suas tarefas que precisa completar"
-msgstr ""
+msgstr "这是您需要完成的任务"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
@@ -819,6 +831,70 @@ msgstr "恢复任务"
 msgid "Remover permanentemente"
 msgstr "永久删除"
 
+#: <dinamico>
+msgid "Céu limpo"
+msgstr "晴空万里"
+
+#: <dinamico>
+msgid "Maiormente limpo"
+msgstr "大部晴朗"
+
+#: <dinamico>
+msgid "Parcialmente nublado"
+msgstr "多云"
+
+#: <dinamico>
+msgid "Nublado"
+msgstr "阴天"
+
+#: <dinamico>
+msgid "Nevoeiro"
+msgstr "雾"
+
+#: <dinamico>
+msgid "Garoa"
+msgstr "毛毛雨"
+
+#: <dinamico>
+msgid "Garoa gelada"
+msgstr "冻毛毛雨"
+
+#: <dinamico>
+msgid "Chuva forte"
+msgstr "大雨"
+
+#: <dinamico>
+msgid "Chuva gelada"
+msgstr "冻雨"
+
+#: <dinamico>
+msgid "Neve"
+msgstr "雪"
+
+#: <dinamico>
+msgid "Granizo"
+msgstr "冰雹"
+
+#: <dinamico>
+msgid "Pancadas de chuva"
+msgstr "阵雨"
+
+#: <dinamico>
+msgid "Pancadas de neve"
+msgstr "阵雪"
+
+#: <dinamico>
+msgid "Trovoada"
+msgstr "雷暴"
+
+#: <dinamico>
+msgid "Trovoada com granizo"
+msgstr "雷暴伴冰雹"
+
+#: <dinamico>
+msgid "Sem dados"
+msgstr "无数据"
+
 #~ msgid "Tarefas de hoje"
 #~ msgstr "今日任务"
 
@@ -833,15 +909,6 @@ msgstr "永久删除"
 
 #~ msgid "Falha em %1 (%2)"
 #~ msgstr "%1 出错 (%2)"
-
-#~ msgid "Bom dia"
-#~ msgstr "早上好"
-
-#~ msgid "Boa tarde"
-#~ msgstr "下午好"
-
-#~ msgid "Boa noite"
-#~ msgstr "晚上好"
 
 #~ msgid "Atualização automática dos feeds"
 #~ msgstr "订阅源自动更新"

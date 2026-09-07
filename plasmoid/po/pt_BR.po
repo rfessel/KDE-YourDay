@@ -772,6 +772,18 @@ msgstr ""
 msgid "Fechar"
 msgstr ""
 
+#: contents/ui/pages/ResumoPage.qml
+msgid "Bom dia"
+msgstr ""
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa tarde"
+msgstr ""
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa noite"
+msgstr ""
+
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Amanhã"
 msgstr ""
@@ -852,4 +864,68 @@ msgstr ""
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
+msgstr ""
+
+#: <dinamico>
+msgid "Céu limpo"
+msgstr ""
+
+#: <dinamico>
+msgid "Maiormente limpo"
+msgstr ""
+
+#: <dinamico>
+msgid "Parcialmente nublado"
+msgstr ""
+
+#: <dinamico>
+msgid "Nublado"
+msgstr ""
+
+#: <dinamico>
+msgid "Nevoeiro"
+msgstr ""
+
+#: <dinamico>
+msgid "Garoa"
+msgstr ""
+
+#: <dinamico>
+msgid "Garoa gelada"
+msgstr ""
+
+#: <dinamico>
+msgid "Chuva forte"
+msgstr ""
+
+#: <dinamico>
+msgid "Chuva gelada"
+msgstr ""
+
+#: <dinamico>
+msgid "Neve"
+msgstr ""
+
+#: <dinamico>
+msgid "Granizo"
+msgstr ""
+
+#: <dinamico>
+msgid "Pancadas de chuva"
+msgstr ""
+
+#: <dinamico>
+msgid "Pancadas de neve"
+msgstr ""
+
+#: <dinamico>
+msgid "Trovoada"
+msgstr ""
+
+#: <dinamico>
+msgid "Trovoada com granizo"
+msgstr ""
+
+#: <dinamico>
+msgid "Sem dados"
 msgstr ""

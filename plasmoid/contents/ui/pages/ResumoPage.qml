@@ -77,10 +77,9 @@ Item {
         },
         greeting: function() {
             var h = new Date().getHours();
-            var raw = "Boa noite";
-            if (h >= 5 && h < 12) raw = "Bom dia";
-            else if (h >= 12 && h < 18) raw = "Boa tarde";
-            return i18n(raw);
+            if (h >= 5 && h < 12) return i18n("Bom dia");
+            if (h >= 12 && h < 18) return i18n("Boa tarde");
+            return i18n("Boa noite");
         }
     })
 

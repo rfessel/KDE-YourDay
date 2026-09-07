@@ -740,6 +740,18 @@ msgstr "מחק"
 msgid "Fechar"
 msgstr "סגור"
 
+#: contents/ui/pages/ResumoPage.qml
+msgid "Bom dia"
+msgstr "בוקר טוב"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa tarde"
+msgstr "צהריים טובים"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Boa noite"
+msgstr "ערב טוב"
+
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Amanhã"
 msgstr "מחר"
@@ -820,6 +832,70 @@ msgstr "שחזר משימה"
 msgid "Remover permanentemente"
 msgstr "הסר לצמיתות"
 
+#: <dinamico>
+msgid "Céu limpo"
+msgstr "שמים בהירים"
+
+#: <dinamico>
+msgid "Maiormente limpo"
+msgstr "ברובו בהיר"
+
+#: <dinamico>
+msgid "Parcialmente nublado"
+msgstr "חלקית מעונן"
+
+#: <dinamico>
+msgid "Nublado"
+msgstr "מעונן"
+
+#: <dinamico>
+msgid "Nevoeiro"
+msgstr "ערפל"
+
+#: <dinamico>
+msgid "Garoa"
+msgstr "רסס"
+
+#: <dinamico>
+msgid "Garoa gelada"
+msgstr "רסס מקפיא"
+
+#: <dinamico>
+msgid "Chuva forte"
+msgstr "גשם חזק"
+
+#: <dinamico>
+msgid "Chuva gelada"
+msgstr "גשם מקפיא"
+
+#: <dinamico>
+msgid "Neve"
+msgstr "שלג"
+
+#: <dinamico>
+msgid "Granizo"
+msgstr "ברד"
+
+#: <dinamico>
+msgid "Pancadas de chuva"
+msgstr "מטחי גשם"
+
+#: <dinamico>
+msgid "Pancadas de neve"
+msgstr "מטחי שלג"
+
+#: <dinamico>
+msgid "Trovoada"
+msgstr "סופת רעמים"
+
+#: <dinamico>
+msgid "Trovoada com granizo"
+msgstr "סופת רעמים עם ברד"
+
+#: <dinamico>
+msgid "Sem dados"
+msgstr "אין נתונים"
+
 #~ msgid "Tarefas de hoje"
 #~ msgstr "משימות להיום"
 
@@ -834,15 +910,6 @@ msgstr "הסר לצמיתות"
 
 #~ msgid "Falha em %1 (%2)"
 #~ msgstr "כשל ב-%1 (%2)"
-
-#~ msgid "Bom dia"
-#~ msgstr "בוקר טוב"
-
-#~ msgid "Boa tarde"
-#~ msgstr "צהריים טובים"
-
-#~ msgid "Boa noite"
-#~ msgstr "ערב טוב"
 
 #~ msgid "Atualização automática dos feeds"
 #~ msgstr "עדכון אוטומטי של הערוצים"

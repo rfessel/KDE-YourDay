@@ -247,6 +247,10 @@ TRANS = {
         'Ícone interativo': 'Interactive icon',
     },
     'en_US': {
+        'Estas são suas tarefas que precisa completar': 'These are the tasks you need to complete',
+        'Padrão (sistema)': 'Default (system)',
+        'Cor de destaque:': 'Accent color:',
+        'Cor usada nos destaques do widget. Vazio = cor de destaque do sistema.': 'Color used for widget highlights. Empty = system accent color.',
         ' pendente(s)': ' pending',
         '%1 — %2': '%1 — %2',
         '1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal': '1. Open Google Calendar in your browser\n2. Click Settings (gear)\n3. Go to Calendar settings\n4. Select the desired calendar\n5. Scroll to Calendar integration\n6. Copy the public iCal address link',
@@ -2157,6 +2161,10 @@ TRANS = {
         'Ícone interativo': 'סמל אינטראקטיבי',
     },
     'zh_CN': {
+        'Estas são suas tarefas que precisa completar': '这是您需要完成的任务',
+        'Padrão (sistema)': '默认（系统）',
+        'Cor de destaque:': '强调色：',
+        'Cor usada nos destaques do widget. Vazio = cor de destaque do sistema.': '用于部件高亮的颜色。留空 = 系统强调色。',
         ' pendente(s)': ' 待处理',
         '%1 — %2': '%1 — %2',
         '1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal': '1. 在浏览器中打开 Google Calendar\n2. 点击设置（齿轮图标）\n3. 前往日历设置\n4. 选择所需的日历\n5. 滚动至日历集成\n6. 复制 iCal 公开地址链接',
