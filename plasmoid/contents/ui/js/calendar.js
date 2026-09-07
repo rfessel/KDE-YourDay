@@ -354,6 +354,48 @@ function formatTime(ms, allDay) {
     return (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
 }
 
+// ----------------------------------------------------------------- fluxo async
+
+// Portão de conclusão exatamente-uma-vez, usado pelo refreshAgenda do widget
+// para contar XHRs (fontes .ics + calendários Google).
+//
+// A regra de negócio protegida (bug recorrente): um handler que dispara em
+// vários readyStates intermediários NÃO pode "zerar o pending" antes da hora
+// e publicar a agenda incompleta. Aqui, mesmo que um caller chame next()
+// repetidas vezes depois de concluir, o finalize() roda exatamente uma vez
+// (fired) — e, se o total começa em 0, o finalize dispara imediatamente, que
+// é o caso "sem fontes": agenda só com os eventos locais.
+function makeCompleter(count, finalize) {
+    var left = Math.max(0, count | 0);
+    var fired = false;
+    var gate = {
+        next: function() {
+            if (fired) {
+                return false;
+            }
+            left--;
+            if (left <= 0) {
+                fired = true;
+                if (typeof finalize === "function") {
+                    finalize();
+                }
+            }
+            return true;
+        },
+        isDone: function() {
+            return fired;
+        },
+        remaining: function() {
+            return left;
+        }
+    };
+    if (left === 0 && typeof finalize === "function") {
+        fired = true;
+        finalize();
+    }
+    return gate;
+}
+
 // ------------------------------------------------------- carregamento
 
 // Teto de bytes para arquivos .ics: acima disso a fonte é recusada (a thread
