@@ -28,8 +28,6 @@ Item {
     required property bool weatherLoading
     required property string weatherCity
 
-    signal gotoAgenda()
-    signal gotoTodos()
     signal toggleTodoId(int index)
 
     // Re-renderiza saudação/data a cada tick do relógio (1 min).
@@ -206,11 +204,6 @@ Item {
                     text: i18n("Próximos compromissos")
                     Layout.fillWidth: true
                 }
-                PlasmaComponents3.ToolButton {
-                    text: "›"
-                    Accessible.name: i18n("Ver agenda")
-                    onClicked: page.gotoAgenda()
-                }
             }
 
             QQC2.BusyIndicator {
@@ -240,11 +233,6 @@ Item {
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                     text: i18n("Tarefas do dia")
                     Layout.fillWidth: true
-                }
-                PlasmaComponents3.ToolButton {
-                    text: "›"
-                    Accessible.name: i18n("Ver to-dos")
-                    onClicked: page.gotoTodos()
                 }
             }
 

@@ -1259,8 +1259,6 @@ PlasmoidItem {
         root.refreshAgenda();
     }
 
-    function gotoAgenda() { root.currentTab = 1; }
-    function gotoTodos() { root.currentTab = 2; }
     function gotoClima() { root.currentTab = 3; }
     function gotoNotas() { root.currentTab = 4; }
     function gotoListas() { root.currentTab = 5; }
@@ -1659,8 +1657,6 @@ PlasmoidItem {
                     weatherData: root.weatherData
                     weatherLoading: root.weatherLoading
                     weatherCity: Plasmoid.configuration.weatherCity || ""
-                    onGotoAgenda: root.gotoAgenda()
-                    onGotoTodos: root.gotoTodos()
                     onToggleTodoId: function(index) { root.toggleTodo(index); }
                 }
 
