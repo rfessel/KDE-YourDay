@@ -33,7 +33,7 @@ Item {
     Column {
         id: col
         anchors.centerIn: parent
-        spacing: -4
+        spacing: -6
 
         PlasmaComponents3.Label {
             id: timeLabel
