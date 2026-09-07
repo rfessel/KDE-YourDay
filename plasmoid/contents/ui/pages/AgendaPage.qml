@@ -90,6 +90,22 @@ Item {
         return new Date(y, m, 1).getDay();
     }
 
+    function weekdayHeader() {
+        // 2023-01-08 era domingo: nomes curtos traduzidos via locale
+        var base = new Date(2023, 0, 8);
+        var out = [];
+        for (var i = 0; i < 7; i++) {
+            var d = new Date(base);
+            d.setDate(base.getDate() + i);
+            out.push(d.toLocaleString(root.tLocale(), "ddd"));
+        }
+        return out;
+    }
+
+    function monthName(m) {
+        return new Date(2020, m, 15).toLocaleString(root.tLocale(), "MMMM");
+    }
+
     function pad2(n) {
         return (n < 10 ? "0" : "") + n;
     }
@@ -247,11 +263,7 @@ Item {
                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
-                    text: {
-                        var months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
-                                      "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-                        return months[viewMonth] + " " + viewYear;
-                    }
+                    text: page.monthName(viewMonth) + " " + viewYear;
                 }
 
                 PlasmaComponents3.ToolButton {
@@ -295,7 +307,7 @@ Item {
                 Layout.fillWidth: true
 
                 Repeater {
-                    model: ["Do", "Se", "Te", "Qa", "Qi", "Se", "Sa"]
+                    model: page.weekdayHeader()
                     delegate: PlasmaComponents3.Label {
                         width: 32
                         text: modelData
