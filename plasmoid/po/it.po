@@ -300,6 +300,10 @@ msgid "Notícias"
 msgstr "Notizie"
 
 #: contents/ui/configGeneral.qml
+msgid "Padrão (sistema)"
+msgstr "Predefinito (sistema)"
+
+#: contents/ui/configGeneral.qml
 msgid "Escolher ícone"
 msgstr "Scegli icona"
 
@@ -338,6 +342,14 @@ msgstr "Automatico"
 #: contents/ui/configGeneral.qml
 msgid "Define o tema visual do widget."
 msgstr "Definisce il tema visivo del widget."
+
+#: contents/ui/configGeneral.qml
+msgid "Cor de destaque:"
+msgstr "Colore accento:"
+
+#: contents/ui/configGeneral.qml
+msgid "Cor usada nos destaques do widget. Vazio = cor de destaque do sistema."
+msgstr "Colore usato per gli accenti del widget. Vuoto = colore accento del sistema."
 
 #: contents/ui/configGeneral.qml
 msgid "Aparência no painel:"
@@ -728,6 +740,10 @@ msgstr "Elimina"
 msgid "Fechar"
 msgstr "Chiudi"
 
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
+msgid "Amanhã"
+msgstr "Domani"
+
 #: contents/ui/pages/ResumoPage.qml
 msgid "Toque para atualizar"
 msgstr "Tocca per aggiornare"
@@ -753,12 +769,12 @@ msgid "Dia"
 msgstr "Giorno"
 
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
-msgid "Amanhã"
-msgstr "Domani"
-
-#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Incluído em"
 msgstr "Aggiunto il"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Estas são suas tarefas que precisa completar"
+msgstr "Questi sono i compiti che devi completare"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
@@ -775,10 +791,6 @@ msgstr "Scadenza"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover prazo"
 msgstr "Rimuovi scadenza"
-
-#: contents/ui/pages/ToDoPage.qml
-msgid "Tarefas de hoje"
-msgstr "Attività di oggi"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid " pendente(s)"
@@ -807,6 +819,9 @@ msgstr "Ripristina attività"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "Rimuovi definitivamente"
+
+#~ msgid "Tarefas de hoje"
+#~ msgstr "Attività di oggi"
 
 #~ msgid "Concluir tarefa"
 #~ msgstr "Completa attività"

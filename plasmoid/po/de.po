@@ -300,6 +300,10 @@ msgid "Notícias"
 msgstr "Nachrichten"
 
 #: contents/ui/configGeneral.qml
+msgid "Padrão (sistema)"
+msgstr "Standard (System)"
+
+#: contents/ui/configGeneral.qml
 msgid "Escolher ícone"
 msgstr "Symbol auswählen"
 
@@ -338,6 +342,14 @@ msgstr "Automatisch"
 #: contents/ui/configGeneral.qml
 msgid "Define o tema visual do widget."
 msgstr "Legt das visuelle Thema des Widgets fest."
+
+#: contents/ui/configGeneral.qml
+msgid "Cor de destaque:"
+msgstr "Akzentfarbe:"
+
+#: contents/ui/configGeneral.qml
+msgid "Cor usada nos destaques do widget. Vazio = cor de destaque do sistema."
+msgstr "Farbe für die Hervorhebungen des Widgets. Leer = System-Akzentfarbe."
 
 #: contents/ui/configGeneral.qml
 msgid "Aparência no painel:"
@@ -728,6 +740,10 @@ msgstr "Löschen"
 msgid "Fechar"
 msgstr "Schließen"
 
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
+msgid "Amanhã"
+msgstr "Morgen"
+
 #: contents/ui/pages/ResumoPage.qml
 msgid "Toque para atualizar"
 msgstr "Zum Aktualisieren antippen"
@@ -753,12 +769,12 @@ msgid "Dia"
 msgstr "Tag"
 
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
-msgid "Amanhã"
-msgstr "Morgen"
-
-#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Incluído em"
 msgstr "Hinzugefügt am"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Estas são suas tarefas que precisa completar"
+msgstr "Dies sind die Aufgaben, die Sie erledigen müssen"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
@@ -775,10 +791,6 @@ msgstr "Frist"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover prazo"
 msgstr "Frist entfernen"
-
-#: contents/ui/pages/ToDoPage.qml
-msgid "Tarefas de hoje"
-msgstr "Heutige Aufgaben"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid " pendente(s)"
@@ -807,6 +819,9 @@ msgstr "Aufgabe wiederherstellen"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "Dauerhaft entfernen"
+
+#~ msgid "Tarefas de hoje"
+#~ msgstr "Heutige Aufgaben"
 
 #~ msgid "Concluir tarefa"
 #~ msgstr "Aufgabe abschließen"

@@ -300,6 +300,10 @@ msgid "Notícias"
 msgstr "חדשות"
 
 #: contents/ui/configGeneral.qml
+msgid "Padrão (sistema)"
+msgstr "ברירת מחדל (מערכת)"
+
+#: contents/ui/configGeneral.qml
 msgid "Escolher ícone"
 msgstr "בחר סמל"
 
@@ -338,6 +342,14 @@ msgstr "אוטומטי"
 #: contents/ui/configGeneral.qml
 msgid "Define o tema visual do widget."
 msgstr "מגדיר את ערכת הנושא של הווידג׳ט."
+
+#: contents/ui/configGeneral.qml
+msgid "Cor de destaque:"
+msgstr "צבע הדגשה:"
+
+#: contents/ui/configGeneral.qml
+msgid "Cor usada nos destaques do widget. Vazio = cor de destaque do sistema."
+msgstr "הצבע המשמש להדגשות של היישומון. ריק = צבע הדגשה של המערכת."
 
 #: contents/ui/configGeneral.qml
 msgid "Aparência no painel:"
@@ -728,6 +740,10 @@ msgstr "מחק"
 msgid "Fechar"
 msgstr "סגור"
 
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
+msgid "Amanhã"
+msgstr "מחר"
+
 #: contents/ui/pages/ResumoPage.qml
 msgid "Toque para atualizar"
 msgstr "לחץ לרענון"
@@ -753,12 +769,12 @@ msgid "Dia"
 msgstr "יום"
 
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
-msgid "Amanhã"
-msgstr "מחר"
-
-#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Incluído em"
 msgstr "נוסף ב"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Estas são suas tarefas que precisa completar"
+msgstr "אלה המשימות שעליך להשלים"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
@@ -775,10 +791,6 @@ msgstr "מועד"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover prazo"
 msgstr "הסר מועד"
-
-#: contents/ui/pages/ToDoPage.qml
-msgid "Tarefas de hoje"
-msgstr "משימות להיום"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid " pendente(s)"
@@ -807,6 +819,9 @@ msgstr "שחזר משימה"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "הסר לצמיתות"
+
+#~ msgid "Tarefas de hoje"
+#~ msgstr "משימות להיום"
 
 #~ msgid "Concluir tarefa"
 #~ msgstr "השלמת משימה"

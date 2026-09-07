@@ -299,6 +299,10 @@ msgid "Notícias"
 msgstr "新闻"
 
 #: contents/ui/configGeneral.qml
+msgid "Padrão (sistema)"
+msgstr ""
+
+#: contents/ui/configGeneral.qml
 msgid "Escolher ícone"
 msgstr "选择图标"
 
@@ -337,6 +341,14 @@ msgstr "自动"
 #: contents/ui/configGeneral.qml
 msgid "Define o tema visual do widget."
 msgstr "设置小部件的视觉主题。"
+
+#: contents/ui/configGeneral.qml
+msgid "Cor de destaque:"
+msgstr ""
+
+#: contents/ui/configGeneral.qml
+msgid "Cor usada nos destaques do widget. Vazio = cor de destaque do sistema."
+msgstr ""
 
 #: contents/ui/configGeneral.qml
 msgid "Aparência no painel:"
@@ -727,6 +739,10 @@ msgstr "删除"
 msgid "Fechar"
 msgstr "关闭"
 
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
+msgid "Amanhã"
+msgstr "明天"
+
 #: contents/ui/pages/ResumoPage.qml
 msgid "Toque para atualizar"
 msgstr "点击刷新"
@@ -752,12 +768,12 @@ msgid "Dia"
 msgstr "日"
 
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
-msgid "Amanhã"
-msgstr "明天"
-
-#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Incluído em"
 msgstr "添加于"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Estas são suas tarefas que precisa completar"
+msgstr ""
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
@@ -774,10 +790,6 @@ msgstr "截止日期"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover prazo"
 msgstr "移除截止日期"
-
-#: contents/ui/pages/ToDoPage.qml
-msgid "Tarefas de hoje"
-msgstr "今日任务"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid " pendente(s)"
@@ -806,6 +818,9 @@ msgstr "恢复任务"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "永久删除"
+
+#~ msgid "Tarefas de hoje"
+#~ msgstr "今日任务"
 
 #~ msgid "Concluir tarefa"
 #~ msgstr "完成任务"

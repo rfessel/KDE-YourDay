@@ -6,6 +6,10 @@ e crie po/<lang>.po com `msginit --locale=<lang> --input=template.pot`.
 
 TRANS = {
     'en': {
+        'Estas são suas tarefas que precisa completar': 'These are the tasks you need to complete',
+        'Padrão (sistema)': 'Default (system)',
+        'Cor de destaque:': 'Accent color:',
+        'Cor usada nos destaques do widget. Vazio = cor de destaque do sistema.': 'Color used for widget highlights. Empty = system accent color.',
         ' pendente(s)': ' pending',
         '%1 — %2': '%1 — %2',
         '1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal': '1. Open Google Calendar in your browser\n2. Click Settings (gear)\n3. Go to Calendar settings\n4. Select the desired calendar\n5. Scroll to Calendar integration\n6. Copy the public iCal address link',
@@ -480,6 +484,10 @@ TRANS = {
         'Ícone interativo': 'Interactive icon',
     },
     'es': {
+        'Estas são suas tarefas que precisa completar': 'Estas son las tareas que necesitas completar',
+        'Padrão (sistema)': 'Predeterminado (sistema)',
+        'Cor de destaque:': 'Color de acento:',
+        'Cor usada nos destaques do widget. Vazio = cor de destaque do sistema.': 'Color usado en los destacados del widget. Vacío = color de acento del sistema.',
         ' pendente(s)': ' pendiente(s)',
         '%1 — %2': '%1 — %2',
         '1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal': '1. Abra Google Calendar en el navegador\n2. Haga clic en Configuración (engranaje)\n3. Vaya a Configuración del calendario\n4. Seleccione el calendario deseado\n5. Desplácese hasta Integración de calendario\n6. Copie el enlace de dirección pública de iCal',
@@ -715,6 +723,10 @@ TRANS = {
         'Ícone interativo': 'Icono interactivo',
     },
     'fr': {
+        'Estas são suas tarefas que precisa completar': 'Ce sont les tâches que vous devez accomplir',
+        'Padrão (sistema)': 'Défaut (système)',
+        'Cor de destaque:': "Couleur d'accent :",
+        'Cor usada nos destaques do widget. Vazio = cor de destaque do sistema.': "Couleur utilisée pour les accents du widget. Vide = couleur d'accent du système.",
         ' pendente(s)': ' en attente',
         '%1 — %2': '%1 — %2',
         '1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal': "1. Ouvrez Google Calendar dans le navigateur\n2. Cliquez sur Paramètres (roue dentée)\n3. Allez dans Paramètres du calendrier\n4. Sélectionnez le calendrier souhaité\n5. Faites défiler jusqu'à Intégration du calendrier\n6. Copiez le lien de l'adresse publique iCal",
@@ -950,6 +962,10 @@ TRANS = {
         'Ícone interativo': 'Icône interactive',
     },
     'de': {
+        'Estas são suas tarefas que precisa completar': 'Dies sind die Aufgaben, die Sie erledigen müssen',
+        'Padrão (sistema)': 'Standard (System)',
+        'Cor de destaque:': 'Akzentfarbe:',
+        'Cor usada nos destaques do widget. Vazio = cor de destaque do sistema.': 'Farbe für die Hervorhebungen des Widgets. Leer = System-Akzentfarbe.',
         ' pendente(s)': ' offene',
         '%1 — %2': '%1 — %2',
         '1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal': '1. Öffnen Sie Google Calendar im Browser\n2. Klicken Sie auf Einstellungen (Zahnrad)\n3. Gehen Sie zu Kalendereinstellungen\n4. Wählen Sie den gewünschten Kalender\n5. Scrollen Sie bis Kalenderintegration\n6. Kopieren Sie den Link der öffentlichen iCal-Adresse',
@@ -1185,6 +1201,10 @@ TRANS = {
         'Ícone interativo': 'Interaktives Symbol',
     },
     'it': {
+        'Estas são suas tarefas que precisa completar': 'Questi sono i compiti che devi completare',
+        'Padrão (sistema)': 'Predefinito (sistema)',
+        'Cor de destaque:': 'Colore accento:',
+        'Cor usada nos destaques do widget. Vazio = cor de destaque do sistema.': 'Colore usato per gli accenti del widget. Vuoto = colore accento del sistema.',
         ' pendente(s)': ' in sospeso',
         '%1 — %2': '%1 — %2',
         '1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal': "1. Apri Google Calendar nel browser\n2. Fai clic su Impostazioni (ingranaggio)\n3. Vai su Impostazioni del calendario\n4. Seleziona il calendario desiderato\n5. Scorri fino a Integrazione del calendario\n6. Copia il link dell'indirizzo pubblico iCal",
@@ -1420,6 +1440,10 @@ TRANS = {
         'Ícone interativo': 'Icona interattiva',
     },
     'ja': {
+        'Estas são suas tarefas que precisa completar': 'これが完了すべきタスクです',
+        'Padrão (sistema)': 'デフォルト（システム）',
+        'Cor de destaque:': 'アクセントカラー：',
+        'Cor usada nos destaques do widget. Vazio = cor de destaque do sistema.': 'ウィジェットの強調表示に使う色。空欄 = システムのアクセントカラー。',
         ' pendente(s)': ' 件保留中',
         '%1 — %2': '%1 — %2',
         '1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal': '1. ブラウザでGoogle Calendarを開きます\n2. 設定（歯車）をクリックします\n3. カレンダー設定に移動します\n4. 使用するカレンダーを選択します\n5. カレンダー連携までスクロールします\n6. iCalの公開アドレスリンクをコピーします',
@@ -1655,6 +1679,10 @@ TRANS = {
         'Ícone interativo': '対話型アイコン',
     },
     'ru': {
+        'Estas são suas tarefas que precisa completar': 'Это задачи, которые вам нужно выполнить',
+        'Padrão (sistema)': 'По умолчанию (система)',
+        'Cor de destaque:': 'Акцентный цвет:',
+        'Cor usada nos destaques do widget. Vazio = cor de destaque do sistema.': 'Цвет, используемый для акцентов виджета. Пусто = системный акцентный цвет.',
         ' pendente(s)': ' в ожидании',
         '%1 — %2': '%1 — %2',
         '1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal': '1. Откройте Google Calendar в браузере\n2. Нажмите Настройки (шестерёнка)\n3. Перейдите в Настройки календаря\n4. Выберите нужный календарь\n5. Прокрутите до Интеграции календаря\n6. Скопируйте ссылку на публичный адрес iCal',
@@ -1890,6 +1918,10 @@ TRANS = {
         'Ícone interativo': 'Интерактивный значок',
     },
     'he': {
+        'Estas são suas tarefas que precisa completar': 'אלה המשימות שעליך להשלים',
+        'Padrão (sistema)': 'ברירת מחדל (מערכת)',
+        'Cor de destaque:': 'צבע הדגשה:',
+        'Cor usada nos destaques do widget. Vazio = cor de destaque do sistema.': 'הצבע המשמש להדגשות של היישומון. ריק = צבע הדגשה של המערכת.',
         ' pendente(s)': ' ממתינות',
         '%1 — %2': '%1 — %2',
         '1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal': '1. פתח את Google Calendar בדפדפן\n2. לחץ על הגדרות ( גלגל שיניים)\n3. עבור להגדרות לוח שנה\n4. בחר את לוח השנה הרצוי\n5. גלול עד אינטגרציה של לוח שנה\n6. העתק את קישורכתובת ה-iCal הציבורית',

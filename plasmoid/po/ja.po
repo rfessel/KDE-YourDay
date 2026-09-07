@@ -300,6 +300,10 @@ msgid "Notícias"
 msgstr "ニュース"
 
 #: contents/ui/configGeneral.qml
+msgid "Padrão (sistema)"
+msgstr "デフォルト（システム）"
+
+#: contents/ui/configGeneral.qml
 msgid "Escolher ícone"
 msgstr "アイコンを選択"
 
@@ -338,6 +342,14 @@ msgstr "自動"
 #: contents/ui/configGeneral.qml
 msgid "Define o tema visual do widget."
 msgstr "ウィジェットのビジュアルテーマを設定します。"
+
+#: contents/ui/configGeneral.qml
+msgid "Cor de destaque:"
+msgstr "アクセントカラー："
+
+#: contents/ui/configGeneral.qml
+msgid "Cor usada nos destaques do widget. Vazio = cor de destaque do sistema."
+msgstr "ウィジェットの強調表示に使う色。空欄 = システムのアクセントカラー。"
 
 #: contents/ui/configGeneral.qml
 msgid "Aparência no painel:"
@@ -728,6 +740,10 @@ msgstr "削除"
 msgid "Fechar"
 msgstr "閉じる"
 
+#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
+msgid "Amanhã"
+msgstr "明日"
+
 #: contents/ui/pages/ResumoPage.qml
 msgid "Toque para atualizar"
 msgstr "タップして更新"
@@ -753,12 +769,12 @@ msgid "Dia"
 msgstr "日"
 
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
-msgid "Amanhã"
-msgstr "明日"
-
-#: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Incluído em"
 msgstr "追加日"
+
+#: contents/ui/pages/ToDoPage.qml
+msgid "Estas são suas tarefas que precisa completar"
+msgstr "これが完了すべきタスクです"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
@@ -775,10 +791,6 @@ msgstr "期限"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover prazo"
 msgstr "期限を削除"
-
-#: contents/ui/pages/ToDoPage.qml
-msgid "Tarefas de hoje"
-msgstr "今日のタスク"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid " pendente(s)"
@@ -807,6 +819,9 @@ msgstr "タスクを復元"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "完全に削除"
+
+#~ msgid "Tarefas de hoje"
+#~ msgstr "今日のタスク"
 
 #~ msgid "Concluir tarefa"
 #~ msgstr "タスクを完了"
