@@ -309,23 +309,48 @@ Item {
 
     Component {
         id: todoRow
-        RowLayout {
+        Rectangle {
             required property int index
             required property var model
             Layout.fillWidth: true
-            spacing: Kirigami.Units.smallSpacing
+            Layout.preferredHeight: contentRow.implicitHeight + Kirigami.Units.smallSpacing * 2
+            radius: Kirigami.Units.smallSpacing
+            color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)), 0.05)
+            border.width: 1
+            border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.08)
 
-            QQC2.CheckBox {
-                checked: model.done
-                onToggled: page.toggleTodoId(index)
-            }
-            PlasmaComponents3.Label {
-                Layout.fillWidth: true
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                text: model.text
-                elide: Text.ElideRight
-                maximumLineCount: 1
-                font.pixelSize: 13
+            RowLayout {
+                id: contentRow
+                anchors.fill: parent
+                anchors.margins: Kirigami.Units.smallSpacing
+                spacing: Kirigami.Units.smallSpacing
+
+                PlasmaComponents3.Label {
+                    Layout.fillWidth: true
+                    color: model.done ? Qt.rgba(0.4, 0.4, 0.4, 0.6) : (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                    text: model.text
+                    elide: Text.ElideRight
+                    maximumLineCount: 1
+                    wrapMode: Text.Wrap
+                    font.pixelSize: 13
+                    font.strikeout: model.done
+                }
+
+                // Símbolo de concluído no fim da linha (à direita)
+                PlasmaComponents3.ToolButton {
+                    Layout.preferredWidth: 24
+                    Layout.preferredHeight: 24
+                    Accessible.name: i18n("Concluir tarefa")
+                    onClicked: page.toggleTodoId(index)
+                    contentItem: Text {
+                        text: model.done ? "✔" : "○"
+                        color: model.done ? "#34a853" : (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                        font.pixelSize: 15
+                        font.bold: model.done
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
             }
         }
     }

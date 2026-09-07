@@ -744,6 +744,10 @@ msgstr "יום"
 msgid "Amanhã"
 msgstr "מחר"
 
+#: contents/ui/pages/ResumoPage.qml
+msgid "Concluir tarefa"
+msgstr "השלמת משימה"
+
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
 msgstr "משימה חדשה…"

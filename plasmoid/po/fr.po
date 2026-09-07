@@ -744,6 +744,10 @@ msgstr "Jour"
 msgid "Amanhã"
 msgstr "Demain"
 
+#: contents/ui/pages/ResumoPage.qml
+msgid "Concluir tarefa"
+msgstr "Terminer la tâche"
+
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
 msgstr "Nouvelle tâche…"

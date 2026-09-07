@@ -744,6 +744,10 @@ msgstr "日"
 msgid "Amanhã"
 msgstr "明日"
 
+#: contents/ui/pages/ResumoPage.qml
+msgid "Concluir tarefa"
+msgstr "タスクを完了"
+
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
 msgstr "新しいタスク…"
