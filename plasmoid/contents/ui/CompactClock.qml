@@ -40,7 +40,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             color: PlasmaCore.Theme.textColor
             text: root.timeText
-            font.pixelSize: Math.max(9, Math.floor(col.height * 0.5))
+            font.pixelSize: Math.max(12, Math.floor(col.height * 0.6))
             font.weight: Font.DemiBold
             horizontalAlignment: Text.AlignHCenter
         }
@@ -51,7 +51,7 @@ Item {
             color: PlasmaCore.Theme.textColor
             opacity: 0.75
             text: root.dateText
-            font.pixelSize: Math.max(6, Math.floor(col.height * 0.2))
+            font.pixelSize: Math.max(9, Math.floor(col.height * 0.28))
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
             maximumLineCount: 1
