@@ -84,27 +84,7 @@
     </entry>
     <entry name="gcalClientId" type="String">
       <default></default>
-      <label>Google Calendar API OAuth 2.0 Client ID.</label>
-    </entry>
-    <entry name="gcalAccessToken" type="String">
-      <default></default>
-      <label>Google Calendar API access token.</label>
-    </entry>
-    <entry name="gcalRefreshToken" type="String">
-      <default></default>
-      <label>Google Calendar API refresh token.</label>
-    </entry>
-    <entry name="gcalTokenExpiry" type="Double">
-      <default>0</default>
-      <label>Timestamp (ms) de expiração do access token.</label>
-    </entry>
-    <entry name="gcalCodeVerifier" type="String">
-      <default></default>
-      <label>PKCE code verifier para autenticação OAuth.</label>
-    </entry>
-    <entry name="gcalAuthState" type="String">
-      <default></default>
-      <label>State parameter para autenticação OAuth.</label>
+      <label>URL do seu Apps Script (script.google.com) usado para sincronizar com o Google Calendar.</label>
     </entry>
     <entry name="gcalCalendarId" type="String">
       <default>primary</default>

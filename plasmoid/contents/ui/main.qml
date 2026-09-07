@@ -19,7 +19,6 @@ import "js/feeds.js" as FeedParser
 import "js/calendar.js" as Cal
 import "js/weather.js" as Weather
 import "js/i18n.js" as I18n
-import "js/googleCalendar.js" as GCal
 import "pages"
 
 PlasmoidItem {
