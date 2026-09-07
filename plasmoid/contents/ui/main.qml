@@ -67,6 +67,8 @@ PlasmoidItem {
 
     property bool agendaLoading: false
     property string agendaNotice: ""
+    property bool agendaFetchFailed: false
+    property int agendaRetryCount: 0
     property var gcalCalendars: []
     property int currentTab: 0   // 0=Resumo, 1=Agenda, 2=Tarefas, 3=Clima, 4=Notas, 5=Listas, 6=Notícias
 
@@ -98,6 +100,8 @@ PlasmoidItem {
     // -------- clima --------------------------------
     property var weatherData: null
     property bool weatherLoading: false
+    property bool weatherFetchFailed: false
+    property int weatherRetryCount: 0
 
     // -------- cidades adicionais (aba Clima) ------
     property var extraCities: []
@@ -952,6 +956,11 @@ PlasmoidItem {
         // Inclui eventos locais
         var all = root.localEvents.slice();
 
+        // Falhas de transporte das fontes remotas (rede não pronta no boot,
+        // Apps Script lento etc.). Se alguma falhar, agendaFetchFailed fica
+        // true e um timer de retry + a ativação do widget refazem a chamada.
+        var fetchFailures = 0;
+
         // Tarefas pendentes até publicar: 1 XHR por fonte .ics + 1 por
         // calendário Google. O gate (calendar.js) garante que o finalize
         // roda exatamente uma vez — um handler que dispare em vários
@@ -975,6 +984,20 @@ PlasmoidItem {
             all.sort(function(a, b) { return (a.start - b.start); });
             root.agendaEvents = all;
             root.agendaLoading = false;
+
+            // Agenda completa só quando todas as fontes responderam. Se alguma
+            // falhou (típico no boot, com a rede ainda subindo), agendamos um
+            // retry em 30s — ao subir a rede o retry traz os compromissos.
+            root.agendaFetchFailed = fetchFailures > 0;
+            if (root.agendaFetchFailed) {
+                if (!agendaRetryTimer.running) {
+                    root.agendaRetryCount = 0;
+                    agendaRetryTimer.start();
+                }
+            } else {
+                root.agendaRetryCount = 0;
+                agendaRetryTimer.stop();
+            }
         }
 
         var gate = Cal.makeCompleter(totalWork, publish);
@@ -1024,11 +1047,13 @@ PlasmoidItem {
                             } catch (e) {
                                 console.warn("[yourday] erro parse Google Calendar:", e);
                             }
+                        } else {
+                            fetchFailures++;
                         }
                         gate.next();
                     };
-                    xhr.onerror = function() { gate.next(); };
-                    xhr.ontimeout = function() { gate.next(); };
+                    xhr.onerror = function() { fetchFailures++; gate.next(); };
+                    xhr.ontimeout = function() { fetchFailures++; gate.next(); };
                     xhr.send(null);
                 })(selectedCals[c]);
             }
@@ -1063,6 +1088,7 @@ PlasmoidItem {
                 if (/^https?:\/\//i.test(url)) {
                     Cal.loadUrl(url, handleText, function(code) {
                         console.warn("[yourday] agenda falhou fetch:", url, code);
+                        fetchFailures++;
                         gate.next();
                     });
                 } else {
@@ -1070,10 +1096,12 @@ PlasmoidItem {
                     try {
                         Cal.loadUrl("file://" + url, handleText, function(code) {
                             console.warn("[yourday] agenda falhou local:", url, code);
+                            fetchFailures++;
                             gate.next();
                         });
                     } catch (e) {
                         console.warn("[yourday] agenda local inválida:", url, String(e));
+                        fetchFailures++;
                         gate.next();
                     }
                 }
@@ -1367,6 +1395,7 @@ PlasmoidItem {
             return;
         }
         root.weatherLoading = true;
+        root.weatherFetchFailed = false;
         Weather.fetchWeather(lat, lon,
             function(data) {
                 if (gen !== root.weatherGen) {
@@ -1374,6 +1403,9 @@ PlasmoidItem {
                 }
                 root.weatherData = data;
                 root.weatherLoading = false;
+                root.weatherFetchFailed = false;
+                root.weatherRetryCount = 0;
+                weatherRetryTimer.stop();
                 root.refreshAllCitiesWeather();
             },
             function(code) {
@@ -1382,6 +1414,11 @@ PlasmoidItem {
                 }
                 console.warn("[yourday] clima falhou:", code);
                 root.weatherLoading = false;
+                root.weatherFetchFailed = true;
+                if (!weatherRetryTimer.running) {
+                    root.weatherRetryCount = 0;
+                    weatherRetryTimer.start();
+                }
             }
         );
     }
@@ -1444,9 +1481,11 @@ PlasmoidItem {
         function onActivated() {
             root.currentTab = FeedParser.clampDefaultTab(Plasmoid.configuration.defaultTab);
             // Sem tempestade ao abrir: só refaz rede se a última foi há > 5 min.
+            // Mas se a carga inicial do boot falhou (rede ainda subindo), refaz
+            // na hora — senão a agenda fica vazia até o próximo ciclo.
             var now = Date.now();
-            if (now - root.lastAgendaRefresh >= 5 * 60000) root.refreshAgenda();
-            if (now - root.lastWeatherRefresh >= 5 * 60000) root.refreshWeather();
+            if (root.agendaFetchFailed || now - root.lastAgendaRefresh >= 5 * 60000) root.refreshAgenda();
+            if (root.weatherFetchFailed || now - root.lastWeatherRefresh >= 5 * 60000) root.refreshWeather();
             root.parseTodos();
         }
     }
@@ -1458,6 +1497,38 @@ PlasmoidItem {
         repeat: true
         running: root.newsRefresh.running
         onTriggered: root.loadAll()
+    }
+
+    // Retry da agenda após falha de transporte no boot (rede ainda subindo).
+    // Refaz a chamada em 30s até 4 tentativas; parar quando algo responder
+    // (publish zera agendaFetchFailed) ou quando o usuário abrir o widget.
+    Timer {
+        id: agendaRetryTimer
+        interval: 30000
+        repeat: true
+        onTriggered: {
+            if (root.agendaLoading || root.agendaRetryCount >= 4) {
+                agendaRetryTimer.stop();
+                return;
+            }
+            root.agendaRetryCount++;
+            root.refreshAgenda();
+        }
+    }
+
+    // Mesma lógica para o clima (falha no boot com rede indisponível).
+    Timer {
+        id: weatherRetryTimer
+        interval: 30000
+        repeat: true
+        onTriggered: {
+            if (root.weatherLoading || root.weatherRetryCount >= 4) {
+                weatherRetryTimer.stop();
+                return;
+            }
+            root.weatherRetryCount++;
+            root.refreshWeather();
+        }
     }
 
     onRefreshMinutesValueChanged: {
