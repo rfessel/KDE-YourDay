@@ -483,6 +483,10 @@ msgstr "%1 — %2"
 msgid "Agenda ignorada: arquivo acima de 2 MB (%1)"
 msgstr "Calendario ignorado: archivo de más de 2 MB (%1)"
 
+#: contents/ui/main.qml contents/ui/pages/AgendaPage.qml
+msgid "Local"
+msgstr "Local"
+
 #: contents/ui/main.qml
 msgid "Aqui estão as principais notícias de seu interesse"
 msgstr "Aquí están las principales noticias de su interés"
@@ -547,6 +551,10 @@ msgstr "Editar evento"
 #: contents/ui/pages/AgendaPage.qml
 msgid "Remover evento"
 msgstr "Eliminar evento"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Adicionar em:"
+msgstr "Añadir en:"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "Título do evento"

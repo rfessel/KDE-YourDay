@@ -62,6 +62,7 @@ PlasmoidItem {
 
     property bool agendaLoading: false
     property string agendaNotice: ""
+    property var gcalCalendars: []
     property int currentTab: 0   // 0=Resumo, 1=Agenda, 2=Tarefas, 3=Clima, 4=Notas, 5=Listas, 6=Notícias
 
     // Tokens de geração: callbacks de XHR antigos são ignorados após nova carga.
@@ -1075,7 +1076,97 @@ PlasmoidItem {
         xhr.send(null);
     }
 
-    function addLocalEvent(title, startMs, endMs, allDay, description, location) {
+    function addGCalEvent(title, startMs, endMs, allDay, description, location, calId) {
+        if (!root.isGCalAuthenticated()) {
+            return;
+        }
+        var scriptUrl = Plasmoid.configuration.gcalClientId;
+        var url = scriptUrl + "?action=create"
+            + "&calendarId=" + encodeURIComponent(calId)
+            + "&title=" + encodeURIComponent(title)
+            + "&start=" + startMs
+            + "&end=" + endMs
+            + "&allDay=" + (allDay ? "true" : "false")
+            + "&description=" + encodeURIComponent(description || "")
+            + "&location=" + encodeURIComponent(location || "");
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.timeout = 15000;
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
+                return;
+            }
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    JSON.parse(xhr.responseText);
+                } catch (e) {
+                    console.warn("[yourday] resposta inválida ao criar evento Google:", e);
+                }
+            } else {
+                console.warn("[yourday] erro ao criar evento Google:", xhr.status);
+            }
+            root.refreshAgenda();
+        };
+        xhr.onerror = function() { root.refreshAgenda(); };
+        xhr.ontimeout = function() { root.refreshAgenda(); };
+        xhr.send(null);
+    }
+
+    function fetchGCalCalendars() {
+        if (!root.isGCalAuthenticated()) {
+            return;
+        }
+        var scriptUrl = Plasmoid.configuration.gcalClientId;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", scriptUrl + "?action=listCalendars", true);
+        xhr.timeout = 15000;
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
+                return;
+            }
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    var data = JSON.parse(xhr.responseText);
+                    if (Array.isArray(data) && data.length > 0) {
+                        root.gcalCalendars = data.map(function(cal) {
+                            return { id: cal.id, summary: cal.summary || cal.name || cal.id, primary: !!cal.isDefault, color: cal.color || "#4285f4" };
+                        });
+                        var savedColors = {};
+                        try { savedColors = JSON.parse(Plasmoid.configuration.gcalCalendarColors || "{}"); } catch(e) {}
+                        for (var i = 0; i < data.length; i++) {
+                            if (!savedColors[data[i].id]) {
+                                savedColors[data[i].id] = data[i].color || "#4285f4";
+                            }
+                        }
+                        Plasmoid.configuration.gcalCalendarColors = JSON.stringify(savedColors);
+                    }
+                } catch (e) {
+                    console.warn("[yourday] erro ao listar calendários Google:", e);
+                }
+            }
+        };
+        xhr.onerror = function() {};
+        xhr.ontimeout = function() {};
+        xhr.send(null);
+    }
+
+    function agendaTargetCalendars() {
+        var out = [{ id: "local", label: i18n("Local"), color: "#34a853" }];
+        if (root.isGCalAuthenticated()) {
+            for (var i = 0; i < root.gcalCalendars.length; i++) {
+                var cal = root.gcalCalendars[i];
+                out.push({ id: cal.id, label: cal.summary || cal.id, color: cal.color || "#4285f4" });
+            }
+        }
+        return out;
+    }
+
+    function addLocalEvent(title, startMs, endMs, allDay, description, location, calendarId) {
+        if (calendarId && calendarId !== "local") {
+            root.addGCalEvent(title, startMs, endMs, allDay, description, location, calendarId);
+            return;
+        }
         var id = String(Date.now()) + "_" + Math.random().toString(36).substr(2, 6);
         var ev = {
             id: id,
@@ -1091,17 +1182,6 @@ PlasmoidItem {
         root.localEvents.push(ev);
         root.saveLocalEvents();
         root.localEvents = root.localEvents.slice();
-
-        // Sincroniza com Google Calendar
-        syncToGoogle(ev, function(googleId) {
-            if (googleId) {
-                ev.googleId = googleId;
-                root.saveLocalEvents();
-                root.localEvents = root.localEvents.slice();
-            }
-            root.refreshAgenda();
-        });
-
         root.refreshAgenda();
     }
 
@@ -1202,6 +1282,8 @@ PlasmoidItem {
         parseNotes();
         loadLists();
         parseLocalEvents();
+        // Lista de calendários do Google para o seletor de agenda (tudo em memória).
+        root.fetchGCalCalendars();
         // Rede em fila, uma carga por vez.
         root.bootQueue = [root.refreshWeather, root.refreshAgenda, root.loadAll, root.loadExtraCities];
         root.bootStep = 0;
@@ -1568,7 +1650,8 @@ PlasmoidItem {
                             events: root.agendaEvents
                             loading: root.agendaLoading
                             notice: root.agendaNotice
-                            onAddEvent: function(title, startMs, endMs, allDay, description, location) { root.addLocalEvent(title, startMs, endMs, allDay, description, location); }
+                            calendarTargets: root.agendaTargetCalendars()
+                            onAddEvent: function(title, startMs, endMs, allDay, description, location, calendarId) { root.addLocalEvent(title, startMs, endMs, allDay, description, location, calendarId); }
                             onUpdateEvent: function(id, title, startMs, endMs, allDay, description, location) { root.updateLocalEvent(id, title, startMs, endMs, allDay, description, location); }
                             onRemoveEvent: function(id) { root.removeLocalEvent(id); }
                         }

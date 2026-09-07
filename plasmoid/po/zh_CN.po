@@ -482,6 +482,10 @@ msgstr "%1 — %2"
 msgid "Agenda ignorada: arquivo acima de 2 MB (%1)"
 msgstr "日历已忽略：文件超过 2 MB（%1）"
 
+#: contents/ui/main.qml contents/ui/pages/AgendaPage.qml
+msgid "Local"
+msgstr "本地"
+
 #: contents/ui/main.qml
 msgid "Aqui estão as principais notícias de seu interesse"
 msgstr "以下是您感兴趣的主要新闻"
@@ -546,6 +550,10 @@ msgstr "编辑事件"
 #: contents/ui/pages/AgendaPage.qml
 msgid "Remover evento"
 msgstr "删除事件"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Adicionar em:"
+msgstr "添加到："
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "Título do evento"

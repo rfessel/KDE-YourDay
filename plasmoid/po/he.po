@@ -483,6 +483,10 @@ msgstr "%1 — %2"
 msgid "Agenda ignorada: arquivo acima de 2 MB (%1)"
 msgstr "היומן מתעלם: קובץ גדול מ-2 מגה־בייט (%1)"
 
+#: contents/ui/main.qml contents/ui/pages/AgendaPage.qml
+msgid "Local"
+msgstr "מקומי"
+
 #: contents/ui/main.qml
 msgid "Aqui estão as principais notícias de seu interesse"
 msgstr "הנה החדשות המרכזיות שמעניינות אותך"
@@ -547,6 +551,10 @@ msgstr "ערוך אירוע"
 #: contents/ui/pages/AgendaPage.qml
 msgid "Remover evento"
 msgstr "הסר אירוע"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Adicionar em:"
+msgstr "הוספה ל:"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "Título do evento"

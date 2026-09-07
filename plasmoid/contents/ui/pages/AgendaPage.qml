@@ -21,9 +21,11 @@ Item {
     required property var events
     required property bool loading
     required property string notice
+    // Lista de destinos ao criar evento: [{ id, label, color }] (Local + calendários Google)
+    property var calendarTargets: [{ id: "local", label: i18n("Local"), color: "#34a853" }]
 
     // Callbacks para gerenciamento de eventos locais
-    property var onAddEvent: function(title, startMs, endMs, allDay, description, location) {}
+    property var onAddEvent: function(title, startMs, endMs, allDay, description, location, calendarId) {}
     property var onUpdateEvent: function(id, title, startMs, endMs, allDay, description, location) {}
     property var onRemoveEvent: function(id) {}
 
@@ -44,6 +46,25 @@ Item {
     property string dialogDate: ""
     property string dialogStartTime: "09:00"
     property string dialogEndTime: "10:00"
+    property string dialogCalendar: "local"
+
+    function calendarLabel(id) {
+        for (var i = 0; i < page.calendarTargets.length; i++) {
+            if (page.calendarTargets[i].id === id) {
+                return page.calendarTargets[i].label;
+            }
+        }
+        return id;
+    }
+
+    function calendarColor(id) {
+        for (var i = 0; i < page.calendarTargets.length; i++) {
+            if (page.calendarTargets[i].id === id) {
+                return page.calendarTargets[i].color;
+            }
+        }
+        return "#34a853";
+    }
 
     function updateSelectedEvents() {
         var range = Cal.dayRange(selectedDate.getTime());
@@ -124,6 +145,15 @@ Item {
         page.dialogDate = formatDateStr(page.selectedDate);
         page.dialogStartTime = "09:00";
         page.dialogEndTime = "10:00";
+        page.dialogCalendar = "local";
+        if (calendarCombo && calendarCombo.model) {
+            for (var ci = 0; ci < calendarCombo.model.length; ci++) {
+                if (calendarCombo.model[ci].id === "local") {
+                    calendarCombo.currentIndex = ci;
+                    break;
+                }
+            }
+        }
         page.dialogOpen = true;
     }
 
@@ -172,7 +202,7 @@ Item {
         if (page.dialogEditing && page.editingEvent) {
             page.onUpdateEvent(page.editingEvent.id, title, startMs, endMs, page.dialogAllDay, page.dialogDescription, page.dialogLocation);
         } else {
-            page.onAddEvent(title, startMs, endMs, page.dialogAllDay, page.dialogDescription, page.dialogLocation);
+            page.onAddEvent(title, startMs, endMs, page.dialogAllDay, page.dialogDescription, page.dialogLocation, page.dialogCalendar);
         }
         page.dialogOpen = false;
     }
@@ -591,6 +621,64 @@ Item {
                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                     font.pixelSize: 15
                     Layout.fillWidth: true
+                }
+
+                // Destino do evento (Local ou um calendário Google)
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 8
+                    visible: !page.dialogEditing && page.calendarTargets.length > 1
+
+                    QQC2.Label {
+                        text: i18n("Adicionar em:")
+                        font.pixelSize: 12
+                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                    }
+
+                    QQC2.ComboBox {
+                        id: calendarCombo
+                        Layout.fillWidth: true
+                        model: page.calendarTargets
+                        textRole: "label"
+                        onActivated: page.dialogCalendar = model[index].id
+
+                        contentItem: RowLayout {
+                            spacing: 6
+                            Rectangle {
+                                implicitWidth: 12
+                                implicitHeight: 12
+                                radius: 6
+                                color: page.calendarColor(page.dialogCalendar)
+                            }
+                            QQC2.Label {
+                                text: calendarCombo.displayText
+                                elide: Text.ElideRight
+                                Layout.fillWidth: true
+                                font.pixelSize: 12
+                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                            }
+                        }
+
+                        delegate: QQC2.ItemDelegate {
+                            required property var modelData
+                            width: calendarCombo.width
+                            contentItem: RowLayout {
+                                spacing: 6
+                                Rectangle {
+                                    implicitWidth: 12
+                                    implicitHeight: 12
+                                    radius: 6
+                                    color: page.calendarColor(modelData.id)
+                                }
+                                QQC2.Label {
+                                    text: modelData.label
+                                    elide: Text.ElideRight
+                                    Layout.fillWidth: true
+                                    font.pixelSize: 12
+                                }
+                            }
+                        }
+                    }
                 }
 
                 // Título

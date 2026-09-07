@@ -494,6 +494,11 @@ msgid "Agenda ignorada: arquivo acima de 2 MB (%1)"
 msgstr ""
 
 #: contents/ui/main.qml
+#: contents/ui/pages/AgendaPage.qml
+msgid "Local"
+msgstr ""
+
+#: contents/ui/main.qml
 msgid "Aqui estão as principais notícias de seu interesse"
 msgstr ""
 
@@ -557,6 +562,10 @@ msgstr ""
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "Remover evento"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Adicionar em:"
 msgstr ""
 
 #: contents/ui/pages/AgendaPage.qml
