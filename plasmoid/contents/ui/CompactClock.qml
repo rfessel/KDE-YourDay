@@ -33,14 +33,14 @@ Item {
     Column {
         id: col
         anchors.centerIn: parent
-        spacing: -2
+        spacing: -4
 
         PlasmaComponents3.Label {
             id: timeLabel
             anchors.horizontalCenter: parent.horizontalCenter
             color: PlasmaCore.Theme.textColor
             text: root.timeText
-            font.pixelSize: Math.max(12, Math.floor(root.height * 0.56))
+            font.pixelSize: Math.max(13, Math.floor(root.height * 0.62))
             font.weight: Font.DemiBold
             horizontalAlignment: Text.AlignHCenter
         }
@@ -51,7 +51,7 @@ Item {
             color: PlasmaCore.Theme.textColor
             opacity: 0.75
             text: root.dateText
-            font.pixelSize: Math.max(9, Math.floor(root.height * 0.26))
+            font.pixelSize: Math.max(10, Math.floor(root.height * 0.3))
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight
             maximumLineCount: 1
