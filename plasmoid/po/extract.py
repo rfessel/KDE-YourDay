@@ -131,16 +131,23 @@ for key in order:
     out.write('msgid "%s"\n' % msgid.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n'))
     out.write('msgstr ""\n\n')
 
-# Strings orig integradas dinamicamente (greeting) - manuais:
-greeting = [
+# Strings integradas dinamicamente (não aparecem como literais de i18n()):
+# greeting da saudação e descrições de clima (traduzidas via i18n(strVariável)).
+manual = [
     'Bom dia', 'Boa tarde', 'Boa noite',
+    'Céu limpo', 'Maiormente limpo', 'Parcialmente nublado', 'Nublado',
+    'Nevoeiro', 'Garoa', 'Garoa gelada', 'Chuva', 'Chuva forte',
+    'Chuva gelada', 'Neve', 'Granizo', 'Pancadas de chuva',
+    'Pancadas de neve', 'Trovoada', 'Trovoada com granizo', 'Sem dados',
 ]
-for g in greeting:
+for g in manual:
     key = ('', g)
     if key not in entries:
         entries[key] = ['<dinamico>']
         order.append(key)
-for g in greeting:
-    out.write('#: <saudacao dinamica>\n')
+for g in manual:
+    if ('', g) in entries:
+        continue
+    out.write('#: <dinamico>\n')
     out.write('msgid "%s"\n' % g.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n'))
     out.write('msgstr ""\n\n')

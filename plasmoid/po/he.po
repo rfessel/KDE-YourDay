@@ -15,59 +15,124 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: contents/ui/configAgenda.qml
+msgid "Conectado ao Google Calendar"
+msgstr "מחובר ל-Google Calendar"
+
+#: contents/ui/configAgenda.qml
+msgid "Informe a URL do Apps Script"
+msgstr "הזינו את כתובת ה-URL של Apps Script"
+
+#: contents/ui/configAgenda.qml
+msgid "Testando conexão..."
+msgstr "בודק חיבור..."
+
+#: contents/ui/configAgenda.qml
+msgid "Resposta inválida: "
+msgstr "תשובה לא חוקית: "
+
+#: contents/ui/configAgenda.qml
+msgid "Erro ao parsear: "
+msgstr "שגיאת ניתוח: "
+
+#: contents/ui/configAgenda.qml
+msgid "Erro HTTP: "
+msgstr "שגיאת HTTP: "
+
+#: contents/ui/configAgenda.qml
+msgid "Erro de conexão. Verifique a URL."
+msgstr "שגיאת חיבור. בדקו את כתובת ה-URL."
+
+#: contents/ui/configAgenda.qml
+msgid "Tempo esgotado. Verifique a URL e a permissão de acesso."
+msgstr "הזמן חלף. בדקו את כתובת ה-URL ואת הרשאת הגישה."
+
+#: contents/ui/configAgenda.qml
+msgid "Desconectado"
+msgstr "מנותק"
+
+#: contents/ui/configAgenda.qml
 msgid "Selecionar arquivo .ics"
-msgstr ""
+msgstr "בחר קובץ .ics"
 
 #: contents/ui/configAgenda.qml
 msgid "Calendário (*.ics)"
-msgstr ""
+msgstr "לוח שנה (*.ics)"
 
 #: contents/ui/configAgenda.qml contents/ui/configGeneral.qml
 msgid "Todos os arquivos (*)"
 msgstr "כל הקבצים (*)"
 
 #: contents/ui/configAgenda.qml
-msgid ""
-"Adicione fontes de calendário (.ics) para ver seus compromissos nas abas "
-"Agenda e Resumo."
-msgstr ""
+msgid "Google Calendar API (sincronização)"
+msgstr "API Google Calendar (סנכרון)"
 
 #: contents/ui/configAgenda.qml
-msgid "Google Calendar"
-msgstr ""
+msgid "Para sincronizar eventos, crie um projeto no Google Cloud Console e ative a API do Google Calendar."
+msgstr "לסנכרון אירועים, צור פרויקט ב-Google Cloud Console והפעל את Google Calendar API."
 
 #: contents/ui/configAgenda.qml
-msgid ""
-"1. Abra o Google Calendar no navegador\n"
-"2. Clique em Configurações (engrenagem)\n"
-"3. Vá em Configurações do calendário\n"
-"4. Selecione o calendário desejado\n"
-"5. Role até Integração de calendário\n"
-"6. Copie o link Endereço público do iCal"
-msgstr ""
+msgid "1. Abra script.google.com\n2. Crie um novo projeto\n3. Cole o código abaixo\n4. No menu lateral, clique em \"Serviços\" (+)\n5. Busque \"Google Calendar API\" e ative\n6. Salve e publique como Web App\n7. Copie a URL gerada"
+msgstr "1. פתחו את script.google.com\n2. צרו פרויקט חדש\n3. הדביקו את הקוד למטה\n4. בתפריט הצד לחצו על \"שירותים\" (+)\n5. חפשו \"Google Calendar API\" והפעילו אותה\n6. שמרו ופרסמו כ-Web App\n7. העתיקו את ה-URL שנוצר"
 
 #: contents/ui/configAgenda.qml
-msgid ""
-"Formato:\n"
-"https://calendar.google.com/calendar/ical/seuemail%40gmail.com/public/"
-"basic.ics"
-msgstr ""
+msgid "Ver código do Apps Script"
+msgstr "צפייה בקוד של Apps Script"
+
+#: contents/ui/configAgenda.qml
+msgid "Código do Apps Script"
+msgstr "קוד של Apps Script"
+
+#: contents/ui/configAgenda.qml
+msgid "Apps Script URL:"
+msgstr "כתובת URL של Apps Script:"
+
+#: contents/ui/configAgenda.qml
+msgid "Conectado"
+msgstr "מחובר"
+
+#: contents/ui/configAgenda.qml
+msgid "Conectar"
+msgstr "חבר"
+
+#: contents/ui/configAgenda.qml
+msgid "Desconectar"
+msgstr "נתק"
+
+#: contents/ui/configAgenda.qml
+msgid "Calendários para sincronizar:"
+msgstr "יומנים לסנכרון:"
+
+#: contents/ui/configAgenda.qml
+msgid "Fontes .ics (somente leitura)"
+msgstr "מקורות .ics (קריאה בלבד)"
+
+#: contents/ui/configAgenda.qml
+msgid "Adicione fontes de calendário (.ics) para ver seus compromissos nas abas Agenda e Resumo."
+msgstr "הוסף מקורות לוח שנה (.ics) כדי לראות את האירועים שלך בלשוניות לוח שנה וסיכום."
+
+#: contents/ui/configAgenda.qml
+msgid "1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal"
+msgstr "1. פתח את Google Calendar בדפדפן\n2. לחץ על הגדרות ( גלגל שיניים)\n3. עבור להגדרות לוח שנה\n4. בחר את לוח השנה הרצוי\n5. גלול עד אינטגרציה של לוח שנה\n6. העתק את קישורכתובת ה-iCal הציבורית"
+
+#: contents/ui/configAgenda.qml
+msgid "Formato:\nhttps://calendar.google.com/calendar/ical/seuemail%40gmail.com/public/basic.ics"
+msgstr "פורמט:\nhttps://calendar.google.com/calendar/ical/yourmail%40gmail.com/public/basic.ics"
 
 #: contents/ui/configAgenda.qml
 msgid "Arquivo local"
-msgstr ""
+msgstr "קובץ מקומי"
 
 #: contents/ui/configAgenda.qml
 msgid "Selecionar arquivo .ics..."
-msgstr ""
+msgstr "בחר קובץ .ics..."
 
 #: contents/ui/configAgenda.qml
 msgid "Adicionar URL ou caminho"
-msgstr ""
+msgstr "הוסףכתובת URL או נתיב"
 
 #: contents/ui/configAgenda.qml
 msgid "URL iCal ou caminho local..."
-msgstr ""
+msgstr "כתובת URL iCal או נתיב מקומי..."
 
 #: contents/ui/configAgenda.qml contents/ui/configFeeds.qml
 #: contents/ui/configView.qml contents/ui/pages/NotasPage.qml
@@ -77,91 +142,91 @@ msgstr "הוסף"
 
 #: contents/ui/configAgenda.qml contents/ui/configView.qml
 msgid "Nenhuma fonte adicionada."
-msgstr ""
+msgstr "לא נוסף מקור."
 
 #: contents/ui/configAgenda.qml contents/ui/configView.qml
 msgid "Remover fonte"
-msgstr ""
+msgstr "הסר מקור"
 
 #: contents/ui/configFeeds.qml
 msgid "Informe uma URL válida (ex.: https://exemplo.com/feed.xml)."
-msgstr "הזן כתובת URL תקפה (למשל: https://example.com/feed.xml)."
+msgstr "הזן כתובת URL חוקית (למשל https://example.com/feed.xml)."
 
 #: contents/ui/configFeeds.qml
 msgid "Esse feed já foi adicionado."
-msgstr "ערוץ זה כבר נוסף."
+msgstr "הזמנה זו כבר נוספה."
 
 #: contents/ui/configFeeds.qml
 msgid "Informe uma URL válida."
-msgstr ""
+msgstr "הזן כתובת URL חוקית."
 
 #: contents/ui/configFeeds.qml
 msgid "Falha ao testar: "
-msgstr ""
+msgstr "בדיקה נכשלה: "
 
 #: contents/ui/configFeeds.qml
 msgid "Endereço válido — %1 notícia(s) carregada(s)."
-msgstr ""
+msgstr "כתובת חוקית — נטענו %1 חדשות."
 
 #: contents/ui/configFeeds.qml
 msgid "Tempo esgotado."
-msgstr ""
+msgstr "תם הזמן."
 
 #: contents/ui/configFeeds.qml
 msgid "Falha de conexão."
-msgstr ""
+msgstr "החיבור נכשל."
 
 #: contents/ui/configFeeds.qml
 msgid "Resposta inválida."
-msgstr ""
+msgstr "תגובה לא חוקית."
 
 #: contents/ui/configFeeds.qml
 msgid "Erro HTTP %1."
-msgstr ""
+msgstr "שגיאת HTTP %1."
 
 #: contents/ui/configFeeds.qml
 msgid "Endereço inválido: "
-msgstr ""
+msgstr "כתובת לא חוקית: "
 
 #: contents/ui/configFeeds.qml
 msgid "A cada 5 minutos"
-msgstr ""
+msgstr "כל 5 דקות"
 
 #: contents/ui/configFeeds.qml
 msgid "A cada 10 minutos"
-msgstr ""
+msgstr "כל 10 דקות"
 
 #: contents/ui/configFeeds.qml
 msgid "A cada 15 minutos"
-msgstr ""
+msgstr "כל 15 דקות"
 
 #: contents/ui/configFeeds.qml
 msgid "A cada 30 minutos"
-msgstr ""
+msgstr "כל 30 דקות"
 
 #: contents/ui/configFeeds.qml
 msgid "A cada 1 hora"
-msgstr ""
+msgstr "כל שעה"
 
 #: contents/ui/configFeeds.qml
 msgid "Atualizar manualmente"
-msgstr ""
+msgstr "רענן ידנית"
 
 #: contents/ui/configFeeds.qml
 msgid "Adicionar feed RSS"
-msgstr "הוסף ערוץ RSS"
+msgstr "הוסף הזנת RSS"
 
 #: contents/ui/configFeeds.qml
-msgid "URL do feed (RSS ou Atom)..."
-msgstr ""
+msgid "URL do feed (RSS ou Atom)…"
+msgstr "כתובת URL של ההזנה (RSS או Atom)…"
 
 #: contents/ui/configFeeds.qml
 msgid "Limpar"
 msgstr "נקה"
 
 #: contents/ui/configFeeds.qml
-msgid "Testando..."
-msgstr ""
+msgid "Testando…"
+msgstr "בודק…"
 
 #: contents/ui/configFeeds.qml
 msgid "Testar"
@@ -169,15 +234,15 @@ msgstr "בדוק"
 
 #: contents/ui/configFeeds.qml
 msgid "Seus feeds (%1)"
-msgstr "הערוצים שלך (%1)"
+msgstr "ההזנות שלך (%1)"
 
 #: contents/ui/configFeeds.qml
 msgid "Remover feed"
-msgstr "הסר ערוץ"
+msgstr "הסר הזנה"
 
 #: contents/ui/configFeeds.qml
 msgid "Limite:"
-msgstr ""
+msgstr "מגבלה:"
 
 #: contents/ui/configFeeds.qml
 msgid "notícias"
@@ -189,45 +254,50 @@ msgstr "תצוגה"
 
 #: contents/ui/configFeeds.qml
 msgid "Máximo total de notícias:"
-msgstr ""
+msgstr "מספר חדשות מרבי:"
 
 #: contents/ui/configFeeds.qml
 msgid "Linhas da chamada:"
-msgstr ""
+msgstr "שורות כותרת:"
 
 #: contents/ui/configFeeds.qml contents/ui/configView.qml
 msgid "linhas por notícia"
-msgstr "שורות לחדשה"
+msgstr "שורות לכתבה"
 
 #: contents/ui/configFeeds.qml
 msgid "Atualizar:"
-msgstr ""
+msgstr "רענון:"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Resumo"
-msgstr ""
+msgstr "סיכום"
 
 #: contents/ui/configGeneral.qml contents/ui/configView.qml
 #: contents/ui/main.qml
 msgid "Agenda"
-msgstr ""
+msgstr "לוח שנה"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Tarefas"
-msgstr ""
+msgstr "משימות"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
 #: contents/ui/pages/ClimaPage.qml
 msgid "Clima"
-msgstr ""
+msgstr "מזג אוויר"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Notas"
-msgstr ""
+msgstr "הערות"
+
+#: contents/ui/configGeneral.qml contents/ui/configListas.qml
+#: contents/ui/main.qml
+msgid "Listas"
+msgstr "רשימות"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Notícias"
-msgstr ""
+msgstr "חדשות"
 
 #: contents/ui/configGeneral.qml
 msgid "Escolher ícone"
@@ -239,158 +309,151 @@ msgstr "תמונות (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"
 
 #: contents/ui/configGeneral.qml
 msgid "Configurações gerais do widget."
-msgstr ""
+msgstr "הגדרות כלליות של הווידג׳ט."
 
 #: contents/ui/configGeneral.qml
 msgid "Aba padrão ao abrir:"
-msgstr ""
+msgstr "לשונית ברירת מחדל בפתיחה:"
 
 #: contents/ui/configGeneral.qml
 msgid "Define qual aba será exibida ao clicar no widget."
-msgstr ""
+msgstr "מגדיר איזו לשונית מוצגת בלחיצה על הווידג׳ט."
 
 #: contents/ui/configGeneral.qml
 msgid "Tema:"
-msgstr ""
+msgstr "ערכת נושא:"
 
 #: contents/ui/configGeneral.qml
 msgid "Claro"
-msgstr ""
+msgstr "בהיר"
 
 #: contents/ui/configGeneral.qml
 msgid "Escuro"
-msgstr ""
+msgstr "כהה"
 
 #: contents/ui/configGeneral.qml
 msgid "Automático"
-msgstr ""
+msgstr "אוטומטי"
 
 #: contents/ui/configGeneral.qml
 msgid "Define o tema visual do widget."
-msgstr ""
+msgstr "מגדיר את ערכת הנושא של הווידג׳ט."
 
 #: contents/ui/configGeneral.qml
 msgid "Ícone do widget"
-msgstr "סמל הווידג'ט"
+msgstr "סמל הווידג׳ט"
 
 #: contents/ui/configGeneral.qml
 msgid "Ícone do sistema"
-msgstr ""
+msgstr "סמל מערכת"
 
 #: contents/ui/configGeneral.qml
 msgid "Arquivo..."
-msgstr ""
-
-#: contents/ui/configListas.qml contents/ui/main.qml
-msgid "Listas"
-msgstr ""
+msgstr "קובץ..."
 
 #: contents/ui/configListas.qml
 msgid "Exportar suas listas para arquivo."
-msgstr ""
+msgstr "ייצא את הרשימות שלך לקובץ."
 
 #: contents/ui/configListas.qml
 msgid "Listas disponíveis: %1"
-msgstr ""
+msgstr "רשימות זמינות: %1"
 
 #: contents/ui/configListas.qml
 msgid "Exportar como TXT"
-msgstr ""
+msgstr "ייצוא כ-TXT"
 
 #: contents/ui/configListas.qml
 msgid "Exportar como CSV (Planilha)"
-msgstr ""
+msgstr "ייצוא כ-CSV (גיליון אלקטרוני)"
 
 #: contents/ui/configListas.qml
 msgid "Salvar como TXT"
-msgstr ""
+msgstr "שמור כ-TXT"
 
 #: contents/ui/configListas.qml
 msgid "Arquivo de texto (*.txt)"
-msgstr ""
+msgstr "קובץ טקסט (*.txt)"
 
 #: contents/ui/configListas.qml
 msgid "Salvar como CSV"
-msgstr ""
+msgstr "שמור כ-CSV"
 
 #: contents/ui/configListas.qml
 msgid "Arquivo CSV (*.csv)"
-msgstr ""
+msgstr "קובץ CSV (*.csv)"
 
 #: contents/ui/configView.qml
 msgid "Máximo total de notícias na lista:"
-msgstr "מקסימום חדשות ברשימה:"
+msgstr "מספר חדשות מרבי ברשימה:"
 
 #: contents/ui/configView.qml
 msgid "Linhas da chamada da matéria:"
-msgstr "שורות של כותרת הכתבה:"
+msgstr "שורות כותרת:"
 
 #: contents/ui/configView.qml
 msgid "Este limite vale para a lista inteira, somando todos os feeds. Para ajustar cada fonte individualmente, use a seção “Feeds de notícias”."
-msgstr "מגבלה זו חלה על כל הרשימה, בסיכום כל הערוצים. כדי להתאים כל מקור בנפרד, השתמש בסעיף «ערוצי חדשות»."
+msgstr "מגבלת זו חלה על הרשימה כולה, כולל כל ההזנות. כדי להתאים כל מקור בנפרד, השתמש בחלק \"הזנות חדשות\"."
 
 #: contents/ui/configView.qml
 msgid "As alterações são aplicadas imediatamente ao widget."
-msgstr "השינויים חלים על הווידג'ט מיד."
+msgstr "השינויים מוחלים מיד על הווידג׳ט."
 
 #: contents/ui/configView.qml
-msgid ""
-"Fontes de calendário (.ics): uma URL do Google/CalDAV (definição “URL "
-"pessoal do iCal” / secret) ou um caminho local para um arquivo .ics. Os "
-"compromissos de hoje aparecem nas abas Agenda e Resumo."
-msgstr ""
+msgid "Fontes de calendário (.ics): uma URL do Google/CalDAV (definição “URL pessoal do iCal” / secret) ou um caminho local para um arquivo .ics. Os compromissos de hoje aparecem nas abas Agenda e Resumo."
+msgstr "מקורות לוח שנה (.ics): כתובת URL של Google/CalDAV (\"כתובת URL אישית של iCal\" / סודית) או נתיב מקומי לקובץ .ics. האירועים של היום מופיעים בלשוניות לוח שנה וסיכום."
 
 #: contents/ui/configView.qml
 msgid "URL .ics ou caminho local…"
-msgstr ""
+msgstr "כתובת URL .ics או נתיב מקומי…"
 
 #: contents/ui/configWeather.qml
 msgid "Busque uma cidade e escolha se ela será a principal ou adicional."
-msgstr ""
+msgstr "חפש עיר ובחר אם היא תהיה ראשית או נוספת."
 
 #: contents/ui/configWeather.qml
 msgid "Buscar cidade..."
-msgstr ""
+msgstr "חפש עיר..."
 
 #: contents/ui/configWeather.qml
 msgid "Buscar"
-msgstr ""
+msgstr "חפש"
 
 #: contents/ui/configWeather.qml
 msgid "Obtendo localização..."
-msgstr ""
+msgstr "משיג מיקום..."
 
 #: contents/ui/configWeather.qml
 msgid "Minha localização"
-msgstr ""
+msgstr "המיקום שלי"
 
 #: contents/ui/configWeather.qml
 msgid "Definir como principal"
-msgstr ""
+msgstr "הגדר כראשי"
 
 #: contents/ui/configWeather.qml
 msgid "Adicionar como adicional"
-msgstr ""
+msgstr "הוסף כתוספת"
 
 #: contents/ui/configWeather.qml
 msgid "Cidade principal: %1"
-msgstr ""
+msgstr "עיר ראשית: %1"
 
 #: contents/ui/configWeather.qml
 msgid "Limpar principal"
-msgstr ""
+msgstr "נקה עיר ראשית"
 
 #: contents/ui/configWeather.qml
 msgid "Cidades adicionais:"
-msgstr ""
+msgstr "ערים נוספות:"
 
 #: contents/ui/configWeather.qml
 msgid "Remover"
-msgstr ""
+msgstr "הסר"
 
 #: contents/ui/configWeather.qml
 msgid "Nenhuma cidade adicional."
-msgstr ""
+msgstr "אין ערים נוספות."
 
 #: contents/ui/main.qml
 msgid "tempo esgotado"
@@ -398,11 +461,15 @@ msgstr "תם הזמן"
 
 #: contents/ui/main.qml
 msgid "falha de conexão"
-msgstr "כשל חיבור"
+msgstr "החיבור נכשל"
 
 #: contents/ui/main.qml
 msgid "resposta inválida (não é RSS) ou servidor inacessível"
-msgstr "תגובה לא תקפה (לא RSS) או שרת לא נגיש"
+msgstr "תגובה לא חוקית (לא RSS) או שרת לא נגיש"
+
+#: contents/ui/main.qml
+msgid "abortado"
+msgstr "בוטל"
 
 #: contents/ui/main.qml
 msgid "HTTP %1"
@@ -413,22 +480,20 @@ msgid "%1 — %2"
 msgstr "%1 — %2"
 
 #: contents/ui/main.qml
-msgid "Falha em %1 (%2)"
-msgstr "כשל ב-%1 (%2)"
+msgid "Agenda ignorada: arquivo acima de 2 MB (%1)"
+msgstr "היומן מתעלם: קובץ גדול מ-2 מגה־בייט (%1)"
 
 #: contents/ui/main.qml
 msgid "Aqui estão as principais notícias de seu interesse"
-msgstr ""
+msgstr "הנה החדשות המרכזיות שמעניינות אותך"
 
 #: contents/ui/main.qml
 msgid "Atualizar notícias"
-msgstr "עדכן חדשות"
+msgstr "רענן חדשות"
 
 #: contents/ui/main.qml
-msgid ""
-"Nenhum feed configurado.\n"
-"Adicione feeds RSS nas Configurações."
-msgstr ""
+msgid "Nenhum feed configurado.\nAdicione feeds RSS nas Configurações."
+msgstr "אין הזנות מוגדרות.\nהוסף הזנות RSS בהגדרות."
 
 #: contents/ui/main.qml
 msgid "Nenhuma notícia encontrada"
@@ -440,7 +505,7 @@ msgstr "לא נטענו חדשות. ראה פרטים למטה."
 
 #: contents/ui/main.qml
 msgid "Abrir configurações"
-msgstr ""
+msgstr "פתח הגדרות"
 
 #: contents/ui/main.qml
 msgid "Tentar novamente"
@@ -448,7 +513,7 @@ msgstr "נסה שוב"
 
 #: contents/ui/main.qml
 msgid "Alguns feeds não carregaram:"
-msgstr "חלק מהערוצים לא נטענו:"
+msgstr "חלק מההזנות לא נטענו:"
 
 #: contents/ui/main.qml
 msgid "Atualizado às %1"
@@ -456,203 +521,268 @@ msgstr "עודכן ב-%1"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "Estes são os seus compromissos para esta data..."
-msgstr ""
+msgstr "האירועים שלך בתאריך זה..."
 
-#: contents/ui/pages/AgendaPage.qml contents/ui/pages/ResumoPage.qml
+#: contents/ui/pages/AgendaPage.qml
+msgid "Novo evento"
+msgstr "אירוע חדש"
+
+#: contents/ui/pages/AgendaPage.qml contents/ui/pages/ClimaPage.qml
+#: contents/ui/pages/ResumoPage.qml
 msgid "Hoje"
-msgstr ""
+msgstr "היום"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "Nenhum compromisso neste dia"
-msgstr ""
+msgstr "אין אירועים ביום זה"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "Dia todo"
-msgstr ""
+msgstr "כל היום"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Editar evento"
+msgstr "ערוך אירוע"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Remover evento"
+msgstr "הסר אירוע"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Título do evento"
+msgstr "כותרת האירוע"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Data:"
+msgstr "תאריך:"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Início:"
+msgstr "התחלה:"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Fim:"
+msgstr "סיום:"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Local (opcional)"
+msgstr "מיקום (אופציונלי)"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Descrição (opcional)"
+msgstr "תיאור (אופציונלי)"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Cancelar"
+msgstr "ביטול"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Salvar"
+msgstr "שמירה"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Toque em atualizar para carregar os dados."
-msgstr ""
+msgstr "לחץ על רענון כדי לטעון נתונים."
 
 #: contents/ui/pages/ClimaPage.qml
-msgid ""
-"Nenhuma cidade configurada.\n"
-"Vá em Configurações → Clima para adicionar."
-msgstr ""
+msgid "Nenhuma cidade configurada.\nVá em Configurações → Clima para adicionar."
+msgstr "לא מוגדרת עיר.\nעבור להגדרות → מזג אוויר כדי להוסיף."
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Atualizar"
-msgstr "עדכן"
+msgstr "רענן"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Máx: %1°"
-msgstr ""
+msgstr "מקס: %1°"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Mín: %1°"
-msgstr ""
+msgstr "מינ: %1°"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Umidade"
-msgstr ""
+msgstr "לחות"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Chuva"
-msgstr ""
+msgstr "גשם"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Vento"
-msgstr ""
+msgstr "רוח"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Sol"
-msgstr ""
+msgstr "שמש"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Previsão 7 dias"
-msgstr ""
+msgstr "תחזית ל-7 ימים"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Máx"
-msgstr ""
+msgstr "מקס"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Mín"
-msgstr ""
+msgstr "מינ"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Cidade:"
-msgstr ""
+msgstr "עיר:"
 
 #: contents/ui/pages/ListasPage.qml
 msgid "Suas listas, compras ou qualquer coisa que precise organizar..."
-msgstr ""
+msgstr "הרשימות, הקניות או כל דבר שתרצה לארגן..."
 
 #: contents/ui/pages/ListasPage.qml
 msgid "Nome da nova lista..."
-msgstr ""
+msgstr "שם הרשימה החדשה..."
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Histórico de listas finalizadas"
+msgstr "היסטוריית רשימות שהושלמו"
 
 #: contents/ui/pages/ListasPage.qml
 msgid "itens"
-msgstr ""
+msgstr "פריטים"
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Finalizar lista"
+msgstr "השלמת רשימה"
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Adicionar item"
+msgstr "הוספת פריט"
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Excluir lista"
+msgstr "מחיקת רשימה"
 
 #: contents/ui/pages/ListasPage.qml
 msgid "Novo item..."
-msgstr ""
+msgstr "פריט חדש..."
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Finalizadas (%1)"
+msgstr "מושלמות (%1)"
+
+#: contents/ui/pages/ListasPage.qml contents/ui/pages/ToDoPage.qml
+msgid "Fechar histórico"
+msgstr "סגירת היסטוריה"
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Restaurar lista"
+msgstr "שחזור רשימה"
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Excluir permanentemente"
+msgstr "מחיקה לצמיתות"
 
 #: contents/ui/pages/NotasPage.qml
 msgid "Suas notas, pensamentos ou qualquer coisa que precise anotar..."
-msgstr ""
+msgstr "ההערות, המחשבות או כל דבר שתרצה לכתוב..."
 
 #: contents/ui/pages/NotasPage.qml
 msgid "Escreva sua nota…"
-msgstr ""
+msgstr "כתוב את ההערה שלך…"
 
 #: contents/ui/pages/NotasPage.qml
-msgid ""
-"Nenhuma nota ainda.\n"
-"Escreva uma acima para começar."
-msgstr ""
+msgid "Nenhuma nota ainda.\nEscreva uma acima para começar."
+msgstr "אין הערות עדיין.\nכתוב אחת למעלה כדי להתחיל."
 
 #: contents/ui/pages/NotasPage.qml
 msgid "Apagar"
-msgstr ""
+msgstr "מחק"
 
 #: contents/ui/pages/NotasPage.qml
 msgid "Fechar"
-msgstr ""
+msgstr "סגור"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Toque para atualizar"
-msgstr ""
+msgstr "לחץ לרענון"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Próximos compromissos"
-msgstr ""
+msgstr "אירועים קרובים"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Ver agenda"
-msgstr ""
+msgstr "הצג לוח שנה"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Nenhum compromisso próximo"
-msgstr ""
+msgstr "אין אירועים קרובים"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tarefas do dia"
-msgstr ""
+msgstr "משימות להיום"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Ver to-dos"
-msgstr ""
+msgstr "הצג משימות"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Nenhuma tarefa para hoje"
-msgstr ""
+msgstr "אין משימות להיום"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Dia"
-msgstr ""
+msgstr "יום"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Amanhã"
-msgstr ""
+msgstr "מחר"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
-msgstr ""
+msgstr "משימה חדשה…"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Tarefas de hoje"
-msgstr ""
+msgstr "משימות להיום"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid " pendente(s)"
-msgstr ""
+msgstr " ממתינות"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid ""
-"Nenhuma tarefa ainda.\n"
-"Adicione uma acima para começar o dia."
-msgstr ""
+msgid "Nenhuma tarefa ainda.\nAdicione uma acima para começar o dia."
+msgstr "אין משימות עדיין.\nהוסף אחת למעלה כדי להתחיל את היום."
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover tarefa"
-msgstr ""
+msgstr "הסר משימה"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Tarefas concluídas (%1)"
-msgstr ""
+msgid "Histórico de tarefas concluídas"
+msgstr "היסטוריית משימות שהושלמו"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Concluídas (%1)"
-msgstr ""
+msgstr "הושלמו (%1)"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Restaurar tarefa"
-msgstr ""
+msgstr "שחזר משימה"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
-msgstr ""
+msgstr "הסר לצמיתות"
 
-#: <saudacao dinamica>
-msgid "Bom dia"
-msgstr "בוקר טוב"
+#~ msgid "Falha em %1 (%2)"
+#~ msgstr "כשל ב-%1 (%2)"
 
-#: <saudacao dinamica>
-msgid "Boa tarde"
-msgstr "צהריים טובים"
+#~ msgid "Bom dia"
+#~ msgstr "בוקר טוב"
 
-#: <saudacao dinamica>
-msgid "Boa noite"
-msgstr "ערב טוב"
+#~ msgid "Boa tarde"
+#~ msgstr "צהריים טובים"
 
-#~ msgid "URL do feed (RSS ou Atom)…"
-#~ msgstr "כתובת URL של הערוץ (RSS או Atom)…"
-
-#~ msgid "Testando…"
-#~ msgstr "בודק…"
+#~ msgid "Boa noite"
+#~ msgstr "ערב טוב"
 
 #~ msgid "Atualização automática dos feeds"
 #~ msgstr "עדכון אוטומטי של הערוצים"

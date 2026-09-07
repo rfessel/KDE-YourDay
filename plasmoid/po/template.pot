@@ -11,6 +11,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: contents/ui/configAgenda.qml
+msgid "Conectado ao Google Calendar"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Informe a URL do Apps Script"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Testando conexão..."
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Resposta inválida: "
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Erro ao parsear: "
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Erro HTTP: "
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Erro de conexão. Verifique a URL."
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Tempo esgotado. Verifique a URL e a permissão de acesso."
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Desconectado"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
 msgid "Selecionar arquivo .ics"
 msgstr ""
 
@@ -24,11 +60,51 @@ msgid "Todos os arquivos (*)"
 msgstr ""
 
 #: contents/ui/configAgenda.qml
-msgid "Adicione fontes de calendário (.ics) para ver seus compromissos nas abas Agenda e Resumo."
+msgid "Google Calendar API (sincronização)"
 msgstr ""
 
 #: contents/ui/configAgenda.qml
-msgid "Google Calendar"
+msgid "Para sincronizar eventos, crie um projeto no Google Cloud Console e ative a API do Google Calendar."
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "1. Abra script.google.com\n2. Crie um novo projeto\n3. Cole o código abaixo\n4. No menu lateral, clique em \"Serviços\" (+)\n5. Busque \"Google Calendar API\" e ative\n6. Salve e publique como Web App\n7. Copie a URL gerada"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Ver código do Apps Script"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Código do Apps Script"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Apps Script URL:"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Conectado"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Conectar"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Desconectar"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Calendários para sincronizar:"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Fontes .ics (somente leitura)"
+msgstr ""
+
+#: contents/ui/configAgenda.qml
+msgid "Adicione fontes de calendário (.ics) para ver seus compromissos nas abas Agenda e Resumo."
 msgstr ""
 
 #: contents/ui/configAgenda.qml
@@ -142,7 +218,7 @@ msgid "Adicionar feed RSS"
 msgstr ""
 
 #: contents/ui/configFeeds.qml
-msgid "URL do feed (RSS ou Atom)..."
+msgid "URL do feed (RSS ou Atom)…"
 msgstr ""
 
 #: contents/ui/configFeeds.qml
@@ -150,7 +226,7 @@ msgid "Limpar"
 msgstr ""
 
 #: contents/ui/configFeeds.qml
-msgid "Testando..."
+msgid "Testando…"
 msgstr ""
 
 #: contents/ui/configFeeds.qml
@@ -223,6 +299,12 @@ msgid "Notas"
 msgstr ""
 
 #: contents/ui/configGeneral.qml
+#: contents/ui/configListas.qml
+#: contents/ui/main.qml
+msgid "Listas"
+msgstr ""
+
+#: contents/ui/configGeneral.qml
 #: contents/ui/main.qml
 msgid "Notícias"
 msgstr ""
@@ -277,11 +359,6 @@ msgstr ""
 
 #: contents/ui/configGeneral.qml
 msgid "Arquivo..."
-msgstr ""
-
-#: contents/ui/configListas.qml
-#: contents/ui/main.qml
-msgid "Listas"
 msgstr ""
 
 #: contents/ui/configListas.qml
@@ -401,6 +478,10 @@ msgid "resposta inválida (não é RSS) ou servidor inacessível"
 msgstr ""
 
 #: contents/ui/main.qml
+msgid "abortado"
+msgstr ""
+
+#: contents/ui/main.qml
 msgid "HTTP %1"
 msgstr ""
 
@@ -409,7 +490,7 @@ msgid "%1 — %2"
 msgstr ""
 
 #: contents/ui/main.qml
-msgid "Falha em %1 (%2)"
+msgid "Agenda ignorada: arquivo acima de 2 MB (%1)"
 msgstr ""
 
 #: contents/ui/main.qml
@@ -453,6 +534,11 @@ msgid "Estes são os seus compromissos para esta data..."
 msgstr ""
 
 #: contents/ui/pages/AgendaPage.qml
+msgid "Novo evento"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+#: contents/ui/pages/ClimaPage.qml
 #: contents/ui/pages/ResumoPage.qml
 msgid "Hoje"
 msgstr ""
@@ -463,6 +549,46 @@ msgstr ""
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "Dia todo"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Editar evento"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Remover evento"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Título do evento"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Data:"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Início:"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Fim:"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Local (opcional)"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Descrição (opcional)"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Cancelar"
+msgstr ""
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Salvar"
 msgstr ""
 
 #: contents/ui/pages/ClimaPage.qml
@@ -526,11 +652,44 @@ msgid "Nome da nova lista..."
 msgstr ""
 
 #: contents/ui/pages/ListasPage.qml
+msgid "Histórico de listas finalizadas"
+msgstr ""
+
+#: contents/ui/pages/ListasPage.qml
 msgid "itens"
 msgstr ""
 
 #: contents/ui/pages/ListasPage.qml
+msgid "Finalizar lista"
+msgstr ""
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Adicionar item"
+msgstr ""
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Excluir lista"
+msgstr ""
+
+#: contents/ui/pages/ListasPage.qml
 msgid "Novo item..."
+msgstr ""
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Finalizadas (%1)"
+msgstr ""
+
+#: contents/ui/pages/ListasPage.qml
+#: contents/ui/pages/ToDoPage.qml
+msgid "Fechar histórico"
+msgstr ""
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Restaurar lista"
+msgstr ""
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Excluir permanentemente"
 msgstr ""
 
 #: contents/ui/pages/NotasPage.qml
@@ -610,7 +769,7 @@ msgid "Remover tarefa"
 msgstr ""
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Tarefas concluídas (%1)"
+msgid "Histórico de tarefas concluídas"
 msgstr ""
 
 #: contents/ui/pages/ToDoPage.qml
@@ -623,17 +782,5 @@ msgstr ""
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
-msgstr ""
-
-#: <saudacao dinamica>
-msgid "Bom dia"
-msgstr ""
-
-#: <saudacao dinamica>
-msgid "Boa tarde"
-msgstr ""
-
-#: <saudacao dinamica>
-msgid "Boa noite"
 msgstr ""
 

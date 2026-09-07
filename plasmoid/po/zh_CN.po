@@ -14,59 +14,124 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: contents/ui/configAgenda.qml
+msgid "Conectado ao Google Calendar"
+msgstr "已连接到 Google 日历"
+
+#: contents/ui/configAgenda.qml
+msgid "Informe a URL do Apps Script"
+msgstr "请输入 Apps Script 网址"
+
+#: contents/ui/configAgenda.qml
+msgid "Testando conexão..."
+msgstr "正在测试连接..."
+
+#: contents/ui/configAgenda.qml
+msgid "Resposta inválida: "
+msgstr "无效响应："
+
+#: contents/ui/configAgenda.qml
+msgid "Erro ao parsear: "
+msgstr "解析错误："
+
+#: contents/ui/configAgenda.qml
+msgid "Erro HTTP: "
+msgstr "HTTP 错误："
+
+#: contents/ui/configAgenda.qml
+msgid "Erro de conexão. Verifique a URL."
+msgstr "连接错误。请检查网址。"
+
+#: contents/ui/configAgenda.qml
+msgid "Tempo esgotado. Verifique a URL e a permissão de acesso."
+msgstr "超时。请检查网址和访问权限。"
+
+#: contents/ui/configAgenda.qml
+msgid "Desconectado"
+msgstr "已断开"
+
+#: contents/ui/configAgenda.qml
 msgid "Selecionar arquivo .ics"
-msgstr ""
+msgstr "选择 .ics 文件"
 
 #: contents/ui/configAgenda.qml
 msgid "Calendário (*.ics)"
-msgstr ""
+msgstr "日历 (*.ics)"
 
 #: contents/ui/configAgenda.qml contents/ui/configGeneral.qml
 msgid "Todos os arquivos (*)"
 msgstr "所有文件 (*)"
 
 #: contents/ui/configAgenda.qml
-msgid ""
-"Adicione fontes de calendário (.ics) para ver seus compromissos nas abas "
-"Agenda e Resumo."
-msgstr ""
+msgid "Google Calendar API (sincronização)"
+msgstr "Google Calendar API（同步）"
 
 #: contents/ui/configAgenda.qml
-msgid "Google Calendar"
-msgstr ""
+msgid "Para sincronizar eventos, crie um projeto no Google Cloud Console e ative a API do Google Calendar."
+msgstr "要同步事件，请在 Google Cloud Console 中创建项目并启用 Google Calendar API。"
 
 #: contents/ui/configAgenda.qml
-msgid ""
-"1. Abra o Google Calendar no navegador\n"
-"2. Clique em Configurações (engrenagem)\n"
-"3. Vá em Configurações do calendário\n"
-"4. Selecione o calendário desejado\n"
-"5. Role até Integração de calendário\n"
-"6. Copie o link Endereço público do iCal"
-msgstr ""
+msgid "1. Abra script.google.com\n2. Crie um novo projeto\n3. Cole o código abaixo\n4. No menu lateral, clique em \"Serviços\" (+)\n5. Busque \"Google Calendar API\" e ative\n6. Salve e publique como Web App\n7. Copie a URL gerada"
+msgstr "1. 打开 script.google.com\n2. 创建新项目\n3. 粘贴下面的代码\n4. 在侧边菜单中点击“服务”(+)\n5. 搜索“Google Calendar API”并启用\n6. 保存并发布为 Web 应用\n7. 复制生成的 URL"
 
 #: contents/ui/configAgenda.qml
-msgid ""
-"Formato:\n"
-"https://calendar.google.com/calendar/ical/seuemail%40gmail.com/public/"
-"basic.ics"
-msgstr ""
+msgid "Ver código do Apps Script"
+msgstr "查看 Apps Script 代码"
+
+#: contents/ui/configAgenda.qml
+msgid "Código do Apps Script"
+msgstr "Apps Script 代码"
+
+#: contents/ui/configAgenda.qml
+msgid "Apps Script URL:"
+msgstr "Apps Script 网址："
+
+#: contents/ui/configAgenda.qml
+msgid "Conectado"
+msgstr "已连接"
+
+#: contents/ui/configAgenda.qml
+msgid "Conectar"
+msgstr "连接"
+
+#: contents/ui/configAgenda.qml
+msgid "Desconectar"
+msgstr "断开连接"
+
+#: contents/ui/configAgenda.qml
+msgid "Calendários para sincronizar:"
+msgstr "要同步的日历："
+
+#: contents/ui/configAgenda.qml
+msgid "Fontes .ics (somente leitura)"
+msgstr ".ics 来源（只读）"
+
+#: contents/ui/configAgenda.qml
+msgid "Adicione fontes de calendário (.ics) para ver seus compromissos nas abas Agenda e Resumo."
+msgstr "添加日历来源 (.ics) 以在「日历」和「摘要」标签页中查看您的日程。"
+
+#: contents/ui/configAgenda.qml
+msgid "1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal"
+msgstr "1. 在浏览器中打开 Google Calendar\n2. 点击设置（齿轮图标）\n3. 前往日历设置\n4. 选择所需的日历\n5. 滚动至日历集成\n6. 复制 iCal 公开地址链接"
+
+#: contents/ui/configAgenda.qml
+msgid "Formato:\nhttps://calendar.google.com/calendar/ical/seuemail%40gmail.com/public/basic.ics"
+msgstr "格式:\nhttps://calendar.google.com/calendar/ical/yourmail%40gmail.com/public/basic.ics"
 
 #: contents/ui/configAgenda.qml
 msgid "Arquivo local"
-msgstr ""
+msgstr "本地文件"
 
 #: contents/ui/configAgenda.qml
 msgid "Selecionar arquivo .ics..."
-msgstr ""
+msgstr "选择 .ics 文件..."
 
 #: contents/ui/configAgenda.qml
 msgid "Adicionar URL ou caminho"
-msgstr ""
+msgstr "添加 URL 或路径"
 
 #: contents/ui/configAgenda.qml
 msgid "URL iCal ou caminho local..."
-msgstr ""
+msgstr "iCal URL 或本地路径..."
 
 #: contents/ui/configAgenda.qml contents/ui/configFeeds.qml
 #: contents/ui/configView.qml contents/ui/pages/NotasPage.qml
@@ -76,91 +141,91 @@ msgstr "添加"
 
 #: contents/ui/configAgenda.qml contents/ui/configView.qml
 msgid "Nenhuma fonte adicionada."
-msgstr ""
+msgstr "未添加来源。"
 
 #: contents/ui/configAgenda.qml contents/ui/configView.qml
 msgid "Remover fonte"
-msgstr ""
+msgstr "删除来源"
 
 #: contents/ui/configFeeds.qml
 msgid "Informe uma URL válida (ex.: https://exemplo.com/feed.xml)."
-msgstr "请输入有效的 URL（例如：https://example.com/feed.xml）。"
+msgstr "请输入有效的 URL（例如 https://example.com/feed.xml）。"
 
 #: contents/ui/configFeeds.qml
 msgid "Esse feed já foi adicionado."
-msgstr "该订阅源已添加。"
+msgstr "此订阅源已添加。"
 
 #: contents/ui/configFeeds.qml
 msgid "Informe uma URL válida."
-msgstr ""
+msgstr "请输入有效的 URL。"
 
 #: contents/ui/configFeeds.qml
 msgid "Falha ao testar: "
-msgstr ""
+msgstr "测试失败: "
 
 #: contents/ui/configFeeds.qml
 msgid "Endereço válido — %1 notícia(s) carregada(s)."
-msgstr ""
+msgstr "地址有效 — 已加载 %1 条新闻。"
 
 #: contents/ui/configFeeds.qml
 msgid "Tempo esgotado."
-msgstr ""
+msgstr "连接超时。"
 
 #: contents/ui/configFeeds.qml
 msgid "Falha de conexão."
-msgstr ""
+msgstr "连接失败。"
 
 #: contents/ui/configFeeds.qml
 msgid "Resposta inválida."
-msgstr ""
+msgstr "无效响应。"
 
 #: contents/ui/configFeeds.qml
 msgid "Erro HTTP %1."
-msgstr ""
+msgstr "HTTP 错误 %1。"
 
 #: contents/ui/configFeeds.qml
 msgid "Endereço inválido: "
-msgstr ""
+msgstr "无效地址: "
 
 #: contents/ui/configFeeds.qml
 msgid "A cada 5 minutos"
-msgstr ""
+msgstr "每 5 分钟"
 
 #: contents/ui/configFeeds.qml
 msgid "A cada 10 minutos"
-msgstr ""
+msgstr "每 10 分钟"
 
 #: contents/ui/configFeeds.qml
 msgid "A cada 15 minutos"
-msgstr ""
+msgstr "每 15 分钟"
 
 #: contents/ui/configFeeds.qml
 msgid "A cada 30 minutos"
-msgstr ""
+msgstr "每 30 分钟"
 
 #: contents/ui/configFeeds.qml
 msgid "A cada 1 hora"
-msgstr ""
+msgstr "每 1 小时"
 
 #: contents/ui/configFeeds.qml
 msgid "Atualizar manualmente"
-msgstr ""
+msgstr "手动刷新"
 
 #: contents/ui/configFeeds.qml
 msgid "Adicionar feed RSS"
 msgstr "添加 RSS 订阅源"
 
 #: contents/ui/configFeeds.qml
-msgid "URL do feed (RSS ou Atom)..."
-msgstr ""
+msgid "URL do feed (RSS ou Atom)…"
+msgstr "订阅源 URL（RSS 或 Atom）…"
 
 #: contents/ui/configFeeds.qml
 msgid "Limpar"
 msgstr "清除"
 
 #: contents/ui/configFeeds.qml
-msgid "Testando..."
-msgstr ""
+msgid "Testando…"
+msgstr "测试中…"
 
 #: contents/ui/configFeeds.qml
 msgid "Testar"
@@ -172,11 +237,11 @@ msgstr "您的订阅源 (%1)"
 
 #: contents/ui/configFeeds.qml
 msgid "Remover feed"
-msgstr "移除订阅源"
+msgstr "删除订阅源"
 
 #: contents/ui/configFeeds.qml
 msgid "Limite:"
-msgstr ""
+msgstr "限制:"
 
 #: contents/ui/configFeeds.qml
 msgid "notícias"
@@ -188,45 +253,50 @@ msgstr "显示"
 
 #: contents/ui/configFeeds.qml
 msgid "Máximo total de notícias:"
-msgstr ""
+msgstr "最大新闻总数:"
 
 #: contents/ui/configFeeds.qml
 msgid "Linhas da chamada:"
-msgstr ""
+msgstr "标题行数:"
 
 #: contents/ui/configFeeds.qml contents/ui/configView.qml
 msgid "linhas por notícia"
-msgstr "每条新闻的行数"
+msgstr "每条新闻行数"
 
 #: contents/ui/configFeeds.qml
 msgid "Atualizar:"
-msgstr ""
+msgstr "刷新:"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Resumo"
-msgstr ""
+msgstr "摘要"
 
 #: contents/ui/configGeneral.qml contents/ui/configView.qml
 #: contents/ui/main.qml
 msgid "Agenda"
-msgstr ""
+msgstr "日历"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Tarefas"
-msgstr ""
+msgstr "任务"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
 #: contents/ui/pages/ClimaPage.qml
 msgid "Clima"
-msgstr ""
+msgstr "天气"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Notas"
-msgstr ""
+msgstr "笔记"
+
+#: contents/ui/configGeneral.qml contents/ui/configListas.qml
+#: contents/ui/main.qml
+msgid "Listas"
+msgstr "列表"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Notícias"
-msgstr ""
+msgstr "新闻"
 
 #: contents/ui/configGeneral.qml
 msgid "Escolher ícone"
@@ -238,162 +308,155 @@ msgstr "图片 (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"
 
 #: contents/ui/configGeneral.qml
 msgid "Configurações gerais do widget."
-msgstr ""
+msgstr "小部件的常规设置。"
 
 #: contents/ui/configGeneral.qml
 msgid "Aba padrão ao abrir:"
-msgstr ""
+msgstr "打开时的默认标签页:"
 
 #: contents/ui/configGeneral.qml
 msgid "Define qual aba será exibida ao clicar no widget."
-msgstr ""
+msgstr "设置点击小部件时显示的标签页。"
 
 #: contents/ui/configGeneral.qml
 msgid "Tema:"
-msgstr ""
+msgstr "主题:"
 
 #: contents/ui/configGeneral.qml
 msgid "Claro"
-msgstr ""
+msgstr "浅色"
 
 #: contents/ui/configGeneral.qml
 msgid "Escuro"
-msgstr ""
+msgstr "深色"
 
 #: contents/ui/configGeneral.qml
 msgid "Automático"
-msgstr ""
+msgstr "自动"
 
 #: contents/ui/configGeneral.qml
 msgid "Define o tema visual do widget."
-msgstr ""
+msgstr "设置小部件的视觉主题。"
 
 #: contents/ui/configGeneral.qml
 msgid "Ícone do widget"
-msgstr "小组件图标"
+msgstr "小部件图标"
 
 #: contents/ui/configGeneral.qml
 msgid "Ícone do sistema"
-msgstr ""
+msgstr "系统图标"
 
 #: contents/ui/configGeneral.qml
 msgid "Arquivo..."
-msgstr ""
-
-#: contents/ui/configListas.qml contents/ui/main.qml
-msgid "Listas"
-msgstr ""
+msgstr "文件..."
 
 #: contents/ui/configListas.qml
 msgid "Exportar suas listas para arquivo."
-msgstr ""
+msgstr "将您的列表导出到文件。"
 
 #: contents/ui/configListas.qml
 msgid "Listas disponíveis: %1"
-msgstr ""
+msgstr "可用列表: %1"
 
 #: contents/ui/configListas.qml
 msgid "Exportar como TXT"
-msgstr ""
+msgstr "导出为 TXT"
 
 #: contents/ui/configListas.qml
 msgid "Exportar como CSV (Planilha)"
-msgstr ""
+msgstr "导出为 CSV（电子表格）"
 
 #: contents/ui/configListas.qml
 msgid "Salvar como TXT"
-msgstr ""
+msgstr "保存为 TXT"
 
 #: contents/ui/configListas.qml
 msgid "Arquivo de texto (*.txt)"
-msgstr ""
+msgstr "文本文件 (*.txt)"
 
 #: contents/ui/configListas.qml
 msgid "Salvar como CSV"
-msgstr ""
+msgstr "保存为 CSV"
 
 #: contents/ui/configListas.qml
 msgid "Arquivo CSV (*.csv)"
-msgstr ""
+msgstr "CSV 文件 (*.csv)"
 
 #: contents/ui/configView.qml
 msgid "Máximo total de notícias na lista:"
-msgstr "列表中新闻的最大总数："
+msgstr "列表中最大新闻总数:"
 
 #: contents/ui/configView.qml
 msgid "Linhas da chamada da matéria:"
-msgstr "报道标题行数："
+msgstr "标题行数:"
 
 #: contents/ui/configView.qml
 msgid "Este limite vale para a lista inteira, somando todos os feeds. Para ajustar cada fonte individualmente, use a seção “Feeds de notícias”."
-msgstr "此上限适用于整个列表（所有订阅源之和）。要单独调整每个源，请使用“新闻订阅源”部分。"
+msgstr "此限制适用于整个列表（所有订阅源的总和）。如需单独调整每个来源，请使用「新闻订阅源」部分。"
 
 #: contents/ui/configView.qml
 msgid "As alterações são aplicadas imediatamente ao widget."
-msgstr "更改会立即应用到小组件。"
+msgstr "更改会立即应用到小部件。"
 
 #: contents/ui/configView.qml
-msgid ""
-"Fontes de calendário (.ics): uma URL do Google/CalDAV (definição “URL "
-"pessoal do iCal” / secret) ou um caminho local para um arquivo .ics. Os "
-"compromissos de hoje aparecem nas abas Agenda e Resumo."
-msgstr ""
+msgid "Fontes de calendário (.ics): uma URL do Google/CalDAV (definição “URL pessoal do iCal” / secret) ou um caminho local para um arquivo .ics. Os compromissos de hoje aparecem nas abas Agenda e Resumo."
+msgstr "日历来源 (.ics)：Google/CalDAV 的 URL（「iCal 个人 URL」/ 密钥）或 .ics 文件的本地路径。今日日程显示在「日历」和「摘要」标签页中。"
 
 #: contents/ui/configView.qml
 msgid "URL .ics ou caminho local…"
-msgstr ""
+msgstr "URL .ics 或本地路径…"
 
 #: contents/ui/configWeather.qml
 msgid "Busque uma cidade e escolha se ela será a principal ou adicional."
-msgstr ""
+msgstr "搜索城市并选择它是主要城市还是附加城市。"
 
 #: contents/ui/configWeather.qml
 msgid "Buscar cidade..."
-msgstr ""
+msgstr "搜索城市..."
 
 #: contents/ui/configWeather.qml
 msgid "Buscar"
-msgstr ""
+msgstr "搜索"
 
 #: contents/ui/configWeather.qml
 msgid "Obtendo localização..."
-msgstr ""
+msgstr "正在获取位置..."
 
 #: contents/ui/configWeather.qml
 msgid "Minha localização"
-msgstr ""
+msgstr "我的位置"
 
 #: contents/ui/configWeather.qml
 msgid "Definir como principal"
-msgstr ""
+msgstr "设为主要城市"
 
 #: contents/ui/configWeather.qml
 msgid "Adicionar como adicional"
-msgstr ""
+msgstr "添加为附加城市"
 
 #: contents/ui/configWeather.qml
 msgid "Cidade principal: %1"
-msgstr ""
+msgstr "主要城市: %1"
 
 #: contents/ui/configWeather.qml
 msgid "Limpar principal"
-msgstr ""
+msgstr "清除主要城市"
 
 #: contents/ui/configWeather.qml
 msgid "Cidades adicionais:"
-msgstr ""
+msgstr "附加城市:"
 
 #: contents/ui/configWeather.qml
 msgid "Remover"
-msgstr ""
+msgstr "移除"
 
 #: contents/ui/configWeather.qml
 msgid "Nenhuma cidade adicional."
-msgstr ""
+msgstr "没有附加城市。"
 
 #: contents/ui/main.qml
 msgid "tempo esgotado"
-msgstr "超时"
+msgstr "连接超时"
 
 #: contents/ui/main.qml
 msgid "falha de conexão"
@@ -401,7 +464,11 @@ msgstr "连接失败"
 
 #: contents/ui/main.qml
 msgid "resposta inválida (não é RSS) ou servidor inacessível"
-msgstr "响应无效（不是 RSS）或无法访问服务器"
+msgstr "无效响应（非 RSS）或服务器不可达"
+
+#: contents/ui/main.qml
+msgid "abortado"
+msgstr "已中止"
 
 #: contents/ui/main.qml
 msgid "HTTP %1"
@@ -412,22 +479,20 @@ msgid "%1 — %2"
 msgstr "%1 — %2"
 
 #: contents/ui/main.qml
-msgid "Falha em %1 (%2)"
-msgstr "%1 出错 (%2)"
+msgid "Agenda ignorada: arquivo acima de 2 MB (%1)"
+msgstr "日历已忽略：文件超过 2 MB（%1）"
 
 #: contents/ui/main.qml
 msgid "Aqui estão as principais notícias de seu interesse"
-msgstr ""
+msgstr "以下是您感兴趣的主要新闻"
 
 #: contents/ui/main.qml
 msgid "Atualizar notícias"
-msgstr "更新新闻"
+msgstr "刷新新闻"
 
 #: contents/ui/main.qml
-msgid ""
-"Nenhum feed configurado.\n"
-"Adicione feeds RSS nas Configurações."
-msgstr ""
+msgid "Nenhum feed configurado.\nAdicione feeds RSS nas Configurações."
+msgstr "未配置订阅源。\n请在设置中添加 RSS 订阅源。"
 
 #: contents/ui/main.qml
 msgid "Nenhuma notícia encontrada"
@@ -435,11 +500,11 @@ msgstr "未找到新闻"
 
 #: contents/ui/main.qml
 msgid "Nenhuma notícia carregada. Veja os detalhes abaixo."
-msgstr "未加载新闻。请查看下方详情。"
+msgstr "未加载新闻。详情请见下方。"
 
 #: contents/ui/main.qml
 msgid "Abrir configurações"
-msgstr ""
+msgstr "打开设置"
 
 #: contents/ui/main.qml
 msgid "Tentar novamente"
@@ -447,7 +512,7 @@ msgstr "重试"
 
 #: contents/ui/main.qml
 msgid "Alguns feeds não carregaram:"
-msgstr "部分订阅源未加载："
+msgstr "部分订阅源加载失败:"
 
 #: contents/ui/main.qml
 msgid "Atualizado às %1"
@@ -455,203 +520,268 @@ msgstr "更新于 %1"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "Estes são os seus compromissos para esta data..."
-msgstr ""
+msgstr "这是您该日期的日程安排..."
 
-#: contents/ui/pages/AgendaPage.qml contents/ui/pages/ResumoPage.qml
+#: contents/ui/pages/AgendaPage.qml
+msgid "Novo evento"
+msgstr "新建事件"
+
+#: contents/ui/pages/AgendaPage.qml contents/ui/pages/ClimaPage.qml
+#: contents/ui/pages/ResumoPage.qml
 msgid "Hoje"
-msgstr ""
+msgstr "今天"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "Nenhum compromisso neste dia"
-msgstr ""
+msgstr "这一天没有日程"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "Dia todo"
-msgstr ""
+msgstr "全天"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Editar evento"
+msgstr "编辑事件"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Remover evento"
+msgstr "删除事件"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Título do evento"
+msgstr "事件标题"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Data:"
+msgstr "日期:"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Início:"
+msgstr "开始:"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Fim:"
+msgstr "结束:"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Local (opcional)"
+msgstr "地点（可选）"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Descrição (opcional)"
+msgstr "描述（可选）"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Cancelar"
+msgstr "取消"
+
+#: contents/ui/pages/AgendaPage.qml
+msgid "Salvar"
+msgstr "保存"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Toque em atualizar para carregar os dados."
-msgstr ""
+msgstr "点击刷新以加载数据。"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid ""
-"Nenhuma cidade configurada.\n"
-"Vá em Configurações → Clima para adicionar."
-msgstr ""
+msgid "Nenhuma cidade configurada.\nVá em Configurações → Clima para adicionar."
+msgstr "未配置城市。\n请前往设置 → 天气添加城市。"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Atualizar"
-msgstr "更新"
+msgstr "刷新"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Máx: %1°"
-msgstr ""
+msgstr "最高: %1°"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Mín: %1°"
-msgstr ""
+msgstr "最低: %1°"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Umidade"
-msgstr ""
+msgstr "湿度"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Chuva"
-msgstr ""
+msgstr "降雨"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Vento"
-msgstr ""
+msgstr "风力"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Sol"
-msgstr ""
+msgstr "日照"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Previsão 7 dias"
-msgstr ""
+msgstr "7天预报"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Máx"
-msgstr ""
+msgstr "最高"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Mín"
-msgstr ""
+msgstr "最低"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Cidade:"
-msgstr ""
+msgstr "城市:"
 
 #: contents/ui/pages/ListasPage.qml
 msgid "Suas listas, compras ou qualquer coisa que precise organizar..."
-msgstr ""
+msgstr "您的列表、购物或任何需要整理的内容..."
 
 #: contents/ui/pages/ListasPage.qml
 msgid "Nome da nova lista..."
-msgstr ""
+msgstr "新列表名称..."
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Histórico de listas finalizadas"
+msgstr "已完成列表的历史记录"
 
 #: contents/ui/pages/ListasPage.qml
 msgid "itens"
-msgstr ""
+msgstr "项"
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Finalizar lista"
+msgstr "完成列表"
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Adicionar item"
+msgstr "添加项目"
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Excluir lista"
+msgstr "删除列表"
 
 #: contents/ui/pages/ListasPage.qml
 msgid "Novo item..."
-msgstr ""
+msgstr "新项目..."
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Finalizadas (%1)"
+msgstr "已完成（%1）"
+
+#: contents/ui/pages/ListasPage.qml contents/ui/pages/ToDoPage.qml
+msgid "Fechar histórico"
+msgstr "关闭历史记录"
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Restaurar lista"
+msgstr "恢复列表"
+
+#: contents/ui/pages/ListasPage.qml
+msgid "Excluir permanentemente"
+msgstr "永久删除"
 
 #: contents/ui/pages/NotasPage.qml
 msgid "Suas notas, pensamentos ou qualquer coisa que precise anotar..."
-msgstr ""
+msgstr "您的笔记、想法或任何需要记录的内容..."
 
 #: contents/ui/pages/NotasPage.qml
 msgid "Escreva sua nota…"
-msgstr ""
+msgstr "写下您的笔记…"
 
 #: contents/ui/pages/NotasPage.qml
-msgid ""
-"Nenhuma nota ainda.\n"
-"Escreva uma acima para começar."
-msgstr ""
+msgid "Nenhuma nota ainda.\nEscreva uma acima para começar."
+msgstr "暂无笔记。\n请在上方写下一条以开始。"
 
 #: contents/ui/pages/NotasPage.qml
 msgid "Apagar"
-msgstr ""
+msgstr "删除"
 
 #: contents/ui/pages/NotasPage.qml
 msgid "Fechar"
-msgstr ""
+msgstr "关闭"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Toque para atualizar"
-msgstr ""
+msgstr "点击刷新"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Próximos compromissos"
-msgstr ""
+msgstr "即将到来的日程"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Ver agenda"
-msgstr ""
+msgstr "查看日历"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Nenhum compromisso próximo"
-msgstr ""
+msgstr "没有即将到来的日程"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tarefas do dia"
-msgstr ""
+msgstr "今日任务"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Ver to-dos"
-msgstr ""
+msgstr "查看任务"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Nenhuma tarefa para hoje"
-msgstr ""
+msgstr "今天没有任务"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Dia"
-msgstr ""
+msgstr "日"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Amanhã"
-msgstr ""
+msgstr "明天"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Nova tarefa…"
-msgstr ""
+msgstr "新任务…"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Tarefas de hoje"
-msgstr ""
+msgstr "今日任务"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid " pendente(s)"
-msgstr ""
+msgstr " 待处理"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid ""
-"Nenhuma tarefa ainda.\n"
-"Adicione uma acima para começar o dia."
-msgstr ""
+msgid "Nenhuma tarefa ainda.\nAdicione uma acima para começar o dia."
+msgstr "暂无任务。\n请在上方添加一项以开始新的一天。"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover tarefa"
-msgstr ""
+msgstr "删除任务"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Tarefas concluídas (%1)"
-msgstr ""
+msgid "Histórico de tarefas concluídas"
+msgstr "已完成任务的历史记录"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Concluídas (%1)"
-msgstr ""
+msgstr "已完成 (%1)"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Restaurar tarefa"
-msgstr ""
+msgstr "恢复任务"
 
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
-msgstr ""
+msgstr "永久删除"
 
-#: <saudacao dinamica>
-msgid "Bom dia"
-msgstr "早上好"
+#~ msgid "Falha em %1 (%2)"
+#~ msgstr "%1 出错 (%2)"
 
-#: <saudacao dinamica>
-msgid "Boa tarde"
-msgstr "下午好"
+#~ msgid "Bom dia"
+#~ msgstr "早上好"
 
-#: <saudacao dinamica>
-msgid "Boa noite"
-msgstr "晚上好"
+#~ msgid "Boa tarde"
+#~ msgstr "下午好"
 
-#~ msgid "URL do feed (RSS ou Atom)…"
-#~ msgstr "订阅源 URL（RSS 或 Atom）…"
-
-#~ msgid "Testando…"
-#~ msgstr "正在测试…"
+#~ msgid "Boa noite"
+#~ msgstr "晚上好"
 
 #~ msgid "Atualização automática dos feeds"
 #~ msgstr "订阅源自动更新"
