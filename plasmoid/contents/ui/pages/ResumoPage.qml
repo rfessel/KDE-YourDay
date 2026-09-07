@@ -36,16 +36,25 @@ Item {
     readonly property int timeTick: root.clockTick
 
     readonly property var nextEvents: {
+        // page.events já vem cortado na janela (mês passado .. +3 meses);
+        // aqui filtra só o que termina a partir de hoje e limita a 3.
+        // Como agendaEvents vem ordenado por start, o 1º break já garante
+        // os 3 menores starts dentre os candidatos (sem varrer tudo).
         var now = Date.now();
+        var d = new Date();
+        var todayStart = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0).getTime();
         var upcoming = [];
-        for (var i = 0; i < page.events.length; i++) {
-            var ev = page.events[i];
-            if (ev.end > now) {
+        var evs = page.events;
+        for (var i = 0; i < evs.length; i++) {
+            var ev = evs[i];
+            if (ev.end > todayStart) {
                 upcoming.push(ev);
+                if (upcoming.length >= 3) {
+                    break;
+                }
             }
         }
-        upcoming.sort(function(a, b) { return a.start - b.start; });
-        return upcoming.slice(0, 3);
+        return upcoming;
     }
 
     readonly property var rootGreeting: ({
