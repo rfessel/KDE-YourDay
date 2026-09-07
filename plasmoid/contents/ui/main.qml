@@ -38,6 +38,10 @@ PlasmoidItem {
         }
         return v;
     })()
+    // Estado do auto-refresh de notícias extraído para feeds.js para virar
+    // teste real: refreshMinutes=0 ⇒ running=false (não regressar o busy loop).
+    readonly property var newsRefresh: FeedParser.newsRefreshState(
+        root.refreshMinutesValue, root.currentFeeds().length > 0)
     readonly property var slicedAll: root.allItems.slice(0, Number(Plasmoid.configuration.maxItems) || 50)
 
     // Abas já visitadas: depois da 1ª visita a página permanece carregada.
@@ -210,7 +214,7 @@ PlasmoidItem {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
-                root.currentTab = Plasmoid.configuration.defaultTab || 0;
+                root.currentTab = FeedParser.clampDefaultTab(Plasmoid.configuration.defaultTab);
                 root.expanded = !root.expanded;
             }
             Accessible.name: Plasmoid.title
@@ -846,30 +850,42 @@ PlasmoidItem {
         // Inclui eventos locais
         var all = root.localEvents.slice();
 
-        // Busca eventos do Google Calendar via Apps Script
-        var gcalPending = 0;
-        function gcalDone() {
+        // Tarefas pendentes até publicar: 1 XHR por fonte .ics + 1 por
+        // calendário Google. O gate (calendar.js) garante que o finalize
+        // roda exatamente uma vez — um handler que dispare em vários
+        // readyStates intermediários não zera o pending antes da hora.
+        var totalWork = sources.length;
+
+        var scriptUrl = "";
+        var selectedCals = [];
+        if (root.isGCalAuthenticated()) {
+            scriptUrl = Plasmoid.configuration.gcalClientId;
+            selectedCals = (Plasmoid.configuration.gcalSelectedCalendars || "").split(",").filter(function(s) { return s; });
+            if (selectedCals.length === 0) selectedCals = ["primary"];
+            totalWork += selectedCals.length;
+        }
+
+        function publish() {
             if (gen !== root.agendaGen) {
                 return;
             }
-            gcalPending--;
-            if (gcalPending <= 0 && pendingCount <= 0) {
-                all = all.filter(inWindow);
-                all.sort(function(a, b) { return (a.start - b.start); });
-                root.agendaEvents = all;
-                root.agendaLoading = false;
-            }
+            all = all.filter(inWindow);
+            all.sort(function(a, b) { return (a.start - b.start); });
+            root.agendaEvents = all;
+            root.agendaLoading = false;
+        }
+
+        var gate = Cal.makeCompleter(totalWork, publish);
+        if (totalWork === 0) {
+            // Sem fontes: o gate já publicou só os eventos locais.
+            return;
         }
 
         if (root.isGCalAuthenticated()) {
-            var scriptUrl = Plasmoid.configuration.gcalClientId;
             var now = new Date();
             var weekAgo = new Date(now.getTime() - 7 * 86400000);
             var weekAhead = new Date(now.getTime() + 30 * 86400000);
-            var selectedCals = (Plasmoid.configuration.gcalSelectedCalendars || "").split(",").filter(function(s) { return s; });
-            if (selectedCals.length === 0) selectedCals = ["primary"];
 
-            gcalPending = selectedCals.length;
             for (var c = 0; c < selectedCals.length; c++) {
                 (function(calId) {
                     var url = scriptUrl + "?action=list&calendarId=" + encodeURIComponent(calId) + "&timeMin=" + encodeURIComponent(weekAgo.toISOString()) + "&timeMax=" + encodeURIComponent(weekAhead.toISOString());
@@ -907,33 +923,12 @@ PlasmoidItem {
                                 console.warn("[yourday] erro parse Google Calendar:", e);
                             }
                         }
-                        gcalDone();
+                        gate.next();
                     };
-                    xhr.onerror = function() { gcalDone(); };
-                    xhr.ontimeout = function() { gcalDone(); };
+                    xhr.onerror = function() { gate.next(); };
+                    xhr.ontimeout = function() { gate.next(); };
                     xhr.send(null);
                 })(selectedCals[c]);
-            }
-        }
-
-        if (sources.length === 0 && gcalPending === 0) {
-            all = all.filter(inWindow);
-            root.agendaEvents = all;
-            root.agendaLoading = false;
-            return;
-        }
-
-        var pendingCount = sources.length;
-
-        function pendingDone() {
-            if (gen !== root.agendaGen) {
-                return;
-            }
-            pendingCount--;
-            if (pendingCount <= 0 && gcalPending <= 0) {
-                all = all.filter(inWindow);
-                root.agendaEvents = all;
-                root.agendaLoading = false;
             }
         }
 
@@ -941,7 +936,7 @@ PlasmoidItem {
             (function(src) {
                 var url = String(src).trim();
                 if (!url) {
-                    pendingDone();
+                    gate.next();
                     return;
                 }
                 function handleText(text) {
@@ -953,7 +948,7 @@ PlasmoidItem {
                             }
                             root.agendaNotice = root.t("Agenda ignorada: arquivo acima de 2 MB (%1)").arg(shortUrl);
                             console.warn("[yourday] agenda recusada por tamanho:", url, String(text.length));
-                            pendingDone();
+                            gate.next();
                             return;
                         }
                         var evs = Cal.allEvents(text, url, win.fromMs, win.toMs);
@@ -961,23 +956,23 @@ PlasmoidItem {
                     } catch (e) {
                         console.warn("[yourday] erro parse agenda:", url, String(e));
                     }
-                    pendingDone();
+                    gate.next();
                 }
                 if (/^https?:\/\//i.test(url)) {
                     Cal.loadUrl(url, handleText, function(code) {
                         console.warn("[yourday] agenda falhou fetch:", url, code);
-                        pendingDone();
+                        gate.next();
                     });
                 } else {
                     // Arquivo local: tenta XHR file:// (pode falhar) e segue.
                     try {
                         Cal.loadUrl("file://" + url, handleText, function(code) {
                             console.warn("[yourday] agenda falhou local:", url, code);
-                            pendingDone();
+                            gate.next();
                         });
                     } catch (e) {
                         console.warn("[yourday] agenda local inválida:", url, String(e));
-                        pendingDone();
+                        gate.next();
                     }
                 }
             })(sources[i]);
@@ -1271,7 +1266,7 @@ PlasmoidItem {
     Connections {
         target: Plasmoid
         function onActivated() {
-            root.currentTab = Plasmoid.configuration.defaultTab || 0;
+            root.currentTab = FeedParser.clampDefaultTab(Plasmoid.configuration.defaultTab);
             // Sem tempestade ao abrir: só refaz rede se a última foi há > 5 min.
             var now = Date.now();
             if (now - root.lastAgendaRefresh >= 5 * 60000) root.refreshAgenda();
@@ -1283,9 +1278,9 @@ PlasmoidItem {
     Timer {
         id: refreshTimer
         objectName: "refreshTimer"
-        interval: root.refreshMinutesValue > 0 ? root.refreshMinutesValue * 60000 : 0
+        interval: root.newsRefresh.interval
         repeat: true
-        running: root.refreshMinutesValue > 0 && root.currentFeeds().length > 0
+        running: root.newsRefresh.running
         onTriggered: root.loadAll()
     }
 
