@@ -177,7 +177,15 @@ PlasmoidItem {
     }
 
     // ---------- tooltip (data completa, clima e hora) ---------------------
-    readonly property string tooltipDateText: Qt.formatDate(root.now, Qt.DefaultLocaleLongDate)
+    function fullDateText() {
+        var fmt = "dddd, d MMMM yyyy";
+        if (Qt.locale().name.indexOf("pt") === 0) {
+            fmt = "dddd, d 'de' MMMM 'de' yyyy";
+        }
+        return root.now.toLocaleDateString(Qt.locale(), fmt);
+    }
+
+    readonly property string tooltipDateText: root.fullDateText()
     readonly property string tooltipTimeText: Qt.formatTime(root.now, "HH:mm")
 
     function tooltipWeatherLine() {
@@ -202,7 +210,7 @@ PlasmoidItem {
 
     toolTipMainText: root.tooltipMain
     toolTipSubText: root.tooltipSub
-    toolTipTextFormat: Text.RichText
+    toolTipTextFormat: Text.StyledText
 
     onChosenIconChanged: Plasmoid.icon = root.chosenIcon
     property string errorText: ""
