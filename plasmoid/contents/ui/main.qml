@@ -1735,7 +1735,6 @@ PlasmoidItem {
                     weatherData: root.weatherData
                     weatherLoading: root.weatherLoading
                     weatherCity: Plasmoid.configuration.weatherCity || ""
-                    onToggleTodoId: function(index) { root.toggleTodo(index); }
                 }
 
                 Loader {

@@ -28,8 +28,6 @@ Item {
     required property bool weatherLoading
     required property string weatherCity
 
-    signal toggleTodoId(int index)
-
     // Re-renderiza saudação/data a cada tick do relógio (1 min).
     readonly property int timeTick: root.clockTick
 
@@ -352,22 +350,6 @@ Item {
                     wrapMode: Text.Wrap
                     font.pixelSize: 13
                     font.strikeout: model.done
-                }
-
-                // Símbolo de concluído no fim da linha (à direita)
-                PlasmaComponents3.ToolButton {
-                    Layout.preferredWidth: 24
-                    Layout.preferredHeight: 24
-                    Accessible.name: i18n("Concluir tarefa")
-                    onClicked: page.toggleTodoId(index)
-                    contentItem: Text {
-                        text: model.done ? "✔" : "○"
-                        color: model.done ? "#34a853" : (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                        font.pixelSize: 15
-                        font.bold: model.done
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
                 }
             }
         }
