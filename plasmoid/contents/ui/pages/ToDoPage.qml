@@ -126,7 +126,7 @@ Item {
                 spacing: Kirigami.Units.smallSpacing
 
                 QQC2.CheckBox {
-                    checked: false
+                    checked: model.done
                     onClicked: page.toggleTodo(index)
                     Accessible.name: model.text
                 }

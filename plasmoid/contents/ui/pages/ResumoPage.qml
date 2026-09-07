@@ -301,12 +301,13 @@ Item {
     Component {
         id: todoRow
         RowLayout {
+            required property int index
             required property var model
             Layout.fillWidth: true
             spacing: Kirigami.Units.smallSpacing
 
             QQC2.CheckBox {
-                checked: false
+                checked: model.done
                 onToggled: page.toggleTodoId(index)
             }
             PlasmaComponents3.Label {
