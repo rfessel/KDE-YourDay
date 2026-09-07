@@ -360,6 +360,27 @@ msgid "Define o tema visual do widget."
 msgstr ""
 
 #: contents/ui/configGeneral.qml
+msgid "Aparência no painel:"
+msgstr ""
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone"
+msgstr ""
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone interativo"
+msgstr ""
+
+#: contents/ui/configGeneral.qml
+msgid "Relógio"
+msgstr ""
+
+#: contents/ui/configGeneral.qml
+msgid ""
+"Define o que é exibido quando o widget fica na área de sistema (painel)."
+msgstr ""
+
+#: contents/ui/configGeneral.qml
 msgid "Ícone do widget"
 msgstr ""
 
@@ -748,19 +769,11 @@ msgid "Próximos compromissos"
 msgstr ""
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Ver agenda"
-msgstr ""
-
-#: contents/ui/pages/ResumoPage.qml
 msgid "Nenhum compromisso próximo"
 msgstr ""
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tarefas do dia"
-msgstr ""
-
-#: contents/ui/pages/ResumoPage.qml
-msgid "Ver to-dos"
 msgstr ""
 
 #: contents/ui/pages/ResumoPage.qml

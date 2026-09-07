@@ -32,6 +32,10 @@
       <default></default>
       <label>Caminho (URL) de uma imagem usada como ícone do widget; vazio = usar iconName.</label>
     </entry>
+    <entry name="compactMode" type="Int">
+      <default>1</default>
+      <label>Aparência compacta no painel (0=Ícone, 1=Ícone interativo, 2=Relógio com data).</label>
+    </entry>
     <entry name="agendaSources" type="StringList">
       <label>Lista de fontes da agenda: URLs .ics (CalDAV/Google export) ou caminhos de arquivo .ics locais.</label>
     </entry>

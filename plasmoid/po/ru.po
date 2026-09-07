@@ -341,6 +341,26 @@ msgid "Define o tema visual do widget."
 msgstr "Определяет визуальную тему виджета."
 
 #: contents/ui/configGeneral.qml
+msgid "Aparência no painel:"
+msgstr "Внешний вид на панели:"
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone"
+msgstr "Значок"
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone interativo"
+msgstr "Интерактивный значок"
+
+#: contents/ui/configGeneral.qml
+msgid "Relógio"
+msgstr "Часы"
+
+#: contents/ui/configGeneral.qml
+msgid "Define o que é exibido quando o widget fica na área de sistema (painel)."
+msgstr "Определяет, что показывается, когда виджет находится на панели (в системном трее)."
+
+#: contents/ui/configGeneral.qml
 msgid "Ícone do widget"
 msgstr "Иконка виджета"
 
@@ -718,20 +738,12 @@ msgid "Próximos compromissos"
 msgstr "Ближайшие события"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Ver agenda"
-msgstr "Показать календарь"
-
-#: contents/ui/pages/ResumoPage.qml
 msgid "Nenhum compromisso próximo"
 msgstr "Нет предстоящих событий"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tarefas do dia"
 msgstr "Задачи на сегодня"
-
-#: contents/ui/pages/ResumoPage.qml
-msgid "Ver to-dos"
-msgstr "Показать задачи"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Nenhuma tarefa para hoje"
@@ -788,6 +800,12 @@ msgstr "Восстановить задачу"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "Удалить безвозвратно"
+
+#~ msgid "Ver agenda"
+#~ msgstr "Показать календарь"
+
+#~ msgid "Ver to-dos"
+#~ msgstr "Показать задачи"
 
 #~ msgid "Falha em %1 (%2)"
 #~ msgstr "Ошибка в %1 (%2)"

@@ -189,13 +189,49 @@ PlasmoidItem {
 
     compactRepresentation: Item {
         id: compactRoot
-        Layout.minimumWidth: Kirigami.Units.iconSizes.medium
+        readonly property int compactMode: (function() {
+            var m = Plasmoid.configuration.compactMode;
+            return (m === 0 || m === 2) ? m : 1;
+        })()
+
+        Layout.minimumWidth: compactRoot.compactMode === 2 ? Kirigami.Units.gridUnit * 4 : Kirigami.Units.iconSizes.medium
         Layout.minimumHeight: Kirigami.Units.iconSizes.medium
-        Layout.preferredWidth: Kirigami.Units.iconSizes.large
+        Layout.preferredWidth: compactRoot.compactMode === 2 ? Kirigami.Units.gridUnit * 5 : Kirigami.Units.iconSizes.large
         Layout.preferredHeight: Kirigami.Units.iconSizes.large
 
+        // Modo "Ícone": ícone estático escolhido nas configurações.
+        Item {
+            anchors.fill: parent
+            visible: compactRoot.compactMode === 0
+
+            Kirigami.Icon {
+                anchors.fill: parent
+                anchors.margins: 4
+                visible: root.iconResolvedSource === ""
+                source: root.iconResolvedName
+            }
+
+            Image {
+                anchors.fill: parent
+                anchors.margins: 4
+                visible: root.iconResolvedSource !== ""
+                source: root.iconResolvedSource
+                sourceSize: Qt.size(parent.width, parent.height)
+                fillMode: Image.PreserveAspectFit
+                smooth: true
+            }
+        }
+
+        // Modo "Ícone interativo": calendário com o dia atual.
         DayIcon {
             anchors.fill: parent
+            visible: compactRoot.compactMode === 1
+        }
+
+        // Modo "Relógio": horas com a data completa embaixo.
+        CompactClock {
+            anchors.fill: parent
+            visible: compactRoot.compactMode === 2
         }
 
         MouseArea {

@@ -111,6 +111,37 @@ KCM.SimpleKCM {
             wrapMode: Text.Wrap
         }
 
+        // Aparência compacta (painel)
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.topMargin: Kirigami.Units.largeSpacing
+            spacing: Kirigami.Units.smallSpacing
+
+            PlasmaComponents3.Label {
+                text: i18n("Aparência no painel:")
+                font.pixelSize: 13
+            }
+
+            Item { Layout.fillWidth: true }
+
+            QQC2.ComboBox {
+                model: [i18n("Ícone"), i18n("Ícone interativo"), i18n("Relógio")]
+                currentIndex: {
+                    var m = Plasmoid.configuration.compactMode;
+                    return (m === 0 || m === 2) ? m : 1;
+                }
+                onActivated: Plasmoid.configuration.compactMode = index
+            }
+        }
+
+        QQC2.Label {
+            Layout.fillWidth: true
+            text: i18n("Define o que é exibido quando o widget fica na área de sistema (painel).")
+            opacity: 0.5
+            font.pixelSize: 11
+            wrapMode: Text.Wrap
+        }
+
         // Idioma segue o locale do sistema (catálogos .mo do Plasma).
 
         Kirigami.Separator {

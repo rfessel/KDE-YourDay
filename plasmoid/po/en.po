@@ -340,6 +340,26 @@ msgid "Define o tema visual do widget."
 msgstr "Defines the visual theme of the widget."
 
 #: contents/ui/configGeneral.qml
+msgid "Aparência no painel:"
+msgstr "Panel appearance:"
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone"
+msgstr "Icon"
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone interativo"
+msgstr "Interactive icon"
+
+#: contents/ui/configGeneral.qml
+msgid "Relógio"
+msgstr "Clock"
+
+#: contents/ui/configGeneral.qml
+msgid "Define o que é exibido quando o widget fica na área de sistema (painel)."
+msgstr "Defines what is shown when the widget is in the system tray (panel)."
+
+#: contents/ui/configGeneral.qml
 msgid "Ícone do widget"
 msgstr "Widget icon"
 
@@ -717,20 +737,12 @@ msgid "Próximos compromissos"
 msgstr "Upcoming appointments"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Ver agenda"
-msgstr "View calendar"
-
-#: contents/ui/pages/ResumoPage.qml
 msgid "Nenhum compromisso próximo"
 msgstr "No upcoming appointments"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tarefas do dia"
 msgstr "Today's tasks"
-
-#: contents/ui/pages/ResumoPage.qml
-msgid "Ver to-dos"
-msgstr "View to-dos"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Nenhuma tarefa para hoje"
@@ -787,6 +799,12 @@ msgstr "Restore task"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "Remove permanently"
+
+#~ msgid "Ver agenda"
+#~ msgstr "View calendar"
+
+#~ msgid "Ver to-dos"
+#~ msgstr "View to-dos"
 
 #~ msgid "URL do feed (RSS ou Atom)..."
 #~ msgstr "Feed URL (RSS or Atom)..."

@@ -340,6 +340,26 @@ msgid "Define o tema visual do widget."
 msgstr "ウィジェットのビジュアルテーマを設定します。"
 
 #: contents/ui/configGeneral.qml
+msgid "Aparência no painel:"
+msgstr "パネルでの表示："
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone"
+msgstr "アイコン"
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone interativo"
+msgstr "対話型アイコン"
+
+#: contents/ui/configGeneral.qml
+msgid "Relógio"
+msgstr "時計"
+
+#: contents/ui/configGeneral.qml
+msgid "Define o que é exibido quando o widget fica na área de sistema (painel)."
+msgstr "ウィジェットがシステムトレイ（パネル）にあるときに表示する内容を定義します。"
+
+#: contents/ui/configGeneral.qml
 msgid "Ícone do widget"
 msgstr "ウィジェットアイコン"
 
@@ -717,20 +737,12 @@ msgid "Próximos compromissos"
 msgstr "今後の予定"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Ver agenda"
-msgstr "カレンダーを表示"
-
-#: contents/ui/pages/ResumoPage.qml
 msgid "Nenhum compromisso próximo"
 msgstr "予定はありません"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tarefas do dia"
 msgstr "今日のタスク"
-
-#: contents/ui/pages/ResumoPage.qml
-msgid "Ver to-dos"
-msgstr "タスクを表示"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Nenhuma tarefa para hoje"
@@ -787,6 +799,12 @@ msgstr "タスクを復元"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "完全に削除"
+
+#~ msgid "Ver agenda"
+#~ msgstr "カレンダーを表示"
+
+#~ msgid "Ver to-dos"
+#~ msgstr "タスクを表示"
 
 #~ msgid "Falha em %1 (%2)"
 #~ msgstr "%1 でエラー (%2)"

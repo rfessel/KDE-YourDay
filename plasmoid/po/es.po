@@ -340,6 +340,26 @@ msgid "Define o tema visual do widget."
 msgstr "Define el tema visual del widget."
 
 #: contents/ui/configGeneral.qml
+msgid "Aparência no painel:"
+msgstr "Apariencia en el panel:"
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone"
+msgstr "Icono"
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone interativo"
+msgstr "Icono interactivo"
+
+#: contents/ui/configGeneral.qml
+msgid "Relógio"
+msgstr "Reloj"
+
+#: contents/ui/configGeneral.qml
+msgid "Define o que é exibido quando o widget fica na área de sistema (painel)."
+msgstr "Define lo que se muestra cuando el widget está en el área del sistema (panel)."
+
+#: contents/ui/configGeneral.qml
 msgid "Ícone do widget"
 msgstr "Icono del widget"
 
@@ -717,20 +737,12 @@ msgid "Próximos compromissos"
 msgstr "Próximos compromisos"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Ver agenda"
-msgstr "Ver calendario"
-
-#: contents/ui/pages/ResumoPage.qml
 msgid "Nenhum compromisso próximo"
 msgstr "Ningún compromiso próximo"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tarefas do dia"
 msgstr "Tareas del día"
-
-#: contents/ui/pages/ResumoPage.qml
-msgid "Ver to-dos"
-msgstr "Ver tareas"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Nenhuma tarefa para hoje"
@@ -787,6 +799,12 @@ msgstr "Restaurar tarea"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "Eliminar permanentemente"
+
+#~ msgid "Ver agenda"
+#~ msgstr "Ver calendario"
+
+#~ msgid "Ver to-dos"
+#~ msgstr "Ver tareas"
 
 #~ msgid "Falha em %1 (%2)"
 #~ msgstr "Fallo en %1 (%2)"

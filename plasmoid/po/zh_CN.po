@@ -339,6 +339,26 @@ msgid "Define o tema visual do widget."
 msgstr "设置小部件的视觉主题。"
 
 #: contents/ui/configGeneral.qml
+msgid "Aparência no painel:"
+msgstr "面板外观："
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone"
+msgstr "图标"
+
+#: contents/ui/configGeneral.qml
+msgid "Ícone interativo"
+msgstr "互动图标"
+
+#: contents/ui/configGeneral.qml
+msgid "Relógio"
+msgstr "时钟"
+
+#: contents/ui/configGeneral.qml
+msgid "Define o que é exibido quando o widget fica na área de sistema (painel)."
+msgstr "定义当小组件位于系统托盘（面板）中时显示的内容。"
+
+#: contents/ui/configGeneral.qml
 msgid "Ícone do widget"
 msgstr "小部件图标"
 
@@ -716,20 +736,12 @@ msgid "Próximos compromissos"
 msgstr "即将到来的日程"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Ver agenda"
-msgstr "查看日历"
-
-#: contents/ui/pages/ResumoPage.qml
 msgid "Nenhum compromisso próximo"
 msgstr "没有即将到来的日程"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tarefas do dia"
 msgstr "今日任务"
-
-#: contents/ui/pages/ResumoPage.qml
-msgid "Ver to-dos"
-msgstr "查看任务"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Nenhuma tarefa para hoje"
@@ -786,6 +798,12 @@ msgstr "恢复任务"
 #: contents/ui/pages/ToDoPage.qml
 msgid "Remover permanentemente"
 msgstr "永久删除"
+
+#~ msgid "Ver agenda"
+#~ msgstr "查看日历"
+
+#~ msgid "Ver to-dos"
+#~ msgstr "查看任务"
 
 #~ msgid "Falha em %1 (%2)"
 #~ msgstr "%1 出错 (%2)"
