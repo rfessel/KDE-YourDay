@@ -25,6 +25,22 @@ Item {
     property var noteColors: ["#FFF9C4", "#C8E6C9", "#BBDEFB", "#F8BBD0", "#E1BEE7", "#FFE0B2"]
     property string selectedColor: noteColors[0]
     property int popupIndex: -1
+    property int pendingNoteIndex: -1
+
+    // Debounce: só grava a nota 400ms depois da última tecla.
+    Timer {
+        id: noteSaveTimer
+        interval: 400
+        repeat: false
+        onTriggered: {
+            if (page.pendingNoteIndex >= 0
+                    && notePopup.visible
+                    && notePopup.currentIndex === page.pendingNoteIndex) {
+                page.updateNoteText(page.pendingNoteIndex, noteTextField.text);
+            }
+            page.pendingNoteIndex = -1;
+        }
+    }
 
     Flickable {
         anchors.fill: parent
@@ -221,7 +237,8 @@ Item {
                     background: Item {}
                     onTextChanged: {
                         if (notePopup.currentIndex >= 0) {
-                            page.updateNoteText(notePopup.currentIndex, text);
+                            page.pendingNoteIndex = notePopup.currentIndex;
+                            noteSaveTimer.restart();
                         }
                     }
                 }
