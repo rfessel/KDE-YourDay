@@ -79,6 +79,10 @@
       <default>2</default>
       <label>Modo de tema (0=Claro, 1=Escuro, 2=Automático).</label>
     </entry>
+    <entry name="accentColor" type="String">
+      <default></default>
+      <label>Cor de destaque personalizada (hex #rrggbb); vazio = cor de destaque do sistema.</label>
+    </entry>
     <entry name="localEvents" type="StringList">
       <label>Eventos locais criados pelo usuário, serializados como JSON.</label>
     </entry>

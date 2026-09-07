@@ -183,6 +183,33 @@ PlasmoidItem {
         return luminance < 0.5;
     }
 
+    // ---------- paleta de destaque compartilhada (V2) ---------------------
+    // Cor de acento única definida aqui e reutilizada pelas páginas, para o
+    // visual ficar consistente (tema claro/escuro) sem repetir Qt.rgba no
+    // código. accentMain = cor principal; accentSoft = fundo translúcido;
+    // accentBorder = borda do destaque. Config accentColor (vazio = sistema).
+    readonly property color accentMain: {
+        var custom = String(Plasmoid.configuration.accentColor || "").trim();
+        if (custom !== "") {
+            return custom;
+        }
+        return root.isDarkTheme
+            ? Qt.rgba(0.55, 0.75, 1.0, 1)
+            : Qt.rgba(0.15, 0.5, 0.85, 1);
+    }
+    readonly property color accentSoft: Qt.alpha(root.accentMain, root.isDarkTheme ? 0.14 : 0.10)
+    readonly property color accentBorder: Qt.alpha(root.accentMain, root.isDarkTheme ? 0.45 : 0.55)
+    readonly property color textMain: root.isDarkTheme
+        ? Qt.rgba(0.93, 0.93, 0.93, 1)
+        : Qt.rgba(0.13, 0.13, 0.13, 1)
+    readonly property color textSubtle: Qt.alpha(root.textMain, 0.6)
+    readonly property color cardBg: root.isDarkTheme
+        ? Qt.rgba(0.22, 0.22, 0.22, 1)
+        : Qt.rgba(1, 1, 1, 1)
+    readonly property color cardBorder: Qt.alpha(root.isDarkTheme
+        ? Qt.rgba(0.4, 0.4, 0.4, 1)
+        : Qt.rgba(0.75, 0.75, 0.75, 1), 0.5)
+
     // ---------- tooltip (data completa, clima e hora) ---------------------
     function fullDateText() {
         var fmt = "dddd, d MMMM yyyy";
@@ -1582,20 +1609,34 @@ PlasmoidItem {
         Rectangle {
             id: card
             required property var model
+            readonly property bool featured: index === 0
 
             readonly property bool hovered: cardMouse.containsMouse
 
             width: ListView.view.width
-            height: Math.max(120, Math.min(212, contentText.implicitHeight + 16))
+            height: card.featured
+                   ? Math.max(180, Math.min(300, contentText.implicitHeight + 24))
+                   : Math.max(120, Math.min(212, contentText.implicitHeight + 16))
             radius: Kirigami.Units.roundIconSize / 4
             color: card.hovered
-                   ? Qt.alpha(root.isDarkTheme ? Qt.rgba(0.35, 0.65, 0.9, 1) : Qt.rgba(0.15, 0.5, 0.85, 1), 0.15)
-                   : (root.isDarkTheme ? Qt.rgba(0.22, 0.22, 0.22, 1) : Qt.rgba(1, 1, 1, 1))
+                   ? root.accentSoft
+                   : root.cardBg
             border.width: 1
-            border.color: Qt.alpha(root.isDarkTheme ? Qt.rgba(0.4, 0.4, 0.4, 1) : Qt.rgba(0.75, 0.75, 0.75, 1), 0.5)
+            border.color: card.featured ? root.accentBorder : root.cardBorder
 
             Behavior on color {
                 enabled: false // Desabilitado para performance
+            }
+
+            // Destaque editorial para a notícia principal (índice 0).
+            Rectangle {
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                width: card.featured ? 4 : 0
+                radius: 2
+                color: root.accentMain
+                visible: card.featured
             }
 
             Rectangle {
@@ -1605,8 +1646,8 @@ PlasmoidItem {
                 anchors.topMargin: 8
                 anchors.right: parent.right
                 anchors.rightMargin: 8
-                width: 84
-                height: 96
+                width: card.featured ? 128 : 84
+                height: card.featured ? 150 : 96
                 radius: 6
                 color: root.isDarkTheme ? Qt.rgba(0.28, 0.28, 0.28, 1) : Qt.rgba(0.92, 0.92, 0.92, 1)
                 clip: true
@@ -1620,7 +1661,7 @@ PlasmoidItem {
                             id: thumbImg
                             anchors.fill: parent
                             source: card.model.image
-                            sourceSize: Qt.size(84, 96)
+                            sourceSize: card.featured ? Qt.size(128, 150) : Qt.size(84, 96)
                             fillMode: Image.PreserveAspectCrop
                             asynchronous: true
                             cache: true
@@ -1648,11 +1689,11 @@ PlasmoidItem {
                     width: contentText.width
                     text: card.model.title
                     wrapMode: Text.Wrap
-                    maximumLineCount: 2
+                    maximumLineCount: card.featured ? 3 : 2
                     elide: Text.ElideRight
                     font.weight: Font.DemiBold
-                    font.pixelSize: 13
-                    color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                    font.pixelSize: card.featured ? 16 : 13
+                    color: root.textMain
                 }
 
                 PlasmaComponents3.Label {
@@ -1661,10 +1702,10 @@ PlasmoidItem {
                     visible: card.model.summary !== "" && root.headlineLines > 0
                     text: card.model.summary
                     wrapMode: Text.Wrap
-                    maximumLineCount: root.headlineLines
+                    maximumLineCount: root.headlineLines + (card.featured ? 1 : 0)
                     elide: Text.ElideRight
-                    font.pixelSize: 12
-                    color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.72)
+                    font.pixelSize: card.featured ? 13 : 12
+                    color: Qt.alpha(root.textMain, 0.72)
                 }
 
                 Row {
@@ -1719,14 +1760,29 @@ PlasmoidItem {
             Layout.preferredHeight: 52
             Layout.alignment: Qt.AlignHCenter
 
+            readonly property bool activeItem: index === root.currentTab
+
+            // Indicador deslizante: barra vertical na borda esquerda que
+            // aparece/fade com a aba ativa.
+            Rectangle {
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                width: 3
+                height: parent.activeItem ? 26 : 18
+                radius: 1.5
+                color: root.accentMain
+                opacity: parent.activeItem ? 1.0 : 0.0
+                Behavior on opacity { NumberAnimation { duration: 180 } }
+                Behavior on height { NumberAnimation { duration: 180 } }
+            }
+
             Rectangle {
                 anchors.fill: parent
                 radius: Kirigami.Units.smallSpacing
-                color: index === root.currentTab
-                       ? Qt.alpha((root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)), 0.25)
-                       : "transparent"
-                border.width: index === root.currentTab ? 1 : 0
-                border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)), 0.5)
+                color: parent.activeItem ? root.accentSoft : "transparent"
+                border.width: parent.activeItem ? 1 : 0
+                border.color: parent.activeItem ? root.accentBorder : "transparent"
+                Behavior on color { ColorAnimation { duration: 150 } }
             }
 
             MouseArea {
@@ -1746,7 +1802,7 @@ PlasmoidItem {
                     width: 20
                     height: 20
                     source: modelData.icon
-                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                    color: root.textMain
                     isMask: true
                 }
 
@@ -1755,7 +1811,7 @@ PlasmoidItem {
                     text: modelData.label
                     font.pixelSize: 10
                     opacity: index === root.currentTab ? 1.0 : 0.65
-                    color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                    color: root.textMain
                 }
             }
         }
@@ -1808,11 +1864,31 @@ PlasmoidItem {
             }
 
             // Conteúdo das abas
-            StackLayout {
-                id: tabStack
+            Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                currentIndex: root.currentTab
+                clip: true
+
+                // Transição suave de troca de aba: fade rápido + leve slide.
+                readonly property int activeTab: root.currentTab
+                onActiveTabChanged: {
+                    fadeAnim.from = 0.0;
+                    fadeAnim.to = 1.0;
+                    fadeAnim.restart();
+                }
+                opacity: 1.0
+                NumberAnimation {
+                    id: fadeAnim
+                    target: tabFade
+                    property: "opacity"
+                    duration: 140
+                    easing.type: Easing.OutCubic
+                }
+
+                StackLayout {
+                    id: tabFade
+                    anchors.fill: parent
+                    currentIndex: root.currentTab
 
                 ResumoPage {
                     events: root.agendaEvents
@@ -2020,8 +2096,9 @@ PlasmoidItem {
                 }
             }
                     }
-                }
-        }
+                } // StackLayout (tabFade)
+                } // Item wrapper (fade)
+        } // RowLayout (abas + conteúdo)
 
         // ---------------- Rodapé (apenas na aba Notícias)
         ColumnLayout {

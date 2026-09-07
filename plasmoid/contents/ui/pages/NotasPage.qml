@@ -78,8 +78,7 @@ Item {
                 Layout.fillWidth: true
                 Layout.topMargin: Kirigami.Units.smallSpacing
                 Layout.bottomMargin: Kirigami.Units.smallSpacing
-                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                opacity: 0.15
+                color: Qt.alpha(root.textMain, 0.15)
             }
 
             // Entrada para nova nota
@@ -87,9 +86,9 @@ Item {
                 Layout.fillWidth: true
                 Layout.preferredHeight: newNoteCol.implicitHeight + Kirigami.Units.largeSpacing * 2
                 radius: Kirigami.Units.largeSpacing
-                color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)), 0.08)
+                color: root.accentSoft
                 border.width: 1
-                border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)), 0.15)
+                border.color: Qt.alpha(root.accentMain, 0.18)
 
                 ColumnLayout {
                     id: newNoteCol
@@ -118,8 +117,8 @@ Item {
                                 color: modelData
                                 border.width: page.selectedColor === modelData ? 2 : 1
                                 border.color: page.selectedColor === modelData
-                                             ? (root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1))
-                                             : Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.2)
+                                             ? root.accentMain
+                                             : Qt.alpha(root.textMain, 0.2)
 
                                 MouseArea {
                                     anchors.fill: parent
@@ -155,31 +154,50 @@ Item {
                 Repeater {
                     model: page.notes
 
-                    Rectangle {
+                    Item {
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 100
-                        radius: Kirigami.Units.smallSpacing
-                        color: (page.notes[index] && page.notes[index].color) || page.noteColors[0]
-                        border.width: 1
-                        border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.12)
+                        Layout.preferredHeight: 104
 
-                        PlasmaComponents3.Label {
+                        // Sombra suave atrás do post-it (compensada para baixo/direita).
+                        Rectangle {
+                            id: noteShadow
                             anchors.fill: parent
-                            anchors.margins: Kirigami.Units.smallSpacing
-                            text: page.notes[index] ? page.notes[index].text : ""
-                            font.pixelSize: 13
-                            color: "#1a1a1a"
-                            wrapMode: Text.Wrap
-                            maximumLineCount: 4
-                            elide: Text.ElideRight
+                            anchors.rightMargin: -3
+                            anchors.bottomMargin: -3
+                            radius: Kirigami.Units.smallSpacing
+                            color: root.isDarkTheme ? Qt.rgba(0, 0, 0, 0.30) : Qt.rgba(0, 0, 0, 0.12)
                         }
 
-                        MouseArea {
+                        Rectangle {
+                            id: noteCard
                             anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            onClicked: {
-                                page.popupIndex = index;
-                                notePopup.open();
+                            anchors.leftMargin: 0
+                            anchors.topMargin: 0
+                            anchors.rightMargin: 3
+                            anchors.bottomMargin: 3
+                            radius: Kirigami.Units.smallSpacing
+                            color: (page.notes[index] && page.notes[index].color) || page.noteColors[0]
+                            border.width: 1
+                            border.color: Qt.alpha(root.textMain, 0.12)
+
+                            PlasmaComponents3.Label {
+                                anchors.fill: parent
+                                anchors.margins: Kirigami.Units.smallSpacing
+                                text: page.notes[index] ? page.notes[index].text : ""
+                                font.pixelSize: 13
+                                color: "#1a1a1a"
+                                wrapMode: Text.Wrap
+                                maximumLineCount: 4
+                                elide: Text.ElideRight
+                            }
+
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: {
+                                    page.popupIndex = index;
+                                    notePopup.open();
+                                }
                             }
                         }
                     }
@@ -224,7 +242,7 @@ Item {
                 radius: Kirigami.Units.smallSpacing
                 color: notePopup.currentColor
                 border.width: 1
-                border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.1)
+                border.color: Qt.alpha(root.textMain, 0.1)
 
                 QQC2.TextArea {
                     id: noteTextField
@@ -258,8 +276,8 @@ Item {
                         color: modelData
                         border.width: notePopup.currentColor === modelData ? 3 : 1
                         border.color: notePopup.currentColor === modelData
-                                     ? (root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1))
-                                     : Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.2)
+                                     ? root.accentMain
+                                     : Qt.alpha(root.textMain, 0.2)
 
                         MouseArea {
                             anchors.fill: parent

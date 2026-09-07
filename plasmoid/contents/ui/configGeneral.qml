@@ -26,6 +26,8 @@ KCM.SimpleKCM {
         return (c && c.trim() !== "") ? c : Plasmoid.icon;
     }
 
+    readonly property var accentOptions: [i18n("Padrão (sistema)"), "#1e88e5", "#8e24aa", "#e53935", "#43a047", "#fb8c00", "#00acc1", "#d81b60"]
+
     FileDialog {
         id: iconFileDialog
         title: i18n("Escolher ícone")
@@ -106,6 +108,47 @@ KCM.SimpleKCM {
         QQC2.Label {
             Layout.fillWidth: true
             text: i18n("Define o tema visual do widget.")
+            opacity: 0.5
+            font.pixelSize: 11
+            wrapMode: Text.Wrap
+        }
+
+        // Cor de destaque
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.topMargin: Kirigami.Units.largeSpacing
+            spacing: Kirigami.Units.smallSpacing
+
+            PlasmaComponents3.Label {
+                text: i18n("Cor de destaque:")
+                font.pixelSize: 13
+            }
+
+            Item { Layout.fillWidth: true }
+
+            QQC2.ComboBox {
+                Layout.preferredWidth: 120
+                model: page.accentOptions
+                currentIndex: {
+                    var c = String(Plasmoid.configuration.accentColor || "").trim();
+                    var idx = 0;
+                    for (var i = 1; i < page.accentOptions.length; i++) {
+                        if (page.accentOptions[i] === c) {
+                            idx = i;
+                            break;
+                        }
+                    }
+                    return idx;
+                }
+                onActivated: {
+                    Plasmoid.configuration.accentColor = (index === 0) ? "" : page.accentOptions[index];
+                }
+            }
+        }
+
+        QQC2.Label {
+            Layout.fillWidth: true
+            text: i18n("Cor usada nos destaques do widget. Vazio = cor de destaque do sistema.")
             opacity: 0.5
             font.pixelSize: 11
             wrapMode: Text.Wrap

@@ -211,6 +211,35 @@ Item {
         return ev && ev.source === "local";
     }
 
+    // Cor do evento: a do calendário Google quando disponível (source "google"
+    // traz color), senão verde de "Local".
+    function eventColor(ev) {
+        if (ev && ev.color) {
+            return ev.color;
+        }
+        return "#34a853";
+    }
+
+    // Cores distintas dos eventos que caem no dia y/m/d (bolinhas do grid).
+    function dayColors(y, m, d) {
+        var start = new Date(y, m, d, 0, 0, 0, 0).getTime();
+        var end = start + 86400000;
+        var out = [];
+        var seen = {};
+        var evs = page.events;
+        for (var i = 0; i < evs.length; i++) {
+            var ev = evs[i];
+            if (ev.start < end && ev.end > start) {
+                var c = page.eventColor(ev);
+                if (!seen[c]) {
+                    seen[c] = true;
+                    out.push(c);
+                }
+            }
+        }
+        return out;
+    }
+
     Component.onCompleted: updateSelectedEvents()
 
     onEventsChanged: updateSelectedEvents()
@@ -374,6 +403,7 @@ Item {
                         required property var model
                         property bool isCurrentDay: model.day > 0 && isToday(model.year, model.month, model.day)
                         property bool isSelectedDay: model.day > 0 && isSelected(model.year, model.month, model.day)
+                        property var dotColors: model.day > 0 ? page.dayColors(model.year, model.month, model.day) : []
 
                         width: 32
                         height: 28
@@ -390,6 +420,24 @@ Item {
                             font.weight: isCurrentDay ? Font.Bold : Font.Normal
                             color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                             opacity: model.day > 0 ? 1.0 : 0.0
+                        }
+
+                        // Bolinhas coloridas: uma por calendário com compromisso no dia.
+                        Row {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.bottom: parent.bottom
+                            anchors.bottomMargin: 2
+                            spacing: 3
+                            visible: page.dotColors.length > 0
+                            Repeater {
+                                model: page.dotColors.slice(0, 3)
+                                Rectangle {
+                                    width: 4
+                                    height: 4
+                                    radius: 2
+                                    color: modelData
+                                }
+                            }
                         }
 
                         MouseArea {

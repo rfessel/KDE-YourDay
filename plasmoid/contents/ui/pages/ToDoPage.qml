@@ -157,15 +157,16 @@ Item {
     Component {
         id: todoDelegate
         Rectangle {
+            id: todoRect
             required property int index
             required property var model
 
             Layout.fillWidth: true
             Layout.preferredHeight: Math.max(38, row.implicitHeight + Kirigami.Units.smallSpacing * 2)
             radius: Kirigami.Units.smallSpacing
-            color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.05)
+            color: Qt.alpha(root.textMain, 0.05)
             border.width: 1
-            border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.08)
+            border.color: Qt.alpha(root.textMain, 0.08)
 
             RowLayout {
                 id: row
@@ -180,13 +181,13 @@ Item {
                     visible: model.createdAt > 0
 
                     PlasmaComponents3.Label {
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                        color: root.textMain
                         text: i18n("Incluído em")
                         font.pixelSize: 9
                         opacity: 0.55
                     }
                     PlasmaComponents3.Label {
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                        color: root.textMain
                         text: page.createdDateText(model.createdAt)
                         font.pixelSize: 10
                         font.weight: Font.DemiBold
@@ -195,16 +196,17 @@ Item {
 
                 QQC2.CheckBox {
                     checked: model.done
-                    onClicked: page.toggleTodo(index)
+                    onClicked: completeAnim.restart()
                     Accessible.name: model.text
                 }
 
                 PlasmaComponents3.Label {
+                    id: todoLabel
                     Layout.fillWidth: true
                     text: model.text
                     wrapMode: Text.Wrap
                     font.pixelSize: 13
-                    color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                    color: root.textMain
                 }
 
                 // Prazo de término (quando definido)
@@ -234,6 +236,35 @@ Item {
                     onClicked: page.removeTodo(index)
                 }
             }
+
+            // Risca o texto (strike-through animado) ao concluir, depois some.
+            Rectangle {
+                id: strikeLine
+                visible: lineWidth > 0
+                height: 2
+                radius: 1
+                color: Qt.alpha(root.textMain, 0.6)
+                anchors.left: todoLabel.left
+                anchors.verticalCenter: todoLabel.verticalCenter
+                property real lineWidth: 0
+                width: lineWidth
+            }
+
+            SequentialAnimation {
+                id: completeAnim
+                PropertyAnimation {
+                    target: strikeLine
+                    property: "lineWidth"
+                    to: todoLabel.width
+                    duration: 220
+                    easing.type: Easing.InOutQuad
+                }
+                ParallelAnimation {
+                    NumberAnimation { target: todoRect; property: "opacity"; to: 0; duration: 150 }
+                    NumberAnimation { target: todoRect; property: "scale"; to: 0.98; duration: 150 }
+                }
+                ScriptAction { script: page.toggleTodo(index) }
+            }
         }
     }
 
@@ -253,6 +284,7 @@ Item {
 
 // Popup de histórico (abre ao pressionar o botão)
 Rectangle {
+    id: historyPopup
     visible: page.showHistory && page.completedTodos.length > 0
     anchors.left: parent.left
     anchors.right: parent.right
@@ -264,8 +296,12 @@ Rectangle {
     radius: Kirigami.Units.largeSpacing
     color: (root.isDarkTheme ? Qt.rgba(0.22, 0.22, 0.22, 1) : Qt.rgba(0.95, 0.95, 0.95, 1))
     border.width: 1
-    border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.15)
+    border.color: Qt.alpha(root.textMain, 0.15)
     z: 10
+    opacity: page.showHistory ? 1 : 0
+    scale: page.showHistory ? 1 : 0.98
+    Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+    Behavior on scale { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
 
     ColumnLayout {
         id: historyPopupCol

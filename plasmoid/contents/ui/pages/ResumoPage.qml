@@ -31,6 +31,23 @@ Item {
     // Re-renderiza saudação/data a cada tick do relógio (1 min).
     readonly property int timeTick: root.clockTick
 
+    // Fração do dia já decorrida (0..1) para o anel de progresso do herói.
+    // Depende de root.clockTick (tick do relógio) só para re-avaliar; o valor
+    // é calculado de Date.now().
+    readonly property real dayProgress: {
+        var _tick = root.clockTick;
+        var now = new Date();
+        var start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0).getTime();
+        var end = start + 86400000;
+        var frac = (now.getTime() - start) / (end - start);
+        return Math.max(0, Math.min(1, frac));
+    }
+
+    function dayProgressText() {
+        var pct = Math.round(page.dayProgress * 100);
+        return pct + "%";
+    }
+
     readonly property var nextEvents: {
         // page.events já vem cortado na janela (mês passado .. +3 meses);
         // aqui filtra só o que termina a partir de hoje e limita a 3.
@@ -103,96 +120,154 @@ Item {
             anchors.topMargin: Kirigami.Units.smallSpacing
             spacing: Kirigami.Units.largeSpacing
 
-            // Saudação + clima (mesma linha)
+            // Saudação + progresso do dia + clima (herói com gradiente suave)
             KCoreAddons.KUser {
                 id: kuserInfo
             }
-            RowLayout {
+            Rectangle {
                 Layout.fillWidth: true
-                spacing: 0
-
-                // Saudação à esquerda
-                ColumnLayout {
-                    spacing: 2
-
-                    PlasmaExtras.Heading {
-                        level: 3
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                        text: (page.timeTick, rootGreeting.capFirst(rootGreeting.greeting()) + ", " + rootGreeting.capFirst(kuserInfo.loginName))
-                    }
-                    PlasmaComponents3.Label {
-                        text: (page.timeTick, new Date().toLocaleString(Qt.locale(), "dddd, dd MMMM"))
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                        opacity: 0.6
-                        font.pixelSize: 11
-                    }
+                radius: Kirigami.Units.largeSpacing
+                color: "transparent"
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: root.accentSoft }
+                    GradientStop { position: 1.0; color: "transparent" }
                 }
 
-                Item { Layout.fillWidth: true }
+                RowLayout {
+                    anchors.fill: parent
+                    Layout.fillWidth: true
+                    spacing: Kirigami.Units.largeSpacing
+                    anchors.margins: Kirigami.Units.largeSpacing
 
-                // Clima à direita (bloco único)
-                ColumnLayout {
-                    visible: page.weatherCity !== "" && !page.weatherLoading && page.weatherData !== null
-                    spacing: 2
-
-                    // Cidade + ícone + temperatura (mesma linha)
-                    RowLayout {
-                        spacing: Kirigami.Units.smallSpacing
-
-                        PlasmaExtras.Heading {
-                            level: 3
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                            text: page.weatherCity
-                        }
-
-                        Kirigami.Icon {
-                            source: Weather.weatherIconWithRain(page.weatherData ? page.weatherData.code : 0, page.weatherData ? page.weatherData.isNight : false, page.weatherData ? page.weatherData.rain : 0, page.weatherData ? page.weatherData.showers : 0)
-                            Layout.preferredWidth: 24
-                            Layout.preferredHeight: 24
-                        }
+                    // Saudação à esquerda
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 2
 
                         PlasmaExtras.Heading {
                             level: 3
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                            text: page.weatherData ? Math.round(page.weatherData.temp) + "°C" : ""
+                            color: root.textMain
+                            text: (page.timeTick, rootGreeting.capFirst(rootGreeting.greeting()) + ", " + rootGreeting.capFirst(kuserInfo.loginName))
+                        }
+                        PlasmaComponents3.Label {
+                            text: (page.timeTick, new Date().toLocaleString(Qt.locale(), "dddd, dd MMMM"))
+                            color: root.textMain
+                            opacity: 0.6
+                            font.pixelSize: 11
                         }
                     }
 
-                    // Max/min/chuva
-                    PlasmaComponents3.Label {
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                        text: {
-                            if (!page.weatherData) return "";
-                            var s = "Max " + Math.round(page.weatherData.maxTemp) + "°  Min " + Math.round(page.weatherData.minTemp) + "°";
-                            if (page.weatherData.rainChance !== undefined && page.weatherData.rainChance !== null) {
-                                s += "  ·  Chuva " + page.weatherData.rainChance + "%";
+                    // Anel de progresso do dia
+                    ColumnLayout {
+                        Layout.alignment: Qt.AlignVCenter
+                        spacing: 2
+
+                        Canvas {
+                            id: progressRing
+                            Layout.preferredWidth: 46
+                            Layout.preferredHeight: 46
+                            Layout.alignment: Qt.AlignHCenter
+
+                            readonly property real fraction: page.dayProgress
+                            onFractionChanged: requestPaint()
+
+                            onPaint: {
+                                var ctx = getContext("2d");
+                                var w = width, h = height;
+                                ctx.clearRect(0, 0, w, h);
+                                var cx = w / 2, cy = h / 2;
+                                var r = Math.min(w, h) / 2 - 3;
+                                ctx.lineWidth = 3.5;
+                                ctx.lineCap = "round";
+
+                                ctx.strokeStyle = Qt.alpha(root.accentMain, 0.18);
+                                ctx.beginPath();
+                                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                                ctx.stroke();
+
+                                ctx.strokeStyle = root.accentMain;
+                                ctx.beginPath();
+                                ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * progressRing.fraction);
+                                ctx.stroke();
                             }
-                            return s;
                         }
-                        font.pixelSize: 11
-                        opacity: 0.6
+
+                        PlasmaComponents3.Label {
+                            Layout.alignment: Qt.AlignHCenter
+                            text: page.dayProgressText()
+                            font.pixelSize: 9
+                            font.weight: Font.DemiBold
+                            color: root.textSubtle
+                        }
                     }
-                }
 
-                // Loading
-                QQC2.BusyIndicator {
-                    visible: page.weatherCity !== "" && page.weatherLoading
-                    running: visible
-                    Layout.preferredWidth: 20
-                    Layout.preferredHeight: 20
-                }
+                    Item { Layout.fillWidth: true }
 
-                // Fallback
-                PlasmaComponents3.Label {
-                    visible: page.weatherCity !== "" && !page.weatherLoading && page.weatherData === null
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                    text: i18n("Toque para atualizar")
-                    font.pixelSize: 10
-                    opacity: 0.4
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: root.refreshWeather()
+                    // Clima à direita (bloco único)
+                    ColumnLayout {
+                        visible: page.weatherCity !== "" && !page.weatherLoading && page.weatherData !== null
+                        spacing: 2
+
+                        // Cidade + ícone + temperatura (mesma linha)
+                        RowLayout {
+                            spacing: Kirigami.Units.smallSpacing
+
+                            PlasmaExtras.Heading {
+                                level: 3
+                                color: root.textMain
+                                text: page.weatherCity
+                            }
+
+                            Kirigami.Icon {
+                                source: Weather.weatherIconWithRain(page.weatherData ? page.weatherData.code : 0, page.weatherData ? page.weatherData.isNight : false, page.weatherData ? page.weatherData.rain : 0, page.weatherData ? page.weatherData.showers : 0)
+                                Layout.preferredWidth: 24
+                                Layout.preferredHeight: 24
+                            }
+
+                            PlasmaExtras.Heading {
+                                level: 3
+                                color: root.textMain
+                                text: page.weatherData ? Math.round(page.weatherData.temp) + "°C" : ""
+                            }
+                        }
+
+                        // Max/min/chuva
+                        PlasmaComponents3.Label {
+                            Layout.alignment: Qt.AlignRight
+                            color: root.textMain
+                            text: {
+                                if (!page.weatherData) return "";
+                                var s = "Max " + Math.round(page.weatherData.maxTemp) + "°  Min " + Math.round(page.weatherData.minTemp) + "°";
+                                if (page.weatherData.rainChance !== undefined && page.weatherData.rainChance !== null) {
+                                    s += "  ·  Chuva " + page.weatherData.rainChance + "%";
+                                }
+                                return s;
+                            }
+                            font.pixelSize: 11
+                            opacity: 0.6
+                        }
+                    }
+
+                    // Loading
+                    QQC2.BusyIndicator {
+                        visible: page.weatherCity !== "" && page.weatherLoading && page.weatherData === null
+                        running: visible
+                        Layout.preferredWidth: 20
+                        Layout.preferredHeight: 20
+                    }
+
+                    // Fallback
+                    PlasmaComponents3.Label {
+                        visible: page.weatherCity !== "" && !page.weatherLoading && page.weatherData === null
+                        color: root.textMain
+                        text: i18n("Toque para atualizar")
+                        font.pixelSize: 10
+                        opacity: 0.4
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: root.refreshWeather()
+                        }
                     }
                 }
             }
@@ -201,7 +276,7 @@ Item {
             Rectangle {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 1
-                color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.15)
+                color: Qt.alpha(root.textMain, 0.15)
             }
 
             // Seção: Próximos compromissos
@@ -210,7 +285,7 @@ Item {
                 spacing: Kirigami.Units.smallSpacing
                 PlasmaExtras.Heading {
                     level: 4
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                    color: root.textMain
                     text: i18n("Próximos compromissos")
                     Layout.fillWidth: true
                 }
@@ -240,7 +315,7 @@ Item {
                 spacing: Kirigami.Units.smallSpacing
                 PlasmaExtras.Heading {
                     level: 4
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                    color: root.textMain
                     text: i18n("Tarefas do dia")
                     Layout.fillWidth: true
                 }
@@ -267,9 +342,21 @@ Item {
             Layout.fillWidth: true
             Layout.preferredHeight: contentRow.implicitHeight + Kirigami.Units.smallSpacing * 2
             radius: Kirigami.Units.smallSpacing
-            color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)), 0.05)
+            color: root.accentSoft
             border.width: 1
-            border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.08)
+            border.color: Qt.alpha(root.accentMain, 0.18)
+
+            // Filete colorido no topo identifica o tipo de compromisso.
+            Rectangle {
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 2
+                radius: 1
+                visible: model.allDay
+                color: root.accentMain
+                opacity: 0.5
+            }
 
             RowLayout {
                 id: contentRow
@@ -283,13 +370,13 @@ Item {
 
                     PlasmaComponents3.Label {
                         text: model.allDay ? i18n("Dia") : Cal.formatTime(model.start, model.allDay)
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                        color: root.textMain
                         font.pixelSize: 12
                         font.weight: Font.DemiBold
                     }
 
                     PlasmaComponents3.Label {
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                        color: root.textMain
                         text: {
                             var d = new Date(model.start);
                             var now = new Date();
@@ -304,7 +391,7 @@ Item {
                 }
                 PlasmaComponents3.Label {
                     Layout.fillWidth: true
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                    color: root.textMain
                     text: model.title
                     elide: Text.ElideRight
                     maximumLineCount: 2
@@ -323,9 +410,9 @@ Item {
             Layout.fillWidth: true
             Layout.preferredHeight: contentRow.implicitHeight + Kirigami.Units.smallSpacing * 2
             radius: Kirigami.Units.smallSpacing
-            color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)), 0.05)
+            color: root.accentSoft
             border.width: 1
-            border.color: Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.08)
+            border.color: Qt.alpha(root.accentMain, 0.18)
 
             RowLayout {
                 id: contentRow
@@ -340,13 +427,13 @@ Item {
                     visible: model.createdAt > 0
 
                     PlasmaComponents3.Label {
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                        color: root.textMain
                         text: i18n("Incluído em")
                         font.pixelSize: 9
                         opacity: 0.55
                     }
                     PlasmaComponents3.Label {
-                        color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                        color: root.textMain
                         text: page.createdDateText(model.createdAt)
                         font.pixelSize: 10
                         font.weight: Font.DemiBold
@@ -355,7 +442,7 @@ Item {
 
                 PlasmaComponents3.Label {
                     Layout.fillWidth: true
-                    color: model.done ? Qt.rgba(0.4, 0.4, 0.4, 0.6) : (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                    color: model.done ? Qt.rgba(0.4, 0.4, 0.4, 0.6) : root.textMain
                     text: model.text
                     elide: Text.ElideRight
                     maximumLineCount: 1
