@@ -633,23 +633,58 @@ PlasmoidItem {
         return Qt.createQmlObject("import QtQuick; ListModel {}", root, "listItemsModel");
     }
 
+    function genId() {
+        return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    }
+
+    // Lê uma entrada da config. Aceita o formato novo (JSON) e o antigo
+    // ("nome|0/1|item1;item2"), gerando ids estáveis no legado.
+    function parseListEntry(entry) {
+        var s = String(entry || "").trim();
+        if (s.charAt(0) === "{") {
+            try {
+                return JSON.parse(s);
+            } catch (e) {
+                return null;
+            }
+        }
+        var parts = s.split("|");
+        var name = parts[0];
+        var done = false;
+        var itemsPart = "";
+        if (parts.length >= 3) {
+            done = parts[1] === "1";
+            itemsPart = parts[2];
+        } else {
+            itemsPart = parts[1] || "";
+        }
+        var items = [];
+        if (itemsPart) {
+            var itemParts = itemsPart.split(";");
+            for (var j = 0; j < itemParts.length; j++) {
+                var ip = itemParts[j].split("|");
+                items.push({ text: ip[1] || "", done: ip[0] === "1", id: root.genId() });
+            }
+        }
+        return { name: name, done: done, id: root.genId(), items: items };
+    }
+
     function saveLists() {
         var raw = [];
         for (var i = 0; i < root.listsList.length; i++) {
-            var m = root.listsList[i].itemsModel;
+            var list = root.listsList[i];
+            var m = list.itemsModel;
             var items = [];
             for (var j = 0; j < m.count; j++) {
                 var row = m.get(j);
-                items.push((row.done ? "1" : "0") + "|" + row.text);
+                items.push({ text: row.text, done: !!row.done, id: row.id || root.genId() });
             }
-            raw.push(root.listsList[i].name + "|" + (root.listsList[i].done ? "1" : "0") + "|" + items.join(";"));
+            raw.push(JSON.stringify({ name: list.name, done: !!list.done, id: list.id, items: items }));
         }
         Plasmoid.configuration.lists = raw;
     }
 
     // Mantém as listas sempre ordenadas: ativas (done=false) primeiro.
-    // Assim page.activeLists[i] === listsList[i] e os índices dos delegates
-    // batem com os índices reais (senão itens novos caíam na lista errada).
     function sortListsArr(arr) {
         return arr.slice().sort(function(a, b) {
             var da = a.done ? 1 : 0;
@@ -658,39 +693,38 @@ PlasmoidItem {
         });
     }
 
+    function findList(lid) {
+        for (var i = 0; i < root.listsList.length; i++) {
+            if (root.listsList[i].id === lid) {
+                return root.listsList[i];
+            }
+        }
+        return null;
+    }
+
     function loadLists() {
         root.listsList = [];
         var raw = Plasmoid.configuration.lists;
         if (raw) {
             for (var i = 0; i < raw.length; i++) {
-                var parts = raw[i].split("|");
-                var name = parts[0];
-                var done = false;
-                var itemsPart = "";
-                if (parts.length >= 3) {
-                    done = parts[1] === "1";
-                    itemsPart = parts[2];
-                } else {
-                    itemsPart = parts[1] || "";
+                var obj = root.parseListEntry(raw[i]);
+                if (!obj) {
+                    continue;
                 }
                 var m = root.newItemsModel();
-                if (itemsPart) {
-                    var itemParts = itemsPart.split(";");
-                    for (var j = 0; j < itemParts.length; j++) {
-                        var ip = itemParts[j].split("|");
-                        m.append({ text: ip[1] || "", done: ip[0] === "1" });
-                    }
+                var items = obj.items || [];
+                for (var j = 0; j < items.length; j++) {
+                    m.append({ text: String(items[j].text || ""), done: !!items[j].done, id: items[j].id || root.genId() });
                 }
-                root.listsList.push({ name: name, done: done, itemsModel: m });
+                root.listsList.push({ name: String(obj.name || ""), done: !!obj.done, id: obj.id || root.genId(), itemsModel: m });
             }
         }
         root.listsList = root.sortListsArr(root.listsList);
     }
 
     function addList(name) {
-        var list = { name: name, done: false, itemsModel: root.newItemsModel() };
-        // Insere no grupo de ativas, antes da primeira lista finalizada,
-        // para não quebrar o mapeamento índice filtrado -> índice real.
+        var list = { name: name, done: false, id: root.genId(), itemsModel: root.newItemsModel() };
+        // Insere no grupo de ativas, antes da primeira lista finalizada.
         var insertAt = root.listsList.length;
         for (var i = 0; i < root.listsList.length; i++) {
             if (root.listsList[i].done) {
@@ -704,19 +738,23 @@ PlasmoidItem {
         root.saveLists();
     }
 
-    function removeList(index) {
-        if (index < 0 || index >= root.listsList.length) {
-            return;
+    function removeList(lid) {
+        for (var i = 0; i < root.listsList.length; i++) {
+            if (root.listsList[i].id === lid) {
+                root.listsList = root.listsList.slice(0, i).concat(root.listsList.slice(i + 1));
+                break;
+            }
         }
-        root.listsList = root.listsList.slice(0, index).concat(root.listsList.slice(index + 1));
         root.saveLists();
     }
 
-    function setListDone(listIndex, done) {
-        if (listIndex < 0 || listIndex >= root.listsList.length) {
-            return;
+    function setListDone(lid, done) {
+        for (var i = 0; i < root.listsList.length; i++) {
+            if (root.listsList[i].id === lid) {
+                root.listsList[i].done = done;
+                break;
+            }
         }
-        root.listsList[listIndex].done = done;
         root.listsList = root.sortListsArr(root.listsList);
         root.saveLists();
         if (listasLoader.item) {
@@ -725,35 +763,46 @@ PlasmoidItem {
         }
     }
 
-    function addListItem(listIndex, text) {
-        if (listIndex < 0 || listIndex >= root.listsList.length) {
+    function findListItem(list, iid) {
+        var m = list.itemsModel;
+        for (var i = 0; i < m.count; i++) {
+            if (m.get(i).id === iid) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function addListItem(lid, text) {
+        var list = root.findList(lid);
+        if (!list) {
             return;
         }
-        root.listsList[listIndex].itemsModel.append({ text: text, done: false });
+        list.itemsModel.append({ text: text, done: false, id: root.genId() });
         root.saveLists();
     }
 
-    function removeListItem(listIndex, itemIndex) {
-        if (listIndex < 0 || listIndex >= root.listsList.length) {
+    function removeListItem(lid, iid) {
+        var list = root.findList(lid);
+        if (!list) {
             return;
         }
-        var m = root.listsList[listIndex].itemsModel;
-        if (itemIndex < 0 || itemIndex >= m.count) {
-            return;
+        var idx = root.findListItem(list, iid);
+        if (idx >= 0) {
+            list.itemsModel.remove(idx);
         }
-        m.remove(itemIndex);
         root.saveLists();
     }
 
-    function toggleListItem(listIndex, itemIndex) {
-        if (listIndex < 0 || listIndex >= root.listsList.length) {
+    function toggleListItem(lid, iid) {
+        var list = root.findList(lid);
+        if (!list) {
             return;
         }
-        var m = root.listsList[listIndex].itemsModel;
-        if (itemIndex < 0 || itemIndex >= m.count) {
-            return;
+        var idx = root.findListItem(list, iid);
+        if (idx >= 0) {
+            list.itemsModel.setProperty(idx, "done", !list.itemsModel.get(idx).done);
         }
-        m.setProperty(itemIndex, "done", !m.get(itemIndex).done);
         root.saveLists();
     }
 
@@ -1607,11 +1656,11 @@ PlasmoidItem {
                             id: listasPage
                             lists: root.listsList
                             onAddList: function(name) { root.addList(name); }
-                            onRemoveList: function(index) { root.removeList(index); }
-                            onAddItem: function(listIndex, text) { root.addListItem(listIndex, text); }
-                            onRemoveItem: function(listIndex, itemIndex) { root.removeListItem(listIndex, itemIndex); }
-                            onToggleItem: function(listIndex, itemIndex) { root.toggleListItem(listIndex, itemIndex); }
-                            onSetDone: function(listIndex, done) { root.setListDone(listIndex, done); }
+                            onRemoveList: function(listId) { root.removeList(listId); }
+                            onAddItem: function(listId, text) { root.addListItem(listId, text); }
+                            onRemoveItem: function(listId, itemId) { root.removeListItem(listId, itemId); }
+                            onToggleItem: function(listId, itemId) { root.toggleListItem(listId, itemId); }
+                            onSetDone: function(listId, done) { root.setListDone(listId, done); }
                         }
                     }
                 }

@@ -45,7 +45,7 @@
       <label>Lista de notas (post-its), serializadas como "texto|cor".</label>
     </entry>
     <entry name="lists" type="StringList">
-      <label>Lista de listas, serializadas como "nome|itens (separados por ;)".</label>
+      <label>Lista de listas, serializadas como JSON: {"name","done","id","items"} (formato antigo com | e ; é migrado automaticamente).</label>
     </entry>
     <entry name="weatherCity" type="String">
       <default></default>
