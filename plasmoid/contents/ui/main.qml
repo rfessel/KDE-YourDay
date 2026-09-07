@@ -4,7 +4,9 @@
 */
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 import QtQuick.Controls as QQC2
+import QtQuick.LocalStorage
 import QtQml
 
 import org.kde.plasma.plasmoid 2.0
@@ -28,10 +30,8 @@ PlasmoidItem {
     property var feedFailures: []
     property var pendingUrls: []
     property int pendingItems: 0
-    property double hangDeadline: 0
     property bool loading: false
     readonly property int headlineLines: Number(Plasmoid.configuration.headlineLines) || 2
-    readonly property int newsColumns: Math.max(1, Math.min(4, Number(Plasmoid.configuration.columns) || 1))
     readonly property int refreshMinutesValue: (function() {
         var v = Number(Plasmoid.configuration.refreshMinutes);
         if (typeof Plasmoid.configuration.refreshMinutes === "undefined" || v === null || isNaN(v)) {
@@ -40,9 +40,15 @@ PlasmoidItem {
         return v;
     })()
     readonly property var slicedAll: root.allItems.slice(0, Number(Plasmoid.configuration.maxItems) || 50)
-    property double bodyWidth: 0
-    readonly property double gridColumnWidth: root.newsColumns > 0
-            ? Math.max(0, (root.bodyWidth - Kirigami.Units.largeSpacing * (root.newsColumns - 1)) / root.newsColumns) : 0
+
+    // Abas já visitadas: depois da 1ª visita a página permanece carregada.
+    property var visitedTabs: [true, false, false, false, false, false, false]
+    // Tick do relógio: força a saudação/data a re-renderizar a cada minuto.
+    property int clockTick: 0
+    // Cache de notícias em SQLite (QtQuick.LocalStorage).
+    property var newsDbHandle: null
+    // Cache antigo (migração do KConfig).
+    property bool newsCacheMigrated: false
 
     // -------- agenda e to-dos do dia --------------------------------
     property var agendaEvents: []
@@ -69,6 +75,11 @@ PlasmoidItem {
     property var bootQueue: []
 
     onCurrentTabChanged: {
+        if (currentTab >= 0 && currentTab < root.visitedTabs.length) {
+            var v = root.visitedTabs.slice();
+            v[currentTab] = true;
+            root.visitedTabs = v;
+        }
         if (currentTab === 3) {
             root.selectedCityName = Plasmoid.configuration.weatherCity || "";
         }
@@ -111,7 +122,10 @@ PlasmoidItem {
         root.extraCities.forEach(function(city) {
             Weather.fetchWeather(city.lat, city.lon,
                 function(data) {
-                    var copy = JSON.parse(JSON.stringify(root.extraWeatherData));
+                    var copy = {};
+                    for (var k in root.extraWeatherData) {
+                        copy[k] = root.extraWeatherData[k];
+                    }
                     copy[city.name] = data;
                     root.extraWeatherData = copy;
                 },
@@ -224,21 +238,6 @@ PlasmoidItem {
         return isNaN(v) || v <= 0 ? 0 : v;
     }
 
-    property var _lastSliced: []
-    property string _lastSlicedKey: ""
-
-    function sliceItems() {
-        var limit = Number(Plasmoid.configuration.maxItems) || 50;
-        var items = root.allItems.slice(0, limit);
-        // Só atualiza se mudou (evita re-render desnecessário)
-        var key = items.length + ":" + (items.length > 0 ? items[0].title : "");
-        if (key !== root._lastSlicedKey) {
-            root._lastSlicedKey = key;
-            // Força atualização apenas quando necessário
-            root._lastSliced = items;
-        }
-    }
-
     function feedErrorText(url, code) {
         var why;
         if (code === -2) {
@@ -247,41 +246,105 @@ PlasmoidItem {
             why = root.t("falha de conexão");
         } else if (code === 0) {
             why = root.t("resposta inválida (não é RSS) ou servidor inacessível");
+        } else if (code === -3) {
+            why = root.t("abortado");
         } else {
             why = root.t("HTTP %1").arg(code);
         }
         return root.t("%1 — %2").arg(url).arg(why);
     }
 
-    // -------- cache de notícias (offline) --------
-    function saveNewsCache() {
+    // -------- cache de notícias (SQLite, fora do appletsrc) --------
+    function newsDb() {
+        if (root.newsDbHandle) {
+            return root.newsDbHandle;
+        }
+        var db;
         try {
-            var items = [];
-            for (var i = 0; i < root.allItems.length; i++) {
-                var it = root.allItems[i];
-                items.push({
-                    title: it.title || "",
-                    link: it.link || "",
-                    source: it.source || "",
-                    time: it.time || "",
-                    summary: it.summary || "",
-                    image: it.image || ""
-                });
-            }
-            Plasmoid.configuration.cachedNews = JSON.stringify(items);
+            db = LocalStorage.openDatabaseSync("yourday_news", "1.0", "Cache offline de notícias (Seu Dia...)", 4 * 1024 * 1024);
+            db.transaction(function(tx) {
+                tx.executeSql("CREATE TABLE IF NOT EXISTS cache (id INTEGER PRIMARY KEY, data TEXT NOT NULL)");
+            });
+        } catch (e) {
+            console.warn("[yourday] falha ao abrir cache SQLite:", e);
+            return null;
+        }
+        root.newsDbHandle = db;
+        return db;
+    }
+
+    function newsCacheJson() {
+        var items = [];
+        for (var i = 0; i < root.allItems.length; i++) {
+            var it = root.allItems[i];
+            items.push({
+                title: it.title || "",
+                link: it.link || "",
+                source: it.source || "",
+                time: it.time || "",
+                summary: it.summary || "",
+                image: it.image || ""
+            });
+        }
+        return JSON.stringify(items);
+    }
+
+    function saveNewsCache() {
+        var db = newsDb();
+        if (!db) {
+            return;
+        }
+        try {
+            var json = newsCacheJson();
+            db.transaction(function(tx) {
+                tx.executeSql("INSERT OR REPLACE INTO cache (id, data) VALUES (1, ?)", [json]);
+            });
         } catch (e) {
             console.warn("[yourday] falha ao salvar cache:", e);
         }
     }
 
     function loadNewsCache() {
+        var db = newsDb();
+        if (!db) {
+            return false;
+        }
         try {
-            var raw = Plasmoid.configuration.cachedNews;
-            if (!raw) return false;
-            var items = JSON.parse(raw);
-            if (!items || items.length === 0) return false;
+            var items = null;
+            db.readTransaction(function(tx) {
+                var rs = tx.executeSql("SELECT data FROM cache WHERE id = 1");
+                if (rs.rows.length > 0) {
+                    try {
+                        items = JSON.parse(rs.rows.item(0).data);
+                    } catch (e) {
+                        items = null;
+                    }
+                }
+            });
+
+            // Migração: cache antigo no appletsrc (cachedNews) -> SQLite.
+            if ((!items || items.length === 0) && !root.newsCacheMigrated) {
+                root.newsCacheMigrated = true;
+                var legacy = Plasmoid.configuration.cachedNews;
+                if (legacy) {
+                    try {
+                        var legacyItems = JSON.parse(legacy);
+                        if (legacyItems && legacyItems.length > 0) {
+                            items = legacyItems;
+                            root.allItems = items;
+                            saveNewsCache();
+                        }
+                    } catch (e) { /* cache corrompido: ignora */ }
+                    if (Plasmoid.configuration.cachedNews !== "") {
+                        Plasmoid.configuration.cachedNews = "";
+                    }
+                }
+            }
+
+            if (!items || items.length === 0) {
+                return false;
+            }
             root.allItems = items;
-            sliceItems();
             return true;
         } catch (e) {
             return false;
@@ -300,28 +363,23 @@ PlasmoidItem {
         root.lastUpdated = Qt.formatTime(new Date(), "HH:mm:ss");
         root.loading = false;
         loadWatchdog.stop();
-        hangTimer.stop();
-        sliceItems();
     }
 
     function finishOne(url) {
         if (root.loading === false) {
-            return; // já finalizado pelo watchdog
-        }
-        if (root.pendingItems <= 0) {
-            return;
+            return; // já finalizado
         }
         var pos = root.pendingUrls.indexOf(url);
-        if (pos !== -1) {
-            root.pendingUrls.splice(pos, 1);
+        if (pos === -1) {
+            return; // já contabilizado
         }
-        root.pendingItems--;
+        root.pendingUrls.splice(pos, 1);
+        root.pendingItems = Math.max(0, root.pendingItems - 1);
         if (root.allItems.length === 0 && root.feedGroups.length > 0) {
             // Sem conteúdo ainda: mostra progressivamente ao chegar cada feed,
             // em vez de esperar todos (ou um lento) para aparecer.
             root.allItems = FeedParser.applyLimits(root.feedGroups, Number(Plasmoid.configuration.maxItems) || 0);
             root.errorText = root.feedFailures.join("\n");
-            sliceItems();
         }
         if (root.pendingItems <= 0) {
             root.pendingItems = 0;
@@ -359,16 +417,21 @@ PlasmoidItem {
         root.feedFailures = [];
         root.pendingUrls = feeds.slice();
         root.pendingItems = feeds.length;
-        root.hangDeadline = Date.now() + 10000;
         loadWatchdog.restart();
-        hangTimer.running = true;
 
         for (var f = 0; f < feeds.length; f++) {
             (function(url, idx, myGen) {
+                var settled = false;
                 var done = function(code, items) {
-                    if (myGen !== root.feedGen) {
+                    if (settled || myGen !== root.feedGen) {
                         return;
                     }
+                    if (root.pendingUrls.indexOf(url) === -1) {
+                        // O watchdog já contabilizou este URL.
+                        settled = true;
+                        return;
+                    }
+                    settled = true;
                     if (code !== 0) {
                         console.warn("[yourday] feed FALHOU:", url, "código", code);
                         root.feedFailures.push(root.feedErrorText(url, code));
@@ -584,6 +647,17 @@ PlasmoidItem {
         Plasmoid.configuration.lists = raw;
     }
 
+    // Mantém as listas sempre ordenadas: ativas (done=false) primeiro.
+    // Assim page.activeLists[i] === listsList[i] e os índices dos delegates
+    // batem com os índices reais (senão itens novos caíam na lista errada).
+    function sortListsArr(arr) {
+        return arr.slice().sort(function(a, b) {
+            var da = a.done ? 1 : 0;
+            var db = b.done ? 1 : 0;
+            return da - db;
+        });
+    }
+
     function loadLists() {
         root.listsList = [];
         var raw = Plasmoid.configuration.lists;
@@ -610,12 +684,24 @@ PlasmoidItem {
                 root.listsList.push({ name: name, done: done, itemsModel: m });
             }
         }
+        root.listsList = root.sortListsArr(root.listsList);
     }
 
     function addList(name) {
-        root.listsList.push({ name: name, done: false, itemsModel: root.newItemsModel() });
+        var list = { name: name, done: false, itemsModel: root.newItemsModel() };
+        // Insere no grupo de ativas, antes da primeira lista finalizada,
+        // para não quebrar o mapeamento índice filtrado -> índice real.
+        var insertAt = root.listsList.length;
+        for (var i = 0; i < root.listsList.length; i++) {
+            if (root.listsList[i].done) {
+                insertAt = i;
+                break;
+            }
+        }
+        var arr = root.listsList.slice();
+        arr.splice(insertAt, 0, list);
+        root.listsList = arr;
         root.saveLists();
-        root.listsList = root.listsList.slice();
     }
 
     function removeList(index) {
@@ -631,16 +717,11 @@ PlasmoidItem {
             return;
         }
         root.listsList[listIndex].done = done;
-        root.listsList.sort(function(a, b) {
-            var da = a.done ? 1 : 0;
-            var db = b.done ? 1 : 0;
-            return da - db;
-        });
-        root.listsList = root.listsList.slice();
+        root.listsList = root.sortListsArr(root.listsList);
         root.saveLists();
-        if (listasPage) {
-            listasPage.expandedList = -1;
-            listasPage.showHistory = done;
+        if (listasLoader.item) {
+            listasLoader.item.expandedList = -1;
+            listasLoader.item.showHistory = done;
         }
     }
 
@@ -1050,7 +1131,8 @@ PlasmoidItem {
     function gotoTodos() { root.currentTab = 2; }
     function gotoClima() { root.currentTab = 3; }
     function gotoNotas() { root.currentTab = 4; }
-    function gotoNoticias() { root.currentTab = 5; }
+    function gotoListas() { root.currentTab = 5; }
+    function gotoNoticias() { root.currentTab = 6; }
 
     function refreshWeather() {
         root.weatherGen++;
@@ -1126,7 +1208,7 @@ PlasmoidItem {
             if (key === "feeds") {
                 root.loadAll();
             } else if (key === "maxItems") {
-                root.sliceItems();
+                // slicedAll é um binding: reavalia sozinho.
             } else if (key === "agendaSources") {
                 root.refreshAgenda();
             } else if (key === "weatherLatitude" || key === "weatherLongitude") {
@@ -1179,29 +1261,15 @@ PlasmoidItem {
         }
     }
 
-    // Segurança: se algo travar durante o carregamento, não fica no spinner para sempre.
+    // Segurança: se algo travar durante o carregamento, aborta os XHR restantes
+    // e libera o spinner no fim (não finge que terminou com resposta falsa).
     Timer {
         id: loadWatchdog
-        interval: 30 * 1000
+        interval: 20 * 1000
         repeat: false
         onTriggered: {
+            FeedParser.abortAllNews();
             root.forceStuck();
-        }
-    }
-
-    Timer {
-        id: hangTimer
-        interval: 400
-        repeat: true
-        running: false
-        onTriggered: {
-            if (!root.loading) {
-                running = false;
-                return;
-            }
-            if (Date.now() >= root.hangDeadline) {
-                root.forceStuck();
-            }
         }
     }
 
@@ -1210,6 +1278,9 @@ PlasmoidItem {
         interval: 60000
         repeat: true
         running: true
+        onTriggered: {
+            root.clockTick++;
+        }
     }
 
     // ------------------------------------------------------------------- dados
@@ -1223,8 +1294,8 @@ PlasmoidItem {
 
             readonly property bool hovered: cardMouse.containsMouse
 
-            width: root.gridColumnWidth
-            height: contentText.implicitHeight + 16
+            width: ListView.view.width
+            height: Math.max(120, Math.min(212, contentText.implicitHeight + 16))
             radius: Kirigami.Units.roundIconSize / 4
             color: card.hovered
                    ? Qt.alpha(root.isDarkTheme ? Qt.rgba(0.35, 0.65, 0.9, 1) : Qt.rgba(0.15, 0.5, 0.85, 1), 0.15)
@@ -1249,15 +1320,24 @@ PlasmoidItem {
                 color: root.isDarkTheme ? Qt.rgba(0.28, 0.28, 0.28, 1) : Qt.rgba(0.92, 0.92, 0.92, 1)
                 clip: true
 
-                Image {
+                Loader {
                     anchors.fill: parent
-                    source: card.model.image
-                    fillMode: Image.PreserveAspectCrop
+                    active: card.model.image !== ""
                     asynchronous: true
-                    cache: true
-                    onStatusChanged: {
-                        if (status === Image.Error) {
-                            thumbBox.visible = false;
+                    sourceComponent: Component {
+                        Image {
+                            id: thumbImg
+                            anchors.fill: parent
+                            source: card.model.image
+                            sourceSize: Qt.size(84, 96)
+                            fillMode: Image.PreserveAspectCrop
+                            asynchronous: true
+                            cache: true
+                            onStatusChanged: {
+                                if (status === Image.Error) {
+                                    thumbBox.visible = false;
+                                }
+                            }
                         }
                     }
                 }
@@ -1456,7 +1536,8 @@ PlasmoidItem {
                 }
 
                 Loader {
-                    active: root.currentTab === 1
+                    active: root.visitedTabs[1]
+                    asynchronous: true
                     sourceComponent: Component {
                         AgendaPage {
                             events: root.agendaEvents
@@ -1470,7 +1551,8 @@ PlasmoidItem {
                 }
 
                 Loader {
-                    active: root.currentTab === 2
+                    active: root.visitedTabs[2]
+                    asynchronous: true
                     sourceComponent: Component {
                         ToDoPage {
                             todos: root.todoList
@@ -1485,7 +1567,8 @@ PlasmoidItem {
                 }
 
                 Loader {
-                    active: root.currentTab === 3
+                    active: root.visitedTabs[3]
+                    asynchronous: true
                     sourceComponent: Component {
                         ClimaPage {
                             weatherData: root.weatherData
@@ -1501,7 +1584,8 @@ PlasmoidItem {
 
                 // Página de Notas
                 Loader {
-                    active: root.currentTab === 4
+                    active: root.visitedTabs[4]
+                    asynchronous: true
                     sourceComponent: Component {
                         NotasPage {
                             notes: root.notesList
@@ -1514,20 +1598,28 @@ PlasmoidItem {
                 }
 
                 // Página de Listas
-                ListasPage {
-                    id: listasPage
-                    lists: root.listsList
-                    onAddList: function(name) { root.addList(name); }
-                    onRemoveList: function(index) { root.removeList(index); }
-                    onAddItem: function(listIndex, text) { root.addListItem(listIndex, text); }
-                    onRemoveItem: function(listIndex, itemIndex) { root.removeListItem(listIndex, itemIndex); }
-                    onToggleItem: function(listIndex, itemIndex) { root.toggleListItem(listIndex, itemIndex); }
-                    onSetDone: function(listIndex, done) { root.setListDone(listIndex, done); }
+                Loader {
+                    id: listasLoader
+                    active: root.visitedTabs[5]
+                    asynchronous: true
+                    sourceComponent: Component {
+                        ListasPage {
+                            id: listasPage
+                            lists: root.listsList
+                            onAddList: function(name) { root.addList(name); }
+                            onRemoveList: function(index) { root.removeList(index); }
+                            onAddItem: function(listIndex, text) { root.addListItem(listIndex, text); }
+                            onRemoveItem: function(listIndex, itemIndex) { root.removeListItem(listIndex, itemIndex); }
+                            onToggleItem: function(listIndex, itemIndex) { root.toggleListItem(listIndex, itemIndex); }
+                            onSetDone: function(listIndex, done) { root.setListDone(listIndex, done); }
+                        }
+                    }
                 }
 
                 // Página de Notícias (corpo original das notícias)
                 Loader {
-                    active: root.currentTab === 6
+                    active: root.visitedTabs[6]
+                    asynchronous: true
                     sourceComponent: Component {
                         ColumnLayout {
                             anchors.fill: parent
@@ -1590,45 +1682,24 @@ PlasmoidItem {
                         Layout.fillWidth: true
                     }
 
-                    // Corpo rolante
+                    // Corpo rolante: ListView de coluna única com delegação reciclada,
+                    // barra de rolagem e textura de fundo.
                     Item {
                         id: bodyArea
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         clip: true
 
-                        onWidthChanged: {
-                            if (Math.abs(root.bodyWidth - bodyArea.width) > 1) {
-                                root.bodyWidth = bodyArea.width;
-                            }
-                        }
-                        Component.onCompleted: root.bodyWidth = bodyArea.width
-
-                        Flickable {
-                            id: bodyFlick
+                        ListView {
+                            id: newsList
                             anchors.fill: parent
                             clip: true
                             boundsBehavior: Flickable.StopAtBounds
-                            contentWidth: bodyArea.width
-                            contentHeight: Math.max(bodyGrid.height + Kirigami.Units.largeSpacing * 2, bodyArea.height)
-
-                            QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
-
-                            Grid {
-                                id: bodyGrid
-                                width: bodyArea.width
-                                columns: root.newsColumns
-                                flow: Grid.LeftToRight
-                                columnSpacing: Kirigami.Units.largeSpacing
-                                rowSpacing: Kirigami.Units.smallSpacing
-                                anchors.top: parent.top
-                                anchors.topMargin: Kirigami.Units.smallSpacing
-
-                                Repeater {
-                                    model: root.slicedAll
-                                    delegate: newsCardDelegate
-                                }
-                            }
+                            model: root.slicedAll
+                            delegate: newsCardDelegate
+                            cacheBuffer: 600
+                            spacing: Kirigami.Units.smallSpacing
+                            ScrollBar.vertical: ScrollBar {}
                         }
 
                         // Carregando…

@@ -32,6 +32,9 @@ Item {
     signal gotoTodos()
     signal toggleTodoId(int index)
 
+    // Re-renderiza saudação/data a cada tick do relógio (1 min).
+    readonly property int timeTick: root.clockTick
+
     readonly property var nextEvents: {
         var now = Date.now();
         var upcoming = [];
@@ -88,10 +91,10 @@ Item {
                     PlasmaExtras.Heading {
                         level: 3
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                        text: rootGreeting.capFirst(rootGreeting.greeting()) + ", " + rootGreeting.capFirst(kuserInfo.loginName)
+                        text: (page.timeTick, rootGreeting.capFirst(rootGreeting.greeting()) + ", " + rootGreeting.capFirst(kuserInfo.loginName))
                     }
                     PlasmaComponents3.Label {
-                        text: new Date().toLocaleString(root.tLocale(), "dddd, dd MMMM")
+                        text: (page.timeTick, new Date().toLocaleString(root.tLocale(), "dddd, dd MMMM"))
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                         opacity: 0.6
                         font.pixelSize: 11
