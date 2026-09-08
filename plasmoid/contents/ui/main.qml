@@ -1282,6 +1282,44 @@ PlasmoidItem {
         xhr.send(null);
     }
 
+    function updateGCalEvent(id, title, startMs, endMs, allDay, description, location, calId) {
+        if (!root.isGCalAuthenticated() || !id) {
+            return;
+        }
+        var scriptUrl = Plasmoid.configuration.gcalClientId;
+        var url = scriptUrl + "?action=update"
+            + "&calendarId=" + encodeURIComponent(calId || "")
+            + "&id=" + encodeURIComponent(id)
+            + "&title=" + encodeURIComponent(title)
+            + "&start=" + startMs
+            + "&end=" + endMs
+            + "&allDay=" + (allDay ? "true" : "false")
+            + "&description=" + encodeURIComponent(description || "")
+            + "&location=" + encodeURIComponent(location || "");
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.timeout = 15000;
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
+                return;
+            }
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    JSON.parse(xhr.responseText);
+                } catch (e) {
+                    console.warn("[yourday] resposta inválida ao atualizar evento Google:", e);
+                }
+            } else {
+                console.warn("[yourday] erro ao atualizar evento Google:", xhr.status);
+            }
+            root.refreshAgenda();
+        };
+        xhr.onerror = function() { root.refreshAgenda(); };
+        xhr.ontimeout = function() { root.refreshAgenda(); };
+        xhr.send(null);
+    }
+
     function fetchGCalCalendars() {
         if (!root.isGCalAuthenticated()) {
             return;
@@ -1368,6 +1406,20 @@ PlasmoidItem {
                 break;
             }
         }
+
+        // Evento nativo do Google (não está na lista local): atualiza direto.
+        if (!ev) {
+            var gev = null;
+            for (var j = 0; j < root.agendaEvents.length; j++) {
+                if (String(root.agendaEvents[j].googleId) === String(id)) {
+                    gev = root.agendaEvents[j];
+                    break;
+                }
+            }
+            root.updateGCalEvent(id, title, startMs, endMs, allDay, description, location, gev ? gev.calendarId : null);
+            return;
+        }
+
         root.saveLocalEvents();
         root.localEvents = root.localEvents.slice();
 
@@ -1395,6 +1447,14 @@ PlasmoidItem {
                 break;
             }
         }
+
+        // Evento nativo do Google (id = googleId): apaga direto no Google.
+        if (!ev) {
+            root.deleteFromGoogle(id);
+            root.refreshAgenda();
+            return;
+        }
+
         root.saveLocalEvents();
         root.localEvents = root.localEvents.slice();
 

@@ -616,6 +616,10 @@ msgstr "Abbrechen"
 msgid "Save"
 msgstr "Speichern"
 
+#: contents/ui/pages/AgendaPage.qml
+msgid "OK"
+msgstr ""
+
 #: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
 msgstr "Auf Aktualisieren tippen, um die Daten zu laden."

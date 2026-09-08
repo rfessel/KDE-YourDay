@@ -135,6 +135,43 @@ Item {
         return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
     }
 
+    // Abre o drop box do seletor de horário abaixo do campo clicado.
+    function openTimePicker(field) {
+        var hh, mm;
+        timePicker.pickStart = (field === startTimeBtn);
+        if (timePicker.pickStart) {
+            hh = parseInt(page.dialogStartTime.split(":")[0]) || 0;
+            mm = parseInt(page.dialogStartTime.split(":")[1]) || 0;
+        } else {
+            hh = parseInt(page.dialogEndTime.split(":")[0]) || 0;
+            mm = parseInt(page.dialogEndTime.split(":")[1]) || 0;
+        }
+        timePicker.visible = true;
+        hList.setIndex(hh);
+        mList.setIndex(Math.round(mm / 5));
+        var pt = field.mapToItem(dialogRect, 0, field.height + 6);
+        timePicker.x = Math.min(Math.max(0, pt.x), dialogRect.width - timePicker.width - 8);
+        timePicker.y = pt.y;
+        if (timePicker.y + timePicker.height > dialogRect.height - 8) {
+            var top = field.mapToItem(dialogRect, 0, 0).y;
+            timePicker.y = Math.max(0, top - timePicker.height - 6);
+        }
+        timePicker.visible = true;
+    }
+
+    function pickTimeApply() {
+        var hh = hList.selectedIndex();
+        var mm = mList.selectedIndex() * 5;
+        var t = page.pad2(hh) + ":" + page.pad2(mm);
+        if (timePicker.pickStart) {
+            page.dialogStartTime = t;
+            page.dialogEndTime = page.pad2((hh + 1) % 24) + ":" + page.pad2(mm);
+        } else {
+            page.dialogEndTime = t;
+        }
+        timePicker.visible = false;
+    }
+
     function openNewEventDialog() {
         page.dialogEditing = false;
         page.editingEvent = null;
@@ -200,15 +237,26 @@ Item {
         }
 
         if (page.dialogEditing && page.editingEvent) {
-            page.onUpdateEvent(page.editingEvent.id, title, startMs, endMs, page.dialogAllDay, page.dialogDescription, page.dialogLocation);
+            page.onUpdateEvent(page.eventKey(page.editingEvent), title, startMs, endMs, page.dialogAllDay, page.dialogDescription, page.dialogLocation);
         } else {
             page.onAddEvent(title, startMs, endMs, page.dialogAllDay, page.dialogDescription, page.dialogLocation, page.dialogCalendar);
         }
         page.dialogOpen = false;
     }
 
-    function isLocalEvent(ev) {
-        return ev && ev.source === "local";
+    // Chave para onUpdateEvent/onRemoveEvent: id local, ou googleId no caso
+    // de compromisso nativo do Google (que não tem campo id próprio).
+    function eventKey(ev) {
+        if (!ev) return "";
+        return ev.source === "local" ? (ev.id || "") : (ev.googleId || ev.id || "");
+    }
+
+    // Eventos que o widget pode editar/apagar: locais e do Google (com
+    // googleId). Compromissos de fontes ICS (url/file) ficam somente leitura.
+    function canEditEvent(ev) {
+        if (!ev) return false;
+        if (ev.source === "local") return true;
+        return ev.source === "google" && !!ev.googleId;
     }
 
     // Cor do evento: a do calendário Google quando disponível (source "google"
@@ -564,10 +612,10 @@ Item {
                                     color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                                 }
 
-                                // Botões de editar/remover apenas para eventos locais
+                                // Botões de editar/remover para eventos locais e do Google
                                 RowLayout {
                                     spacing: 2
-                                    visible: page.isLocalEvent(model)
+                                    visible: page.canEditEvent(model)
 
                                     PlasmaComponents3.ToolButton {
                                         Layout.preferredWidth: 24
@@ -594,7 +642,7 @@ Item {
                                             source: "edit-delete"
                                             color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                                         }
-                                        onClicked: page.onRemoveEvent(model.id)
+                                        onClicked: page.onRemoveEvent(page.eventKey(model))
                                     }
                                 }
                             }
@@ -659,6 +707,7 @@ Item {
         }
 
         Rectangle {
+            id: dialogRect
             anchors.centerIn: parent
             width: 340
             height: dialogCol.implicitHeight + 32
@@ -767,48 +816,60 @@ Item {
                     }
                 }
 
-                // Horários (oculto se dia todo)
-                RowLayout {
+                // Horários (oculto se dia todo) — clique abre o drop box do seletor
+                ColumnLayout {
                     Layout.fillWidth: true
-                    spacing: 8
                     visible: !page.dialogAllDay
-                    QQC2.Label {
-                        text: i18n("Start:")
-                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                        font.pixelSize: 12
-                    }
-                    QQC2.TextField {
-                        id: startTimeField
-                        Layout.preferredWidth: 70
-                        text: page.dialogStartTime
-                        onTextChanged: page.dialogStartTime = text
-                        placeholderText: "HH:MM"
-                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                        background: Rectangle {
-                            radius: 4
-                            color: "transparent"
-                            border.width: 1
-                            border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                    spacing: 6
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 8
+                        QQC2.Label {
+                            text: i18n("Start:")
+                            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                            font.pixelSize: 12
                         }
-                    }
-                    QQC2.Label {
-                        text: i18n("End:")
-                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                        font.pixelSize: 12
-                    }
-                    QQC2.TextField {
-                        id: endTimeField
-                        Layout.preferredWidth: 70
-                        text: page.dialogEndTime
-                        onTextChanged: page.dialogEndTime = text
-                        placeholderText: "HH:MM"
-                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                        background: Rectangle {
-                            radius: 4
-                            color: "transparent"
-                            border.width: 1
-                            border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                        PlasmaComponents3.ToolButton {
+                            id: startTimeBtn
+                            Layout.preferredWidth: 88
+                            Layout.preferredHeight: 26
+                            contentItem: Text {
+                                text: page.dialogStartTime
+                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                font.pixelSize: 13
+                                font.bold: true
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: page.openTimePicker(startTimeBtn)
                         }
+                        Item { Layout.fillWidth: true }
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 8
+                        QQC2.Label {
+                            text: i18n("End:")
+                            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                            font.pixelSize: 12
+                        }
+                        PlasmaComponents3.ToolButton {
+                            id: endTimeBtn
+                            Layout.preferredWidth: 88
+                            Layout.preferredHeight: 26
+                            contentItem: Text {
+                                text: page.dialogEndTime
+                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                font.pixelSize: 13
+                                font.bold: true
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: page.openTimePicker(endTimeBtn)
+                        }
+                        Item { Layout.fillWidth: true }
                     }
                 }
 
@@ -878,6 +939,217 @@ Item {
                             color: Qt.rgba(0.15, 0.5, 0.85, 1)
                         }
                         onClicked: page.saveDialog()
+                    }
+                }
+            }
+
+            // Drop box do seletor de horário (aberto pelo clique no horário)
+            Rectangle {
+                id: timePicker
+                objectName: "timePicker"
+                property bool pickStart: true
+                visible: false
+                z: 60
+                width: 168
+                height: pickCol.implicitHeight + 18
+                radius: 8
+                color: root.isDarkTheme ? Qt.rgba(0.16, 0.16, 0.16, 1) : Qt.rgba(1, 1, 1, 1)
+                border.width: 1
+                border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.75, 0.75, 0.75, 1)
+
+                ColumnLayout {
+                    id: pickCol
+                    anchors.fill: parent
+                    anchors.margins: 9
+                    spacing: 8
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 8
+
+                        // Roda das horas (arraste ou scroll do mouse)
+                        Rectangle {
+                            Layout.preferredWidth: 64
+                            Layout.preferredHeight: 96
+                            radius: 4
+                            color: "transparent"
+                            border.width: 1
+                            border.color: root.isDarkTheme ? Qt.rgba(0.45, 0.45, 0.45, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                            // Faixa central destacada
+                            Rectangle {
+                                y: parent.height / 2 - 16
+                                width: parent.width
+                                height: 32
+                                radius: 2
+                                color: root.isDarkTheme ? Qt.rgba(0.4, 0.7, 1, 0.18) : Qt.rgba(0.15, 0.5, 0.85, 0.16)
+                            }
+                            ListView {
+                                id: hList
+                                objectName: "timeWheelHours"
+                                anchors.fill: parent
+                                anchors.margins: 1
+                                clip: true
+                                model: 24
+                                header: Item { width: 1; height: 31 }
+                                footer: Item { width: 1; height: 31 }
+                                delegate: QQC2.Label {
+                                    width: hList.width
+                                    height: 32
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                    text: page.pad2(modelData)
+                                    font.pixelSize: 14
+                                    font.bold: Math.abs(index * 32 - hList.contentY - (hList.height - 32) / 2) < 8
+                                    color: Math.abs(index * 32 - hList.contentY - (hList.height - 32) / 2) < 8
+                                        ? (root.isDarkTheme ? Qt.rgba(0.5, 0.8, 1, 1) : Qt.rgba(0.15, 0.5, 0.85, 1))
+                                        : (root.isDarkTheme ? Qt.rgba(0.9, 0.9, 0.9, 1) : Qt.rgba(0.25, 0.25, 0.25, 1))
+                                    opacity: Math.abs(index * 32 - hList.contentY - (hList.height - 32) / 2) < 8 ? 1 : 0.5
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: hList.setIndex(index)
+                                    }
+                                }
+                                onMovementEnded: {
+                                    var off = (hList.height - 32) / 2;
+                                    var n = Math.round((hList.contentY + off) / 32);
+                                    if (n < 0) n = 0;
+                                    if (n > hList.count - 1) n = hList.count - 1;
+                                    hList.contentY = n * 32 - off;
+                                }
+                                function setIndex(i) {
+                                    hList.contentY = i * 32 - (hList.height - 32) / 2;
+                                }
+                                function selectedIndex() {
+                                    var n = Math.round((hList.contentY + (hList.height - 32) / 2) / 32);
+                                    if (n < 0) n = 0;
+                                    if (n > hList.count - 1) n = hList.count - 1;
+                                    return n;
+                                }
+                                QQC2.ScrollBar.vertical: QQC2.ScrollBar {
+                                    width: 5
+                                    policy: QQC2.ScrollBar.AsNeeded
+                                    z: 4
+                                    contentItem: Rectangle {
+                                        implicitWidth: 5
+                                        radius: 2
+                                        color: root.isDarkTheme ? Qt.rgba(0.5, 0.8, 1, 0.6) : Qt.rgba(0.15, 0.5, 0.85, 0.55)
+                                    }
+                                    background: Rectangle {
+                                        color: "transparent"
+                                    }
+                                }
+                            }
+                        }
+
+                        // Roda dos minutos (passos de 5)
+                        Rectangle {
+                            Layout.preferredWidth: 64
+                            Layout.preferredHeight: 96
+                            radius: 4
+                            color: "transparent"
+                            border.width: 1
+                            border.color: root.isDarkTheme ? Qt.rgba(0.45, 0.45, 0.45, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                            // Faixa central destacada
+                            Rectangle {
+                                y: parent.height / 2 - 16
+                                width: parent.width
+                                height: 32
+                                radius: 2
+                                color: root.isDarkTheme ? Qt.rgba(0.4, 0.7, 1, 0.18) : Qt.rgba(0.15, 0.5, 0.85, 0.16)
+                            }
+                            ListView {
+                                id: mList
+                                objectName: "timeWheelMinutes"
+                                anchors.fill: parent
+                                anchors.margins: 1
+                                clip: true
+                                model: 12
+                                header: Item { width: 1; height: 31 }
+                                footer: Item { width: 1; height: 31 }
+                                delegate: QQC2.Label {
+                                    width: mList.width
+                                    height: 32
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                    text: page.pad2(modelData * 5)
+                                    font.pixelSize: 14
+                                    font.bold: Math.abs(index * 32 - mList.contentY - (mList.height - 32) / 2) < 8
+                                    color: Math.abs(index * 32 - mList.contentY - (mList.height - 32) / 2) < 8
+                                        ? (root.isDarkTheme ? Qt.rgba(0.5, 0.8, 1, 1) : Qt.rgba(0.15, 0.5, 0.85, 1))
+                                        : (root.isDarkTheme ? Qt.rgba(0.9, 0.9, 0.9, 1) : Qt.rgba(0.25, 0.25, 0.25, 1))
+                                    opacity: Math.abs(index * 32 - mList.contentY - (mList.height - 32) / 2) < 8 ? 1 : 0.5
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        onClicked: mList.setIndex(index)
+                                    }
+                                }
+                                onMovementEnded: {
+                                    var off = (mList.height - 32) / 2;
+                                    var n = Math.round((mList.contentY + off) / 32);
+                                    if (n < 0) n = 0;
+                                    if (n > mList.count - 1) n = mList.count - 1;
+                                    mList.contentY = n * 32 - off;
+                                }
+                                function setIndex(i) {
+                                    mList.contentY = i * 32 - (mList.height - 32) / 2;
+                                }
+                                function selectedIndex() {
+                                    var n = Math.round((mList.contentY + (mList.height - 32) / 2) / 32);
+                                    if (n < 0) n = 0;
+                                    if (n > mList.count - 1) n = mList.count - 1;
+                                    return n;
+                                }
+                                QQC2.ScrollBar.vertical: QQC2.ScrollBar {
+                                    width: 5
+                                    policy: QQC2.ScrollBar.AsNeeded
+                                    z: 4
+                                    contentItem: Rectangle {
+                                        implicitWidth: 5
+                                        radius: 2
+                                        color: root.isDarkTheme ? Qt.rgba(0.5, 0.8, 1, 0.6) : Qt.rgba(0.15, 0.5, 0.85, 0.55)
+                                    }
+                                    background: Rectangle {
+                                        color: "transparent"
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 8
+                        Item { Layout.fillWidth: true }
+
+                        PlasmaComponents3.ToolButton {
+                            text: i18n("Cancel")
+                            contentItem: Text {
+                                text: i18n("Cancel")
+                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                font.pixelSize: 12
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: timePicker.visible = false
+                        }
+
+                        PlasmaComponents3.ToolButton {
+                            objectName: "timePickerOk"
+                            text: i18n("OK")
+                            contentItem: Text {
+                                text: i18n("OK")
+                                color: "#ffffff"
+                                font.pixelSize: 12
+                                font.weight: Font.Bold
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            background: Rectangle {
+                                radius: 4
+                                color: Qt.rgba(0.15, 0.5, 0.85, 1)
+                            }
+                            onClicked: page.pickTimeApply()
+                        }
                     }
                 }
             }

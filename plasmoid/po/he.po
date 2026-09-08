@@ -616,6 +616,10 @@ msgstr "ביטול"
 msgid "Save"
 msgstr "שמירה"
 
+#: contents/ui/pages/AgendaPage.qml
+msgid "OK"
+msgstr ""
+
 #: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
 msgstr "לחץ על רענון כדי לטעון נתונים."
