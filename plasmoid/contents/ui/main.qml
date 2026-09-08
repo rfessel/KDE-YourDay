@@ -71,6 +71,12 @@ PlasmoidItem {
     property int agendaRetryCount: 0
     property var gcalCalendars: []
     property int currentTab: 0   // 0=Resumo, 1=Agenda, 2=Tarefas, 3=Clima, 4=Notas, 5=Listas, 6=Notícias
+    // Aba destino pendente enquanto o diálogo de confirmação estiver aberto.
+    property int pendingTab: -1
+    // Referência da AgendaPage e visibilidade da confirmação (expostas pelo
+    // fullRepresentation, cujos ids não enxergam a root PlasmoidItem).
+    property var agendaPageInst: null
+    property bool tabConfirmVisible: false
 
     // Tokens de geração: callbacks de XHR antigos são ignorados após nova carga.
     property int feedGen: 0
@@ -1466,10 +1472,43 @@ PlasmoidItem {
         root.refreshAgenda();
     }
 
-    function gotoClima() { root.currentTab = 3; }
-    function gotoNotas() { root.currentTab = 4; }
-    function gotoListas() { root.currentTab = 5; }
-    function gotoNoticias() { root.currentTab = 6; }
+    function gotoClima() { root.requestTab(3); }
+    function gotoNotas() { root.requestTab(4); }
+    function gotoListas() { root.requestTab(5); }
+    function gotoNoticias() { root.requestTab(6); }
+
+    // Troca de aba pedida pelo usuário. Se o diálogo de compromisso estiver
+    // aberto na Agenda e houver alterações, pergunta antes de sair.
+    function requestTab(idx) {
+        if (idx === root.currentTab) {
+            return;
+        }
+        if (root.agendaPageInst && root.agendaPageInst.dialogOpen) {
+            root.pendingTab = idx;
+            root.tabConfirmVisible = true;
+            return;
+        }
+        root.currentTab = idx;
+    }
+
+    // Confirmação de saída confirmada: descarta o diálogo e troca de aba.
+    function confirmLeaveTab() {
+        if (root.agendaPageInst) {
+            root.agendaPageInst.dialogOpen = false;
+        }
+        root.tabConfirmVisible = false;
+        if (root.pendingTab >= 0) {
+            var idx = root.pendingTab;
+            root.pendingTab = -1;
+            root.currentTab = idx;
+        }
+    }
+
+    // É só cancelar a troca, continua editando na agenda.
+    function cancelLeaveTab() {
+        root.tabConfirmVisible = false;
+        root.pendingTab = -1;
+    }
 
     function refreshWeather() {
         root.weatherGen++;
@@ -1852,7 +1891,7 @@ PlasmoidItem {
                 anchors.fill: parent
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
-                onClicked: root.currentTab = index
+                onClicked: root.requestTab(index)
                 Accessible.name: modelData.label
             }
 
@@ -1962,10 +2001,13 @@ PlasmoidItem {
                 }
 
                 Loader {
+                    id: agendaLoader
                     active: root.visitedTabs[1]
                     asynchronous: true
+                    onItemChanged: root.agendaPageInst = agendaLoader.item
                     sourceComponent: Component {
                         AgendaPage {
+                            id: agendaPage
                             events: root.agendaEvents
                             loading: root.agendaLoading
                             notice: root.agendaNotice
@@ -2198,6 +2240,92 @@ PlasmoidItem {
                 font.pixelSize: 10
             }
         } // ColumnLayout (bodyItem)
+
+        // Confirmação ao sair da aba Agenda com o diálogo de compromisso aberto.
+        Rectangle {
+            id: tabConfirm
+            objectName: "tabConfirm"
+            visible: root.tabConfirmVisible
+            anchors.fill: parent
+            z: 200
+            color: Qt.rgba(0, 0, 0, 0.45)
+
+            // Só os botões decidem: cliques no escuro não fecham a confirmação.
+            MouseArea {
+                anchors.fill: parent
+            }
+
+            Rectangle {
+                anchors.centerIn: parent
+                width: 320
+                height: confirmCol.implicitHeight + 24
+                radius: 8
+                color: root.isDarkTheme ? Qt.rgba(0.2, 0.2, 0.2, 1) : Qt.rgba(0.97, 0.97, 0.97, 1)
+                border.width: 1
+                border.color: root.isDarkTheme ? Qt.rgba(0.4, 0.4, 0.4, 1) : Qt.rgba(0.8, 0.8, 0.8, 1)
+
+                ColumnLayout {
+                    id: confirmCol
+                    anchors.fill: parent
+                    anchors.margins: 16
+                    spacing: 10
+
+                    QQC2.Label {
+                        Layout.fillWidth: true
+                        text: i18n("Unsaved changes")
+                        font.pixelSize: 14
+                        font.weight: Font.Bold
+                        color: root.textMain
+                    }
+
+                    QQC2.Label {
+                        Layout.fillWidth: true
+                        text: i18n("The appointment being edited has unsaved changes. Leave the tab to discard them?")
+                        font.pixelSize: 11
+                        wrapMode: Text.WordWrap
+                        color: root.textMain
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 8
+                        Layout.topMargin: 4
+
+                        Item { Layout.fillWidth: true }
+
+                        PlasmaComponents3.ToolButton {
+                            text: i18n("Continue editing")
+                            contentItem: Text {
+                                text: i18n("Continue editing")
+                                color: root.textMain
+                                font.pixelSize: 11
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: root.cancelLeaveTab()
+                        }
+
+                        PlasmaComponents3.ToolButton {
+                            objectName: "tabConfirmLeave"
+                            text: i18n("Leave without saving")
+                            contentItem: Text {
+                                text: i18n("Leave without saving")
+                                color: "#ffffff"
+                                font.pixelSize: 11
+                                font.weight: Font.Bold
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            background: Rectangle {
+                                radius: 4
+                                color: Qt.rgba(0.15, 0.5, 0.85, 1)
+                            }
+                            onClicked: root.confirmLeaveTab()
+                        }
+                    }
+                }
+            }
+        }
     } // Rectangle
 }
 }

@@ -551,6 +551,24 @@ msgstr "Certains flux n'ont pas pu être chargés :"
 msgid "Updated at %1"
 msgstr "Mis à jour à %1"
 
+#: contents/ui/main.qml
+msgid "Unsaved changes"
+msgstr ""
+
+#: contents/ui/main.qml
+msgid ""
+"The appointment being edited has unsaved changes. Leave the tab to discard "
+"them?"
+msgstr ""
+
+#: contents/ui/main.qml
+msgid "Continue editing"
+msgstr ""
+
+#: contents/ui/main.qml
+msgid "Leave without saving"
+msgstr ""
+
 #: contents/ui/pages/AgendaPage.qml
 msgid "These are your appointments for this date..."
 msgstr "Voici vos rendez-vous pour cette date..."

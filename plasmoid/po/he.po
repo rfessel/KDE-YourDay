@@ -551,6 +551,24 @@ msgstr "חלק מההזנות לא נטענו:"
 msgid "Updated at %1"
 msgstr "עודכן ב-%1"
 
+#: contents/ui/main.qml
+msgid "Unsaved changes"
+msgstr ""
+
+#: contents/ui/main.qml
+msgid ""
+"The appointment being edited has unsaved changes. Leave the tab to discard "
+"them?"
+msgstr ""
+
+#: contents/ui/main.qml
+msgid "Continue editing"
+msgstr ""
+
+#: contents/ui/main.qml
+msgid "Leave without saving"
+msgstr ""
+
 #: contents/ui/pages/AgendaPage.qml
 msgid "These are your appointments for this date..."
 msgstr "האירועים שלך בתאריך זה..."

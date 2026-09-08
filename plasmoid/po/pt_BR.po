@@ -551,6 +551,22 @@ msgstr "Alguns feeds não carregaram:"
 msgid "Updated at %1"
 msgstr "Atualizado às %1"
 
+#: contents/ui/main.qml
+msgid "Unsaved changes"
+msgstr "Alterações não salvas"
+
+#: contents/ui/main.qml
+msgid "The appointment being edited has unsaved changes. Leave the tab to discard them?"
+msgstr "O compromisso em edição tem alterações não salvas. Sair da aba as descartará?"
+
+#: contents/ui/main.qml
+msgid "Continue editing"
+msgstr "Continuar editando"
+
+#: contents/ui/main.qml
+msgid "Leave without saving"
+msgstr "Sair sem salvar"
+
 #: contents/ui/pages/AgendaPage.qml
 msgid "These are your appointments for this date..."
 msgstr "Estes são os seus compromissos para esta data..."

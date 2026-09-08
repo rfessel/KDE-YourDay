@@ -35,6 +35,11 @@ Item {
     property var selectedDate: new Date()
     property var selectedEvents: []
 
+    // Estado do popup de seleção de data no diálogo
+    property int calPickerMonth: new Date().getMonth()
+    property int calPickerYear: new Date().getFullYear()
+    property var calPickerDays: []
+
     // Estado do diálogo de evento
     property bool dialogOpen: false
     property bool dialogEditing: false
@@ -170,6 +175,82 @@ Item {
             page.dialogEndTime = t;
         }
         timePicker.visible = false;
+    }
+
+    // Abre o popup de calendário abaixo do campo de data clicado.
+    function openDatePicker(btn) {
+        var parts = page.dialogDate.split("-");
+        page.calPickerYear = parseInt(parts[0]) || new Date().getFullYear();
+        page.calPickerMonth = Math.max(0, Math.min(11, (parseInt(parts[1]) || 1) - 1));
+        page.rebuildCalDays();
+        var pt = btn.mapToItem(dialogRect, 0, btn.height + 6);
+        datePicker.x = Math.min(Math.max(0, pt.x), dialogRect.width - datePicker.width - 8);
+        datePicker.y = pt.y;
+        if (datePicker.y + datePicker.height > dialogRect.height - 8) {
+            var top = btn.mapToItem(dialogRect, 0, 0).y;
+            datePicker.y = Math.max(0, top - datePicker.height - 6);
+        }
+        datePicker.visible = true;
+    }
+
+    // Dias do mês exibido no popup (0 = célula vazia para alinhar a semana).
+    function rebuildCalDays() {
+        var first = page.firstDayOfWeek(page.calPickerYear, page.calPickerMonth);
+        var total = page.daysInMonth(page.calPickerYear, page.calPickerMonth);
+        var items = [];
+        for (var i = 0; i < first; i++) {
+            items.push(0);
+        }
+        for (var d = 1; d <= total; d++) {
+            items.push(d);
+        }
+        while (items.length % 7 !== 0) {
+            items.push(0);
+        }
+        page.calPickerDays = items;
+    }
+
+    function calPickerPrev() {
+        page.calPickerMonth--;
+        if (page.calPickerMonth < 0) {
+            page.calPickerMonth = 11;
+            page.calPickerYear--;
+        }
+        page.rebuildCalDays();
+    }
+
+    function calPickerNext() {
+        page.calPickerMonth++;
+        if (page.calPickerMonth > 11) {
+            page.calPickerMonth = 0;
+            page.calPickerYear++;
+        }
+        page.rebuildCalDays();
+    }
+
+    function calPickerToday() {
+        var now = new Date();
+        page.calPickerYear = now.getFullYear();
+        page.calPickerMonth = now.getMonth();
+        page.rebuildCalDays();
+    }
+
+    function calPickerSelect(day) {
+        page.dialogDate = page.formatDateStr(new Date(page.calPickerYear, page.calPickerMonth, day));
+        datePicker.visible = false;
+    }
+
+    // Dia destacado no popup deve acompanhar a data do diálogo (dialogDate).
+    function calIsSelected(day) {
+        var parts = page.dialogDate.split("-");
+        var y = parseInt(parts[0]) || 0;
+        var m = (parseInt(parts[1]) || 1) - 1;
+        var d = parseInt(parts[2]) || 0;
+        return page.calPickerYear === y && page.calPickerMonth === m && day === d;
+    }
+
+    function formatDateShort(d) {
+        return d.toLocaleString(Qt.locale(), "dd MMM yyyy");
     }
 
     function openNewEventDialog() {
@@ -701,9 +782,10 @@ Item {
         z: 100
         color: Qt.rgba(0, 0, 0, 0.5)
 
+        // O diálogo fecha somente pelos botões Ok/Cancelar/Salvar; cliques no
+        // escuro não fecham (evita perder digitação por clique acidental).
         MouseArea {
             anchors.fill: parent
-            onClicked: page.dialogOpen = false
         }
 
         Rectangle {
@@ -791,7 +873,7 @@ Item {
                     }
                 }
 
-                // Data
+                // Data (clique abre o popup de calendário)
                 RowLayout {
                     Layout.fillWidth: true
                     spacing: 8
@@ -800,19 +882,27 @@ Item {
                         color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                         font.pixelSize: 12
                     }
-                    QQC2.TextField {
-                        id: dateField
+                    PlasmaComponents3.ToolButton {
+                        id: dateFieldBtn
+                        objectName: "dateFieldBtn"
                         Layout.fillWidth: true
-                        text: page.dialogDate
-                        onTextChanged: page.dialogDate = text
-                        placeholderText: "YYYY-MM-DD"
-                        color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                        background: Rectangle {
-                            radius: 4
-                            color: "transparent"
-                            border.width: 1
-                            border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                        Layout.preferredHeight: 26
+                        contentItem: Text {
+                            text: {
+                                var p = page.dialogDate.split("-");
+                                var y = parseInt(p[0]) || 0;
+                                var m = parseInt(p[1]) || 1;
+                                var d = parseInt(p[2]) || 1;
+                                if (y === 0) return "";
+                                return page.formatDateShort(new Date(y, m - 1, d));
+                            }
+                            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                            font.pixelSize: 13
+                            font.bold: true
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
                         }
+                        onClicked: page.openDatePicker(dateFieldBtn)
                     }
                 }
 
@@ -956,6 +1046,12 @@ Item {
                 color: root.isDarkTheme ? Qt.rgba(0.16, 0.16, 0.16, 1) : Qt.rgba(1, 1, 1, 1)
                 border.width: 1
                 border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.75, 0.75, 0.75, 1)
+
+                // Bloqueia cliques em áreas vazias: só Ok/Cancelar fecham o seletor.
+                MouseArea {
+                    anchors.fill: parent
+                    z: 0
+                }
 
                 ColumnLayout {
                     id: pickCol
@@ -1149,6 +1245,164 @@ Item {
                                 color: Qt.rgba(0.15, 0.5, 0.85, 1)
                             }
                             onClicked: page.pickTimeApply()
+                        }
+                    }
+                }
+            }
+
+            // Popup de calendário para a data (mesmo padrão visual do seletor de horário)
+            Rectangle {
+                id: datePicker
+                objectName: "datePicker"
+                visible: false
+                z: 60
+                width: dateCol.implicitWidth + 20
+                height: dateCol.implicitHeight + 18
+                radius: 8
+                color: root.isDarkTheme ? Qt.rgba(0.16, 0.16, 0.16, 1) : Qt.rgba(1, 1, 1, 1)
+                border.width: 1
+                border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.75, 0.75, 0.75, 1)
+
+                // Bloqueia cliques em áreas vazias: só clique num dia, Hoje ou
+                // Cancelar fecham o calendário.
+                MouseArea {
+                    anchors.fill: parent
+                    z: 0
+                }
+
+                ColumnLayout {
+                    id: dateCol
+                    anchors.fill: parent
+                    anchors.margins: 10
+                    spacing: 8
+
+                    // Cabeçalho: mês e ano com navegação
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 4
+                        PlasmaComponents3.ToolButton {
+                            objectName: "datePickerPrev"
+                            text: "‹"
+                            contentItem: Text {
+                                text: "‹"
+                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                font.pixelSize: 16
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: page.calPickerPrev()
+                        }
+                        QQC2.Label {
+                            Layout.fillWidth: true
+                            text: page.monthName(page.calPickerMonth) + " " + page.calPickerYear
+                            font.pixelSize: 13
+                            font.weight: Font.Bold
+                            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        PlasmaComponents3.ToolButton {
+                            objectName: "datePickerNext"
+                            text: "›"
+                            contentItem: Text {
+                                text: "›"
+                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                font.pixelSize: 16
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: page.calPickerNext()
+                        }
+                    }
+
+                    // Nomes curtos dos dias da semana (via locale)
+                    Grid {
+                        columns: 7
+                        columnSpacing: 2
+                        Layout.alignment: Qt.AlignHCenter
+                        Repeater {
+                            model: page.weekdayHeader()
+                            delegate: QQC2.Label {
+                                width: 28
+                                height: 18
+                                text: modelData
+                                font.pixelSize: 10
+                                font.weight: Font.DemiBold
+                                color: root.isDarkTheme ? Qt.rgba(0.6, 0.6, 0.6, 1) : Qt.rgba(0.5, 0.5, 0.5, 1)
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                        }
+                    }
+
+                    // Grade de dias do mês
+                    Grid {
+                        columns: 7
+                        columnSpacing: 2
+                        Layout.alignment: Qt.AlignHCenter
+                        Repeater {
+                            model: page.calPickerDays
+                            delegate: Rectangle {
+                                required property int modelData
+                                property bool isCalToday: modelData > 0 && page.isToday(page.calPickerYear, page.calPickerMonth, modelData)
+                                property bool isCalSelected: modelData > 0 && page.calIsSelected(modelData)
+                                width: 28
+                                height: 28
+                                radius: 4
+                                visible: modelData > 0
+                                color: isCalSelected
+                                       ? (root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1))
+                                       : (isCalToday ? Qt.alpha((root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)), 0.2) : "transparent")
+                                border.width: isCalToday && !isCalSelected ? 1 : 0
+                                border.color: root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)
+
+                                QQC2.Label {
+                                    anchors.centerIn: parent
+                                    text: modelData
+                                    font.pixelSize: 10
+                                    font.weight: isCalSelected || isCalToday ? Font.Bold : Font.Normal
+                                    color: isCalSelected
+                                           ? "#ffffff"
+                                           : (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                                }
+
+                                MouseArea {
+                                    anchors.fill: parent
+                                    cursorShape: Qt.PointingHandCursor
+                                    onClicked: page.calPickerSelect(modelData)
+                                }
+                            }
+                        }
+                    }
+
+                    // Rodapé: hoje e cancelar
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: 8
+                        PlasmaComponents3.ToolButton {
+                            objectName: "datePickerToday"
+                            text: i18n("Today")
+                            contentItem: Text {
+                                text: i18n("Today")
+                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                font.pixelSize: 11
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: page.calPickerToday()
+                        }
+                        Item { Layout.fillWidth: true }
+                        PlasmaComponents3.ToolButton {
+                            objectName: "datePickerCancel"
+                            text: i18n("Cancel")
+                            contentItem: Text {
+                                text: i18n("Cancel")
+                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                font.pixelSize: 11
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: datePicker.visible = false
                         }
                     }
                 }
