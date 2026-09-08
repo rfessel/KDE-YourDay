@@ -69,6 +69,10 @@ Item {
         return arr;
     }
 
+    // Espaço reservado para a barra de rolagem vertical (desenhada por cima
+    // do conteúdo no QQC2): os cards do clima não ficam escondidos sob ela.
+    readonly property real scrollGutter: climaScrollBar.visible ? climaScrollBar.width : 0
+
     function getCityData(name) {
         if (name === page.weatherCity) return page.currentData;
         return page.extraWeatherData[name] || null;
@@ -109,11 +113,14 @@ Item {
             contentHeight: weatherCol.implicitHeight
             boundsBehavior: Flickable.StopAtBounds
 
-            QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
+            QQC2.ScrollBar.vertical: QQC2.ScrollBar {
+                id: climaScrollBar
+                policy: QQC2.ScrollBar.AsNeeded
+            }
 
             ColumnLayout {
                 id: weatherCol
-                width: parent.width
+                width: parent.width - page.scrollGutter
                 spacing: Kirigami.Units.largeSpacing
 
                 // ========== Card principal ==========

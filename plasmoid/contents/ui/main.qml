@@ -1613,7 +1613,9 @@ PlasmoidItem {
 
             readonly property bool hovered: cardMouse.containsMouse
 
-            width: ListView.view.width
+            // Largura descontada da barra de rolagem vertical (que no QQC2
+            // sobrepõe o conteúdo por padrão): o card não fica escondido sob ela.
+            width: ListView.view.width - ListView.view.scrollGutter
             height: card.featured
                    ? Math.max(180, Math.min(300, contentText.implicitHeight + 24))
                    : Math.max(120, Math.min(212, contentText.implicitHeight + 16))
@@ -2059,11 +2061,17 @@ PlasmoidItem {
                             anchors.fill: parent
                             clip: true
                             boundsBehavior: Flickable.StopAtBounds
+                            // Espaço reservado para a barra de rolagem, para que
+                            // ela não sobreponha os cards (ver newsCardDelegate).
+                            readonly property real scrollGutter: newsScrollBar.visible ? newsScrollBar.width : 0
                             model: root.slicedAll
                             delegate: newsCardDelegate
                             cacheBuffer: 600
                             spacing: Kirigami.Units.smallSpacing
-                            ScrollBar.vertical: ScrollBar {}
+                            ScrollBar.vertical: ScrollBar {
+                                id: newsScrollBar
+                                policy: ScrollBar.AsNeeded
+                            }
                         }
 
                         // Carregando…

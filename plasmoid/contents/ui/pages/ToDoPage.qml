@@ -29,6 +29,11 @@ Item {
     property bool showHistory: false
     property var newDueDate: 0
 
+    // Espaço reservado para a barra de rolagem vertical (desenhada por cima
+    // do conteúdo no QQC2): tarefas e histórico não ficam sob a barra.
+    readonly property real scrollGutter: todoScrollBar.visible ? todoScrollBar.width : 0
+    readonly property real historyScrollGutter: histScrollBar.visible ? histScrollBar.width : 0
+
     function createdDateText(ms) {
         if (!ms) return "";
         var d = new Date(ms);
@@ -63,11 +68,14 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: rootCol.implicitHeight + Kirigami.Units.largeSpacing * 2
 
-        QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
+        QQC2.ScrollBar.vertical: QQC2.ScrollBar {
+            id: todoScrollBar
+            policy: QQC2.ScrollBar.AsNeeded
+        }
 
         ColumnLayout {
             id: rootCol
-            width: parent.width
+            width: parent.width - page.scrollGutter
             anchors.top: parent.top
             anchors.topMargin: Kirigami.Units.smallSpacing
             spacing: Kirigami.Units.smallSpacing
@@ -353,11 +361,14 @@ Rectangle {
             boundsBehavior: Flickable.StopAtBounds
             contentHeight: historyItems.implicitHeight
 
-            QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
+            QQC2.ScrollBar.vertical: QQC2.ScrollBar {
+                id: histScrollBar
+                policy: QQC2.ScrollBar.AsNeeded
+            }
 
             ColumnLayout {
                 id: historyItems
-                width: parent.width
+                width: parent.width - page.historyScrollGutter
                 anchors.top: parent.top
                 spacing: Kirigami.Units.smallSpacing
 

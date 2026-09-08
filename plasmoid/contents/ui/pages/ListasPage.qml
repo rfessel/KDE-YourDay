@@ -110,11 +110,16 @@ Item {
             Layout.topMargin: Kirigami.Units.smallSpacing
             clip: true
             boundsBehavior: Flickable.StopAtBounds
+            // Espaço da barra de rolagem para ela não cobrir os cards.
+            readonly property real scrollGutter: listScrollBar.visible ? listScrollBar.width : 0
             model: page.activeLists
             spacing: Kirigami.Units.smallSpacing
             cacheBuffer: 400
             delegate: listDelegate
-            ScrollBar.vertical: ScrollBar {}
+            ScrollBar.vertical: ScrollBar {
+                id: listScrollBar
+                policy: ScrollBar.AsNeeded
+            }
         }
 
         PlasmaComponents3.Button {
@@ -137,7 +142,7 @@ Item {
             required property var modelData
             required property int index
 
-            width: ListView.view.width
+            width: ListView.view.width - ListView.view.scrollGutter
             radius: Kirigami.Units.largeSpacing
             color: root.isDarkTheme ? Qt.rgba(0.25, 0.25, 0.25, 1) : Qt.rgba(0.95, 0.95, 0.95, 1)
             border.width: 1
@@ -375,7 +380,11 @@ Item {
                 model: page.doneLists
                 spacing: Kirigami.Units.smallSpacing
                 delegate: doneRowDelegate
-                ScrollBar.vertical: ScrollBar {}
+                readonly property real scrollGutter: doneScrollBar.visible ? doneScrollBar.width : 0
+                ScrollBar.vertical: ScrollBar {
+                    id: doneScrollBar
+                    policy: ScrollBar.AsNeeded
+                }
             }
         }
     }
@@ -384,7 +393,7 @@ Item {
         id: doneRowDelegate
         Rectangle {
             required property var modelData
-            width: ListView.view.width
+            width: ListView.view.width - ListView.view.scrollGutter
             implicitHeight: Math.max(32, doneRowLay.implicitHeight + Kirigami.Units.smallSpacing * 2)
             radius: Kirigami.Units.smallSpacing
             color: "transparent"

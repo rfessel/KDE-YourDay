@@ -27,6 +27,10 @@ Item {
     property int popupIndex: -1
     property int pendingNoteIndex: -1
 
+    // Espaço reservado para a barra de rolagem vertical (no QQC2 ela é
+    // desenhada por cima do conteúdo): o grid de notas não fica sob a barra.
+    readonly property real scrollGutter: notasScrollBar.visible ? notasScrollBar.width : 0
+
     // Debounce: só grava a nota 400ms depois da última tecla.
     Timer {
         id: noteSaveTimer
@@ -48,11 +52,14 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: mainCol.implicitHeight + Kirigami.Units.largeSpacing * 2
 
-        QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
+        QQC2.ScrollBar.vertical: QQC2.ScrollBar {
+            id: notasScrollBar
+            policy: QQC2.ScrollBar.AsNeeded
+        }
 
         ColumnLayout {
             id: mainCol
-            width: parent.width
+            width: parent.width - page.scrollGutter
             anchors.top: parent.top
             anchors.leftMargin: Kirigami.Units.largeSpacing
             anchors.rightMargin: Kirigami.Units.largeSpacing

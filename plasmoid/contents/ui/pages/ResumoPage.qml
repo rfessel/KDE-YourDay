@@ -105,6 +105,10 @@ Item {
         return d.toLocaleString(Qt.locale(), "dd/MM/yyyy");
     }
 
+    // Espaço reservado para a barra de rolagem vertical (desenhada por cima
+    // do conteúdo no QQC2): os cards do resumo não ficam escondidos sob ela.
+    readonly property real scrollGutter: resumoScrollBar.visible ? resumoScrollBar.width : 0
+
     Flickable {
         id: pageFlick
         anchors.fill: parent
@@ -112,9 +116,14 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         contentHeight: rootCol.implicitHeight + Kirigami.Units.largeSpacing * 2
 
+        QQC2.ScrollBar.vertical: QQC2.ScrollBar {
+            id: resumoScrollBar
+            policy: QQC2.ScrollBar.AsNeeded
+        }
+
         ColumnLayout {
             id: rootCol
-            width: parent.width
+            width: parent.width - page.scrollGutter
             anchors.top: parent.top
             anchors.topMargin: Kirigami.Units.smallSpacing
             spacing: Kirigami.Units.largeSpacing

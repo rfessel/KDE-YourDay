@@ -497,9 +497,14 @@ Item {
                 contentHeight: eventsCol.height
                 boundsBehavior: Flickable.StopAtBounds
 
+                QQC2.ScrollBar.vertical: QQC2.ScrollBar {
+                    id: agendaScrollBar
+                    policy: QQC2.ScrollBar.AsNeeded
+                }
+
                 ColumnLayout {
                     id: eventsCol
-                    width: parent.width
+                    width: parent.width - (agendaScrollBar.visible ? agendaScrollBar.width : 0)
                     spacing: Kirigami.Units.smallSpacing
 
                     Repeater {
