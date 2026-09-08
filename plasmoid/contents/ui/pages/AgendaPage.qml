@@ -246,13 +246,17 @@ Item {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: Kirigami.Units.smallSpacing
+        anchors.topMargin: Kirigami.Units.smallSpacing
+        anchors.leftMargin: Kirigami.Units.smallSpacing
+        anchors.bottomMargin: Kirigami.Units.smallSpacing
+        anchors.rightMargin: 0
         spacing: 0
 
         // Header
         RowLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: 48
+            Layout.rightMargin: Kirigami.Units.smallSpacing
             spacing: Kirigami.Units.smallSpacing
 
             PlasmaExtras.Heading {
@@ -281,6 +285,7 @@ Item {
 
         Kirigami.Separator {
             Layout.fillWidth: true
+            Layout.rightMargin: Kirigami.Units.smallSpacing
             Layout.topMargin: Kirigami.Units.smallSpacing
             Layout.bottomMargin: Kirigami.Units.smallSpacing
             color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
@@ -504,7 +509,7 @@ Item {
 
                 ColumnLayout {
                     id: eventsCol
-                    width: parent.width - (agendaScrollBar.visible ? agendaScrollBar.width : 0)
+                    width: parent.width - (agendaScrollBar.visible ? agendaScrollBar.width : 0) - Kirigami.Units.smallSpacing
                     spacing: Kirigami.Units.smallSpacing
 
                     Repeater {

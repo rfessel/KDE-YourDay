@@ -142,7 +142,7 @@ Item {
             required property var modelData
             required property int index
 
-            width: ListView.view.width - ListView.view.scrollGutter
+            width: ListView.view.width - ListView.view.scrollGutter - Kirigami.Units.largeSpacing
             radius: Kirigami.Units.largeSpacing
             color: root.isDarkTheme ? Qt.rgba(0.25, 0.25, 0.25, 1) : Qt.rgba(0.95, 0.95, 0.95, 1)
             border.width: 1

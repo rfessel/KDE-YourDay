@@ -80,7 +80,10 @@ Item {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: Kirigami.Units.largeSpacing
+        anchors.topMargin: Kirigami.Units.largeSpacing
+        anchors.leftMargin: Kirigami.Units.largeSpacing
+        anchors.bottomMargin: Kirigami.Units.largeSpacing
+        anchors.rightMargin: 0
         spacing: Kirigami.Units.largeSpacing
 
         // Loading
@@ -120,7 +123,7 @@ Item {
 
             ColumnLayout {
                 id: weatherCol
-                width: parent.width - page.scrollGutter
+                width: parent.width - page.scrollGutter - Kirigami.Units.largeSpacing
                 spacing: Kirigami.Units.largeSpacing
 
                 // ========== Card principal ==========

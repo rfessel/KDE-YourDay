@@ -1614,8 +1614,9 @@ PlasmoidItem {
             readonly property bool hovered: cardMouse.containsMouse
 
             // Largura descontada da barra de rolagem vertical (que no QQC2
-            // sobrepõe o conteúdo por padrão): o card não fica escondido sob ela.
-            width: ListView.view.width - ListView.view.scrollGutter
+            // sobrepõe o conteúdo por padrão) e do respiro à direita, que
+            // ficou a cargo do conteúdo com a barra encostada na borda.
+            width: ListView.view.width - ListView.view.scrollGutter - Kirigami.Units.largeSpacing
             height: card.featured
                    ? Math.max(180, Math.min(300, contentText.implicitHeight + 24))
                    : Math.max(120, Math.min(212, contentText.implicitHeight + 16))
@@ -1832,7 +1833,6 @@ PlasmoidItem {
             Layout.fillHeight: true
             Layout.topMargin: Kirigami.Units.largeSpacing
             Layout.leftMargin: Kirigami.Units.largeSpacing
-            Layout.rightMargin: Kirigami.Units.largeSpacing
             spacing: 0
 
             // Barra lateral de navegação
@@ -1995,6 +1995,7 @@ PlasmoidItem {
                     RowLayout {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 48
+                        Layout.rightMargin: Kirigami.Units.largeSpacing
                         spacing: Kirigami.Units.smallSpacing
 
                         PlasmaExtras.Heading {

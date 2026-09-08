@@ -131,7 +131,7 @@ for g in manual:
 
 out = sys.stdout
 out.write('# SOME DESCRIPTIVE TITLE.\n# Copyright (C) YEAR Seu Dia... contributors\n# This file is distributed under the same license as the widget.\n# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.\n#\n'
-          'msgid ""\nmsgstr ""\n"Project-Id-Version: Your Day... 2.0.2\\n"\n"MIME-Version: 1.0\\n"\n"Content-Type: text/plain; charset=UTF-8\\n"\n"Content-Transfer-Encoding: 8bit\\n"\n\n')
+          'msgid ""\nmsgstr ""\n"Project-Id-Version: Your Day... 2.1\\n"\n"MIME-Version: 1.0\\n"\n"Content-Type: text/plain; charset=UTF-8\\n"\n"Content-Transfer-Encoding: 8bit\\n"\n\n')
 
 for key in order:
     ctxt, msgid = key

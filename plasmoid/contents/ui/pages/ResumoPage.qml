@@ -123,7 +123,7 @@ Item {
 
         ColumnLayout {
             id: rootCol
-            width: parent.width - page.scrollGutter
+            width: parent.width - page.scrollGutter - Kirigami.Units.largeSpacing
             anchors.top: parent.top
             anchors.topMargin: Kirigami.Units.smallSpacing
             spacing: Kirigami.Units.largeSpacing

@@ -59,7 +59,7 @@ Item {
 
         ColumnLayout {
             id: mainCol
-            width: parent.width - page.scrollGutter
+            width: parent.width - page.scrollGutter - Kirigami.Units.largeSpacing
             anchors.top: parent.top
             anchors.leftMargin: Kirigami.Units.largeSpacing
             anchors.rightMargin: Kirigami.Units.largeSpacing

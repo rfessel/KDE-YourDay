@@ -203,6 +203,12 @@ Item {
                 + " > permitido=" + Math.round(allowed * 10) / 10 + ")");
             test.verify(maxRight <= flk.width,
                 label + ": conteúdo invadiu o gutter do scrollbar");
+            // A barra deve estar encostada na borda direita do viewport
+            // (não flutuando longe do canto do widget).
+            var barRight = bar.x + bar.width;
+            test.verify(Math.abs(barRight - flk.width) < 0.5,
+                label + ": barra não está encostada na borda direita (barRight="
+                + Math.round(barRight * 10) / 10 + " vs flk.width=" + flk.width + ")");
             checked++;
         }
         test.verify(checked > 0, label + ": nenhum Flickable com barra visível foi analisado");
