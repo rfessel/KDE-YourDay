@@ -382,6 +382,18 @@ function makeCompleter(count, finalize) {
             }
             return true;
         },
+        // Watchdog: força o finalize mesmo com peers pendentes (XHR que nunca
+        // responde não pode deixar a agenda vazia para sempre).
+        force: function() {
+            if (fired) {
+                return false;
+            }
+            fired = true;
+            if (typeof finalize === "function") {
+                finalize();
+            }
+            return true;
+        },
         isDone: function() {
             return fired;
         },

@@ -73,6 +73,10 @@ Item {
     // do conteúdo no QQC2): os cards do clima não ficam escondidos sob ela.
     readonly property real scrollGutter: climaScrollBar.visible ? climaScrollBar.width : 0
 
+    // Até 6 próximas horas para o gráfico de linha (temperatura + chuva).
+    readonly property var chartPoints: page.currentData && page.currentData.hours
+                                       ? page.currentData.hours.slice(0, 6) : []
+
     function getCityData(name) {
         if (name === page.weatherCity) return page.currentData;
         return page.extraWeatherData[name] || null;
@@ -231,6 +235,129 @@ Item {
                     }
                 }
 
+                // ========== Próximas horas (gráfico de linha) ==========
+                Rectangle {
+                    id: hoursCard
+                    objectName: "hoursCard"
+                    visible: page.chartPoints.length >= 2
+                    Layout.fillWidth: true
+                    radius: Kirigami.Units.largeSpacing
+                    color: root.isDarkTheme ? Qt.rgba(0.25, 0.25, 0.25, 1) : Qt.rgba(0.95, 0.95, 0.95, 1)
+                    border.width: 1
+                    border.color: root.isDarkTheme ? Qt.rgba(0.4, 0.4, 0.4, 1) : Qt.rgba(0.8, 0.8, 0.8, 1)
+                    implicitHeight: hoursCardCol.implicitHeight + Kirigami.Units.largeSpacing * 2
+
+                    ColumnLayout {
+                        id: hoursCardCol
+                        anchors.fill: parent
+                        anchors.margins: Kirigami.Units.largeSpacing
+                        spacing: Kirigami.Units.smallSpacing
+
+                        PlasmaExtras.Heading {
+                            level: 4
+                            color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                            text: i18n("Next hours")
+                        }
+
+                        // Linha da temperatura: ° em cima, hora + % de chuva embaixo
+                        Canvas {
+                            id: hoursChart
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 130
+                            readonly property var pts: page.chartPoints
+
+                            function xFor(i) {
+                                var n = pts.length;
+                                return 6 + (n > 1 ? i * (width - 16) / (n - 1) : (width - 16) / 2);
+                            }
+
+                            onWidthChanged: requestPaint()
+                            onHeightChanged: requestPaint()
+                            Connections {
+                                target: page
+                                function onChartPointsChanged() { hoursChart.requestPaint(); }
+                            }
+                            Connections {
+                                target: root
+                                function onIsDarkThemeChanged() { hoursChart.requestPaint(); }
+                            }
+
+                            onPaint: {
+                                var ctx = getContext("2d");
+                                var n = pts.length;
+                                var topPad = 18, bottomPad = 18, leftPad = 6, rightPad = 10;
+                                var plotW = width - leftPad - rightPad;
+                                var plotH = height - topPad - bottomPad;
+                                ctx.reset();
+                                if (n < 2 || plotW <= 0 || plotH <= 0) return;
+
+                                var tmin = Infinity, tmax = -Infinity;
+                                for (var i = 0; i < n; i++) {
+                                    if (pts[i].temp < tmin) tmin = pts[i].temp;
+                                    if (pts[i].temp > tmax) tmax = pts[i].temp;
+                                }
+                                if (tmin === Infinity) { tmin = 0; tmax = 1; }
+                                if (tmax - tmin < 4) {
+                                    var pad = (4 - (tmax - tmin)) / 2;
+                                    tmin -= pad;
+                                    tmax += pad;
+                                }
+                                function yFor(t) { return topPad + (1 - (t - tmin) / (tmax - tmin)) * plotH; }
+
+                                var acc = root.accentMain || Qt.rgba(0.15, 0.5, 0.85, 1);
+                                var rainClr = root.isDarkTheme ? "rgba(0.45,0.75,1,0.95)" : "rgba(0.08,0.42,0.88,1)";
+                                var subtle = root.isDarkTheme ? "rgba(0.93,0.93,0.93,0.6)" : "rgba(0.13,0.13,0.13,0.6)";
+                                var textClr = root.textMain || Qt.rgba(0.13, 0.13, 0.13, 1);
+
+                                // grade (linhas sutis)
+                                ctx.strokeStyle = root.isDarkTheme ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)";
+                                ctx.lineWidth = 1;
+                                for (var g = 0; g <= 2; g++) {
+                                    var gy = topPad + g * plotH / 2;
+                                    ctx.beginPath();
+                                    ctx.moveTo(leftPad, gy);
+                                    ctx.lineTo(leftPad + plotW, gy);
+                                    ctx.stroke();
+                                }
+
+                                // linha da temperatura
+                                ctx.strokeStyle = acc;
+                                ctx.lineWidth = 2;
+                                ctx.beginPath();
+                                for (var p = 0; p < n; p++) {
+                                    var px = xFor(p);
+                                    var py = yFor(pts[p].temp);
+                                    if (p === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+                                }
+                                ctx.stroke();
+
+                                ctx.font = "9px sans-serif";
+                                ctx.textAlign = "center";
+                                var bottomY = height - 5;
+                                for (var d = 0; d < n; d++) {
+                                    var dx = xFor(d);
+                                    var dy = yFor(pts[d].temp);
+                                    // ponto
+                                    ctx.fillStyle = acc;
+                                    ctx.beginPath();
+                                    ctx.arc(dx, dy, 3, 0, 2 * Math.PI);
+                                    ctx.fill();
+                                    // temperatura em cima
+                                    ctx.fillStyle = textClr;
+                                    ctx.fillText(Math.round(pts[d].temp) + "°", dx, dy - 8);
+                                    // hora + % de precipitação embaixo
+                                    var htxt = new Date(pts[d].time).getHours() + "h ";
+                                    var w = ctx.measureText(htxt).width;
+                                    ctx.fillStyle = subtle;
+                                    ctx.fillText(htxt, dx - w / 2, bottomY);
+                                    ctx.fillStyle = rainClr;
+                                    ctx.fillText(Math.round(pts[d].rainChance || 0) + "%", dx + w / 2, bottomY);
+                                }
+                            }
+                        }
+                    }
+                }
+
                 // ========== Previsão 7 dias ==========
                 Rectangle {
                     visible: page.currentData && page.currentData.days && page.currentData.days.length > 1
@@ -328,8 +455,9 @@ Item {
                             anchors.margins: Kirigami.Units.largeSpacing
                             spacing: Kirigami.Units.smallSpacing
 
-                            PlasmaExtras.Heading {
-                                level: 4
+PlasmaExtras.Heading {
+                            objectName: "hoursHeader"
+                            level: 4
                         color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
                                 text: modelData.name
                             }

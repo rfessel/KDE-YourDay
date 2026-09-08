@@ -77,6 +77,7 @@ function fetchWeather(lat, lon, onReady, onError) {
             + "&longitude=" + lon
             + "&current=temperature_2m,weather_code,relative_humidity_2m,is_day,rain,showers,wind_speed_10m"
             + "&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code,sunrise,sunset"
+            + "&hourly=temperature_2m,weather_code,precipitation_probability"
             + "&timezone=auto"
             + "&forecast_days=7";
     var xhr = new XMLHttpRequest();
@@ -111,6 +112,27 @@ function fetchWeather(lat, lon, onReady, onError) {
                     sunset: sunsets[i] || ""
                 });
             }
+            // Previsão por hora a partir da hora corrente (até 8 pontos).
+            var hourly = data.hourly || {};
+            var hTimes = hourly.time || [];
+            var hTemps = hourly.temperature_2m || [];
+            var hCodes = hourly.weather_code || [];
+            var hRain = hourly.precipitation_probability || [];
+            var hours = [];
+            var now = new Date();
+            var started = false;
+            for (var h = 0; h < hTimes.length; h++) {
+                var ht = new Date(hTimes[h]);
+                if (!started && ht < now) continue;
+                started = true;
+                hours.push({
+                    time: hTimes[h],
+                    temp: hTemps[h],
+                    code: hCodes[h],
+                    rainChance: hRain[h] !== undefined ? hRain[h] : 0
+                });
+                if (hours.length >= 8) break;
+            }
             onReady({
                 temp: current.temperature_2m,
                 code: current.weather_code,
@@ -124,7 +146,8 @@ function fetchWeather(lat, lon, onReady, onError) {
                 rainChance: (daily.precipitation_probability_max || [])[0],
                 sunrise: (daily.sunrise || [])[0] || "",
                 sunset: (daily.sunset || [])[0] || "",
-                days: days
+                days: days,
+                hours: hours
             });
         } catch (e) {
             onError(0);

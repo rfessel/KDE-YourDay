@@ -183,5 +183,23 @@ Item {
             g0.next();
             compare(calls.length, 1);
         }
+
+        function test_gate_force_publicaMesmoComPeersPendentes() {
+            // Watchdog: peer que nunca responde (XHR pendurada) não pode
+            // deixar a agenda parada para sempre — force() publica o que há.
+            var calls = 0;
+            var gate = Cal.makeCompleter(3, function() { calls++; });
+            gate.next();
+            compare(calls, 0, "2 peers ainda pendentes, não publica");
+            verify(!gate.isDone(), "gate ainda pendente após 1 peer");
+            compare(gate.force(), true, "force publica e avisa que finalizou");
+            compare(calls, 1, "force() finalizou a agenda pendente");
+            verify(gate.isDone(), true);
+            // Depois do force, o peer lento responde: next() é no-op.
+            compare(gate.next(), false);
+            compare(calls, 1, "next() pós-force não re-disparou o finalize");
+            compare(gate.force(), false, "segundo force é no-op");
+            compare(calls, 1);
+        }
     }
 }

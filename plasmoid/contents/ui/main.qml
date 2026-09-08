@@ -78,6 +78,9 @@ PlasmoidItem {
     property var agendaPageInst: null
     property bool tabConfirmVisible: false
 
+    // Gate da carga de agenda em andamento (usado pelo agendaWatchdogTimer).
+    property var pendingAgendaGate: null
+
     // Tokens de geração: callbacks de XHR antigos são ignorados após nova carga.
     property int feedGen: 0
     property int agendaGen: 0
@@ -1013,6 +1016,8 @@ PlasmoidItem {
             if (gen !== root.agendaGen) {
                 return;
             }
+            agendaWatchdogTimer.stop();
+            root.pendingAgendaGate = null;
             all = all.filter(inWindow);
             all.sort(function(a, b) { return (a.start - b.start); });
             root.agendaEvents = all;
@@ -1038,6 +1043,10 @@ PlasmoidItem {
             // Sem fontes: o gate já publicou só os eventos locais.
             return;
         }
+        // Watchdog: se algum XHR pendurar, publica o que chegou e refaz depois.
+        root.pendingAgendaGate = gate;
+        agendaWatchdogTimer.stop();
+        agendaWatchdogTimer.restart();
 
         if (root.isGCalAuthenticated()) {
             var now = new Date();
@@ -1059,6 +1068,7 @@ PlasmoidItem {
                             try {
                                 var data = JSON.parse(xhr.responseText);
                                 if (Array.isArray(data)) {
+                                    console.log("[yourday] gcal", calId, "->", data.length, "eventos");
                                     var savedColors = {};
                                     try { savedColors = JSON.parse(Plasmoid.configuration.gcalCalendarColors || "{}"); } catch(e) {}
                                     for (var i = 0; i < data.length; i++) {
@@ -1654,6 +1664,28 @@ PlasmoidItem {
             }
             root.weatherRetryCount++;
             root.refreshWeather();
+        }
+    }
+
+    // Watchdog da agenda: se um XHR de fonte/Google nunca responder (sem erro
+    // e sem DONE), a agenda não pode ficar vazia para sempre — força a
+    // publicação do que já chegou e agenda um novo pull (publish zera o
+    // estado quando tudo responder).
+    Timer {
+        id: agendaWatchdogTimer
+        interval: 20000
+        repeat: false
+        onTriggered: {
+            var gate = root.pendingAgendaGate;
+            root.pendingAgendaGate = null;
+            if (gate && !gate.isDone()) {
+                gate.force();
+                root.agendaFetchFailed = true;
+                if (!agendaRetryTimer.running) {
+                    root.agendaRetryCount = 0;
+                    agendaRetryTimer.start();
+                }
+            }
         }
     }
 

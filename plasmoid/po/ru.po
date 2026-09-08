@@ -676,6 +676,10 @@ msgid "Sun"
 msgstr "Солнце"
 
 #: contents/ui/pages/ClimaPage.qml
+msgid "Next hours"
+msgstr ""
+
+#: contents/ui/pages/ClimaPage.qml
 msgid "7-day forecast"
 msgstr "Прогноз на 7 дней"
 

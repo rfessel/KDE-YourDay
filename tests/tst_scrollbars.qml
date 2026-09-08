@@ -275,6 +275,27 @@ Item {
             verify(page.scrollGutter > 0, "Clima: gutter calculado (>0)");
         }
 
+        function test_clima_horas_visivel() {
+            var w = makeWeather();
+            var base = new Date();
+            base.setMinutes(0, 0, 0);
+            var hours = [];
+            for (var i = 1; i <= 8; i++) {
+                var t = new Date(base.getTime() + i * 3600000);
+                hours.push({
+                    time: t.toISOString(), temp: 22 + i,
+                    code: i % 2 === 0 ? 2 : 61, rainChance: i * 10
+                });
+            }
+            w.hours = hours;
+            var page = createPage("ClimaPage", {
+                width: 360, height: 800, weatherData: w, weatherLoading: false,
+                weatherCity: "Campinas", extraCities: [], extraWeatherData: ({}), selectedCityName: ""
+            });
+            verify(page.chartPoints.length >= 6, "chartPoints >= 6, tem " + page.chartPoints.length);
+            assertNoScrollbarOverlap(page, "Clima horas", tcase);
+        }
+
         function test_resumo_nao_sobrepoe() {
             var page = createPage("ResumoPage", {
                 width: 360, height: 420,
