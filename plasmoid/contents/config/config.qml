@@ -8,31 +8,31 @@ import org.kde.plasma.configuration 2.0
 
 ConfigModel {
     ConfigCategory {
-        name: "Geral"
+        name: "General"
         icon: "configure"
         source: "configGeneral.qml"
     }
 
     ConfigCategory {
-        name: "Feeds de notícias"
+        name: "News feeds"
         icon: "view-pim-news"
         source: "configFeeds.qml"
     }
 
     ConfigCategory {
-        name: "Agenda"
+        name: "Calendar"
         icon: "view-calendar"
         source: "configAgenda.qml"
     }
 
     ConfigCategory {
-        name: "Clima"
+        name: "Weather"
         icon: "weather-clear"
         source: "configWeather.qml"
     }
 
     ConfigCategory {
-        name: "Listas"
+        name: "Lists"
         icon: "view-list"
         source: "configListas.qml"
     }

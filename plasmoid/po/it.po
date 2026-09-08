@@ -15,71 +15,71 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: contents/ui/configAgenda.qml
-msgid "Conectado ao Google Calendar"
+msgid "Connected to Google Calendar"
 msgstr "Connesso a Google Calendar"
 
 #: contents/ui/configAgenda.qml
-msgid "Informe a URL do Apps Script"
+msgid "Enter the Apps Script URL"
 msgstr "Inserisci l'URL di Apps Script"
 
 #: contents/ui/configAgenda.qml
-msgid "Testando conexão..."
+msgid "Testing connection..."
 msgstr "Test della connessione..."
 
 #: contents/ui/configAgenda.qml
-msgid "Resposta inválida: "
+msgid "Invalid response: "
 msgstr "Risposta non valida: "
 
 #: contents/ui/configAgenda.qml
-msgid "Erro ao parsear: "
+msgid "Parse error: "
 msgstr "Errore di analisi: "
 
 #: contents/ui/configAgenda.qml
-msgid "Erro HTTP: "
+msgid "HTTP error: "
 msgstr "Errore HTTP: "
 
 #: contents/ui/configAgenda.qml
-msgid "Erro de conexão. Verifique a URL."
+msgid "Connection error. Check the URL."
 msgstr "Errore di connessione. Controlla l'URL."
 
 #: contents/ui/configAgenda.qml
-msgid "Tempo esgotado. Verifique a URL e a permissão de acesso."
+msgid "Timed out. Check the URL and access permissions."
 msgstr "Timeout. Controlla l'URL e il permesso di accesso."
 
 #: contents/ui/configAgenda.qml
-msgid "Desconectado"
+msgid "Disconnected"
 msgstr "Disconnesso"
 
 #: contents/ui/configAgenda.qml
-msgid "Selecionar arquivo .ics"
+msgid "Select .ics file"
 msgstr "Seleziona file .ics"
 
 #: contents/ui/configAgenda.qml
-msgid "Calendário (*.ics)"
+msgid "Calendar (*.ics)"
 msgstr "Calendario (*.ics)"
 
 #: contents/ui/configAgenda.qml contents/ui/configGeneral.qml
-msgid "Todos os arquivos (*)"
+msgid "All files (*)"
 msgstr "Tutti i file (*)"
 
 #: contents/ui/configAgenda.qml
-msgid "Google Calendar API (sincronização)"
+msgid "Google Calendar API (sync)"
 msgstr "API Google Calendar (sincronizzazione)"
 
 #: contents/ui/configAgenda.qml
-msgid "Para sincronizar eventos, crie um projeto no Google Cloud Console e ative a API do Google Calendar."
+msgid "To sync events, create a project in Google Cloud Console and enable the Google Calendar API."
 msgstr "Per sincronizzare gli eventi, crea un progetto nella Console Google Cloud e abilita l'API Google Calendar."
 
 #: contents/ui/configAgenda.qml
-msgid "1. Abra script.google.com\n2. Crie um novo projeto\n3. Cole o código abaixo\n4. No menu lateral, clique em \"Serviços\" (+)\n5. Busque \"Google Calendar API\" e ative\n6. Salve e publique como Web App\n7. Copie a URL gerada"
+msgid "1. Open script.google.com\n2. Create a new project\n3. Paste the code below\n4. In the left menu, click \"Services\" (+)\n5. Search for \"Google Calendar API\" and enable it\n6. Save and deploy as a Web App\n7. Copy the generated URL"
 msgstr "1. Apri script.google.com\n2. Crea un nuovo progetto\n3. Incolla il codice qui sotto\n4. Nel menu laterale, clicca su \"Servizi\" (+)\n5. Cerca \"Google Calendar API\" e attivala\n6. Salva e pubblica come Web App\n7. Copia l'URL generata"
 
 #: contents/ui/configAgenda.qml
-msgid "Ver código do Apps Script"
+msgid "View Apps Script code"
 msgstr "Mostra il codice di Apps Script"
 
 #: contents/ui/configAgenda.qml
-msgid "Código do Apps Script"
+msgid "Apps Script Code"
 msgstr "Codice Apps Script"
 
 #: contents/ui/configAgenda.qml
@@ -87,420 +87,416 @@ msgid "Apps Script URL:"
 msgstr "URL di Apps Script:"
 
 #: contents/ui/configAgenda.qml
-msgid "Conectado"
+msgid "Connected"
 msgstr "Connesso"
 
 #: contents/ui/configAgenda.qml
-msgid "Conectar"
+msgid "Connect"
 msgstr "Connetti"
 
 #: contents/ui/configAgenda.qml
-msgid "Desconectar"
+msgid "Disconnect"
 msgstr "Disconnetti"
 
 #: contents/ui/configAgenda.qml
-msgid "Calendários para sincronizar:"
+msgid "Calendars to sync:"
 msgstr "Calendari da sincronizzare:"
 
 #: contents/ui/configAgenda.qml
-msgid "Fontes .ics (somente leitura)"
+msgid ".ics sources (read only)"
 msgstr "Fonti .ics (sola lettura)"
 
 #: contents/ui/configAgenda.qml
-msgid "Adicione fontes de calendário (.ics) para ver seus compromissos nas abas Agenda e Resumo."
+msgid "Add calendar sources (.ics) to see your appointments in the Calendar and Summary tabs."
 msgstr "Aggiungi fonti di calendario (.ics) per vedere i tuoi appuntamenti nelle schede Calendario e Riepilogo."
 
 #: contents/ui/configAgenda.qml
-msgid "1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal"
+msgid "1. Open Google Calendar in your browser\n2. Click Settings (gear)\n3. Go to Calendar settings\n4. Select the desired calendar\n5. Scroll to Calendar integration\n6. Copy the public iCal address link"
 msgstr "1. Apri Google Calendar nel browser\n2. Fai clic su Impostazioni (ingranaggio)\n3. Vai su Impostazioni del calendario\n4. Seleziona il calendario desiderato\n5. Scorri fino a Integrazione del calendario\n6. Copia il link dell'indirizzo pubblico iCal"
 
 #: contents/ui/configAgenda.qml
-msgid "Formato:\nhttps://calendar.google.com/calendar/ical/seuemail%40gmail.com/public/basic.ics"
+msgid "Format:\nhttps://calendar.google.com/calendar/ical/youremail%40gmail.com/public/basic.ics"
 msgstr "Formato:\nhttps://calendar.google.com/calendar/ical/tuamail%40gmail.com/public/basic.ics"
 
 #: contents/ui/configAgenda.qml
-msgid "Arquivo local"
+msgid "Local file"
 msgstr "File locale"
 
 #: contents/ui/configAgenda.qml
-msgid "Selecionar arquivo .ics..."
+msgid "Select .ics file..."
 msgstr "Seleziona file .ics..."
 
 #: contents/ui/configAgenda.qml
-msgid "Adicionar URL ou caminho"
+msgid "Add URL or path"
 msgstr "Aggiungi URL o percorso"
 
 #: contents/ui/configAgenda.qml
-msgid "URL iCal ou caminho local..."
+msgid "iCal URL or local path..."
 msgstr "URL iCal o percorso locale..."
 
 #: contents/ui/configAgenda.qml contents/ui/configFeeds.qml
 #: contents/ui/configView.qml contents/ui/pages/NotasPage.qml
 #: contents/ui/pages/ToDoPage.qml
-msgid "Adicionar"
+msgid "Add"
 msgstr "Aggiungi"
 
 #: contents/ui/configAgenda.qml contents/ui/configView.qml
-msgid "Nenhuma fonte adicionada."
+msgid "No source added."
 msgstr "Nessuna fonte aggiunta."
 
 #: contents/ui/configAgenda.qml contents/ui/configView.qml
-msgid "Remover fonte"
+msgid "Remove source"
 msgstr "Rimuovi fonte"
 
 #: contents/ui/configFeeds.qml
-msgid "Informe uma URL válida (ex.: https://exemplo.com/feed.xml)."
+msgid "Enter a valid URL (e.g., https://example.com/feed.xml)."
 msgstr "Inserisci un URL valido (es. https://esempio.com/feed.xml)."
 
 #: contents/ui/configFeeds.qml
-msgid "Esse feed já foi adicionado."
+msgid "This feed has already been added."
 msgstr "Questo feed è già stato aggiunto."
 
 #: contents/ui/configFeeds.qml
-msgid "Informe uma URL válida."
+msgid "Enter a valid URL."
 msgstr "Inserisci un URL valido."
 
 #: contents/ui/configFeeds.qml
-msgid "Falha ao testar: "
+msgid "Test failed: "
 msgstr "Test fallito: "
 
 #: contents/ui/configFeeds.qml
-msgid "Endereço válido — %1 notícia(s) carregada(s)."
+msgid "Valid address — %1 news item(s) loaded."
 msgstr "Indirizzo valido — %1 notizia(e) caricata(e)."
 
 #: contents/ui/configFeeds.qml
-msgid "Tempo esgotado."
+msgid "Timed out."
 msgstr "Tempo scaduto."
 
 #: contents/ui/configFeeds.qml
-msgid "Falha de conexão."
+msgid "Connection failed."
 msgstr "Connessione fallita."
 
 #: contents/ui/configFeeds.qml
-msgid "Resposta inválida."
+msgid "Invalid response."
 msgstr "Risposta non valida."
 
 #: contents/ui/configFeeds.qml
-msgid "Erro HTTP %1."
+msgid "HTTP error %1."
 msgstr "Errore HTTP %1."
 
 #: contents/ui/configFeeds.qml
-msgid "Endereço inválido: "
+msgid "Invalid address: "
 msgstr "Indirizzo non valido: "
 
 #: contents/ui/configFeeds.qml
-msgid "A cada 5 minutos"
+msgid "Every 5 minutes"
 msgstr "Ogni 5 minuti"
 
 #: contents/ui/configFeeds.qml
-msgid "A cada 10 minutos"
+msgid "Every 10 minutes"
 msgstr "Ogni 10 minuti"
 
 #: contents/ui/configFeeds.qml
-msgid "A cada 15 minutos"
+msgid "Every 15 minutes"
 msgstr "Ogni 15 minuti"
 
 #: contents/ui/configFeeds.qml
-msgid "A cada 30 minutos"
+msgid "Every 30 minutes"
 msgstr "Ogni 30 minuti"
 
 #: contents/ui/configFeeds.qml
-msgid "A cada 1 hora"
+msgid "Every 1 hour"
 msgstr "Ogni ora"
 
 #: contents/ui/configFeeds.qml
-msgid "Atualizar manualmente"
+msgid "Refresh manually"
 msgstr "Aggiorna manualmente"
 
 #: contents/ui/configFeeds.qml
-msgid "Adicionar feed RSS"
+msgid "Add RSS feed"
 msgstr "Aggiungi feed RSS"
 
 #: contents/ui/configFeeds.qml
-msgid "URL do feed (RSS ou Atom)…"
+msgid "Feed URL (RSS or Atom)…"
 msgstr "URL del feed (RSS o Atom)…"
 
 #: contents/ui/configFeeds.qml
-msgid "Limpar"
+msgid "Clear"
 msgstr "Pulisci"
 
 #: contents/ui/configFeeds.qml
-msgid "Testando…"
+msgid "Testing…"
 msgstr "Test in corso…"
 
 #: contents/ui/configFeeds.qml
-msgid "Testar"
+msgid "Test"
 msgstr "Testa"
 
 #: contents/ui/configFeeds.qml
-msgid "Seus feeds (%1)"
+msgid "Your feeds (%1)"
 msgstr "I tuoi feed (%1)"
 
 #: contents/ui/configFeeds.qml
-msgid "Remover feed"
+msgid "Remove feed"
 msgstr "Rimuovi feed"
 
 #: contents/ui/configFeeds.qml
-msgid "Limite:"
+msgid "Limit:"
 msgstr "Limite:"
 
 #: contents/ui/configFeeds.qml
-msgid "notícias"
+msgid "news items"
 msgstr "notizie"
 
 #: contents/ui/configFeeds.qml contents/ui/configView.qml
-msgid "Exibição"
+msgid "Display"
 msgstr "Visualizzazione"
 
 #: contents/ui/configFeeds.qml
-msgid "Máximo total de notícias:"
+msgid "Maximum total news:"
 msgstr "Numero massimo totale di notizie:"
 
-#: contents/ui/configFeeds.qml
-msgid "Linhas da chamada:"
+#: contents/ui/configFeeds.qml contents/ui/configView.qml
+msgid "Headline lines:"
 msgstr "Righe del titolo:"
 
 #: contents/ui/configFeeds.qml contents/ui/configView.qml
-msgid "linhas por notícia"
+msgid "lines per story"
 msgstr "righe per notizia"
 
 #: contents/ui/configFeeds.qml
-msgid "Atualizar:"
+msgid "Refresh:"
 msgstr "Aggiorna:"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
-msgid "Resumo"
+msgid "Summary"
 msgstr "Riepilogo"
 
 #: contents/ui/configGeneral.qml contents/ui/configView.qml
 #: contents/ui/main.qml
-msgid "Agenda"
+msgid "Calendar"
 msgstr "Calendario"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
-msgid "Tarefas"
+msgid "Tasks"
 msgstr "Attività"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
 #: contents/ui/pages/ClimaPage.qml
-msgid "Clima"
+msgid "Weather"
 msgstr "Meteo"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
-msgid "Notas"
+msgid "Notes"
 msgstr "Note"
 
 #: contents/ui/configGeneral.qml contents/ui/configListas.qml
 #: contents/ui/main.qml
-msgid "Listas"
+msgid "Lists"
 msgstr "Liste"
 
 #: contents/ui/configGeneral.qml contents/ui/main.qml
-msgid "Notícias"
+msgid "News"
 msgstr "Notizie"
 
 #: contents/ui/configGeneral.qml
-msgid "Padrão (sistema)"
+msgid "Default (system)"
 msgstr "Predefinito (sistema)"
 
 #: contents/ui/configGeneral.qml
-msgid "Escolher ícone"
+msgid "Choose icon"
 msgstr "Scegli icona"
 
 #: contents/ui/configGeneral.qml
-msgid "Imagens (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"
+msgid "Images (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"
 msgstr "Immagini (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"
 
 #: contents/ui/configGeneral.qml
-msgid "Configurações gerais do widget."
+msgid "General widget settings."
 msgstr "Impostazioni generali del widget."
 
 #: contents/ui/configGeneral.qml
-msgid "Aba padrão ao abrir:"
+msgid "Default tab on open:"
 msgstr "Scheda predefinita all'apertura:"
 
 #: contents/ui/configGeneral.qml
-msgid "Define qual aba será exibida ao clicar no widget."
+msgid "Defines which tab is shown when clicking the widget."
 msgstr "Definisce quale scheda viene mostrata quando si fa clic sul widget."
 
 #: contents/ui/configGeneral.qml
-msgid "Tema:"
+msgid "Theme:"
 msgstr "Tema:"
 
 #: contents/ui/configGeneral.qml
-msgid "Claro"
+msgid "Light"
 msgstr "Chiaro"
 
 #: contents/ui/configGeneral.qml
-msgid "Escuro"
+msgid "Dark"
 msgstr "Scuro"
 
 #: contents/ui/configGeneral.qml
-msgid "Automático"
+msgid "Automatic"
 msgstr "Automatico"
 
 #: contents/ui/configGeneral.qml
-msgid "Define o tema visual do widget."
+msgid "Defines the visual theme of the widget."
 msgstr "Definisce il tema visivo del widget."
 
 #: contents/ui/configGeneral.qml
-msgid "Cor de destaque:"
+msgid "Accent color:"
 msgstr "Colore accento:"
 
 #: contents/ui/configGeneral.qml
-msgid "Cor usada nos destaques do widget. Vazio = cor de destaque do sistema."
+msgid "Color used for widget highlights. Empty = system accent color."
 msgstr "Colore usato per gli accenti del widget. Vuoto = colore accento del sistema."
 
 #: contents/ui/configGeneral.qml
-msgid "Aparência no painel:"
+msgid "Panel appearance:"
 msgstr "Aspetto nel pannello:"
 
 #: contents/ui/configGeneral.qml
-msgid "Ícone"
+msgid "Icon"
 msgstr "Icona"
 
 #: contents/ui/configGeneral.qml
-msgid "Ícone interativo"
+msgid "Interactive icon"
 msgstr "Icona interattiva"
 
 #: contents/ui/configGeneral.qml
-msgid "Relógio"
+msgid "Clock"
 msgstr "Orologio"
 
 #: contents/ui/configGeneral.qml
-msgid "Define o que é exibido quando o widget fica na área de sistema (painel)."
+msgid "Defines what is shown when the widget is in the system tray (panel)."
 msgstr "Definisce cosa mostrare quando il widget si trova nell'area di sistema (pannello)."
 
 #: contents/ui/configGeneral.qml
-msgid "Ícone do widget"
+msgid "Widget icon"
 msgstr "Icona del widget"
 
 #: contents/ui/configGeneral.qml
-msgid "Ícone do sistema"
+msgid "System icon"
 msgstr "Icona di sistema"
 
 #: contents/ui/configGeneral.qml
-msgid "Arquivo..."
+msgid "File..."
 msgstr "File..."
 
 #: contents/ui/configListas.qml
-msgid "Exportar suas listas para arquivo."
+msgid "Export your lists to a file."
 msgstr "Esporta le tue liste in un file."
 
 #: contents/ui/configListas.qml
-msgid "Listas disponíveis: %1"
+msgid "Available lists: %1"
 msgstr "Liste disponibili: %1"
 
 #: contents/ui/configListas.qml
-msgid "Exportar como TXT"
+msgid "Export as TXT"
 msgstr "Esporta come TXT"
 
 #: contents/ui/configListas.qml
-msgid "Exportar como CSV (Planilha)"
+msgid "Export as CSV (Spreadsheet)"
 msgstr "Esporta come CSV (Foglio di calcolo)"
 
 #: contents/ui/configListas.qml
-msgid "Salvar como TXT"
+msgid "Save as TXT"
 msgstr "Salva come TXT"
 
 #: contents/ui/configListas.qml
-msgid "Arquivo de texto (*.txt)"
+msgid "Text file (*.txt)"
 msgstr "File di testo (*.txt)"
 
 #: contents/ui/configListas.qml
-msgid "Salvar como CSV"
+msgid "Save as CSV"
 msgstr "Salva come CSV"
 
 #: contents/ui/configListas.qml
-msgid "Arquivo CSV (*.csv)"
+msgid "CSV file (*.csv)"
 msgstr "File CSV (*.csv)"
 
 #: contents/ui/configView.qml
-msgid "Máximo total de notícias na lista:"
+msgid "Maximum total news items in list:"
 msgstr "Numero massimo totale di notizie nella lista:"
 
 #: contents/ui/configView.qml
-msgid "Linhas da chamada da matéria:"
-msgstr "Righe del titolo:"
-
-#: contents/ui/configView.qml
-msgid "Este limite vale para a lista inteira, somando todos os feeds. Para ajustar cada fonte individualmente, use a seção “Feeds de notícias”."
+msgid "This limit applies to the entire list, summing all feeds. To adjust each source individually, use the \"News feeds\" section."
 msgstr "Questo limite si applica all'intera lista, sommando tutti i feed. Per regolare ogni singola fonte, usa la sezione \"Feed di notizie\"."
 
 #: contents/ui/configView.qml
-msgid "As alterações são aplicadas imediatamente ao widget."
+msgid "Changes are applied to the widget immediately."
 msgstr "Le modifiche vengono applicate immediatamente al widget."
 
 #: contents/ui/configView.qml
-msgid "Fontes de calendário (.ics): uma URL do Google/CalDAV (definição “URL pessoal do iCal” / secret) ou um caminho local para um arquivo .ics. Os compromissos de hoje aparecem nas abas Agenda e Resumo."
+msgid "Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / secret) or a local path to an .ics file. Today's appointments appear in the Calendar and Summary tabs."
 msgstr "Fonti di calendario (.ics): un URL Google/CalDAV (\"URL personale iCal\" / segreto) o un percorso locale a un file .ics. Gli appuntamenti di oggi appaiono nelle schede Calendario e Riepilogo."
 
 #: contents/ui/configView.qml
-msgid "URL .ics ou caminho local…"
+msgid "URL .ics or local path…"
 msgstr "URL .ics o percorso locale…"
 
 #: contents/ui/configWeather.qml
-msgid "Busque uma cidade e escolha se ela será a principal ou adicional."
+msgid "Search for a city and choose whether it will be primary or additional."
 msgstr "Cerca una città e scegli se sarà principale o aggiuntiva."
 
 #: contents/ui/configWeather.qml
-msgid "Buscar cidade..."
+msgid "Search city..."
 msgstr "Cerca città..."
 
 #: contents/ui/configWeather.qml
-msgid "Buscar"
+msgid "Search"
 msgstr "Cerca"
 
 #: contents/ui/configWeather.qml
-msgid "Obtendo localização..."
+msgid "Getting location..."
 msgstr "Ottenimento posizione..."
 
 #: contents/ui/configWeather.qml
-msgid "Minha localização"
+msgid "My location"
 msgstr "La mia posizione"
 
 #: contents/ui/configWeather.qml
-msgid "Definir como principal"
+msgid "Set as primary"
 msgstr "Imposta come principale"
 
 #: contents/ui/configWeather.qml
-msgid "Adicionar como adicional"
+msgid "Add as additional"
 msgstr "Aggiungi come aggiuntiva"
 
 #: contents/ui/configWeather.qml
-msgid "Cidade principal: %1"
+msgid "Primary city: %1"
 msgstr "Città principale: %1"
 
 #: contents/ui/configWeather.qml
-msgid "Limpar principal"
+msgid "Clear primary"
 msgstr "Rimuovi principale"
 
 #: contents/ui/configWeather.qml
-msgid "Cidades adicionais:"
+msgid "Additional cities:"
 msgstr "Città aggiuntive:"
 
 #: contents/ui/configWeather.qml
-msgid "Remover"
+msgid "Remove"
 msgstr "Rimuovi"
 
 #: contents/ui/configWeather.qml
-msgid "Nenhuma cidade adicional."
+msgid "No additional cities."
 msgstr "Nessuna città aggiuntiva."
 
 #: contents/ui/main.qml
-msgid "tempo esgotado"
+msgid "timed out"
 msgstr "tempo scaduto"
 
 #: contents/ui/main.qml
-msgid "falha de conexão"
+msgid "connection failed"
 msgstr "connessione fallita"
 
 #: contents/ui/main.qml
-msgid "resposta inválida (não é RSS) ou servidor inacessível"
+msgid "invalid response (not RSS) or server unreachable"
 msgstr "risposta non valida (non è RSS) o server irraggiungibile"
 
 #: contents/ui/main.qml
-msgid "abortado"
+msgid "aborted"
 msgstr "annullato"
 
 #: contents/ui/main.qml
@@ -512,7 +508,7 @@ msgid "%1 — %2"
 msgstr "%1 — %2"
 
 #: contents/ui/main.qml
-msgid "Agenda ignorada: arquivo acima de 2 MB (%1)"
+msgid "Calendar ignored: file over 2 MB (%1)"
 msgstr "Agenda ignorata: file oltre 2 MB (%1)"
 
 #: contents/ui/main.qml contents/ui/pages/AgendaPage.qml
@@ -520,381 +516,1094 @@ msgid "Local"
 msgstr "Locale"
 
 #: contents/ui/main.qml
-msgid "Aqui estão as principais notícias de seu interesse"
+msgid "Here are the top news of interest to you"
 msgstr "Ecco le principali notizie di tuo interesse"
 
 #: contents/ui/main.qml
-msgid "Atualizar notícias"
+msgid "Refresh news"
 msgstr "Aggiorna notizie"
 
 #: contents/ui/main.qml
-msgid "Nenhum feed configurado.\nAdicione feeds RSS nas Configurações."
+msgid "No feeds configured.\nAdd RSS feeds in Settings."
 msgstr "Nessun feed configurato.\nAggiungi feed RSS nelle Impostazioni."
 
 #: contents/ui/main.qml
-msgid "Nenhuma notícia encontrada"
+msgid "No news found"
 msgstr "Nessuna notizia trovata"
 
 #: contents/ui/main.qml
-msgid "Nenhuma notícia carregada. Veja os detalhes abaixo."
+msgid "No news loaded. See details below."
 msgstr "Nessuna notizia caricata. Vedere i dettagli sotto."
 
 #: contents/ui/main.qml
-msgid "Abrir configurações"
+msgid "Open settings"
 msgstr "Apri impostazioni"
 
 #: contents/ui/main.qml
-msgid "Tentar novamente"
+msgid "Try again"
 msgstr "Riprova"
 
 #: contents/ui/main.qml
-msgid "Alguns feeds não carregaram:"
+msgid "Some feeds failed to load:"
 msgstr "Alcuni feed non sono stati caricati:"
 
 #: contents/ui/main.qml
-msgid "Atualizado às %1"
+msgid "Updated at %1"
 msgstr "Aggiornato alle %1"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Estes são os seus compromissos para esta data..."
+msgid "These are your appointments for this date..."
 msgstr "Ecco i suoi appuntamenti per questa data..."
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Novo evento"
+msgid "New event"
 msgstr "Nuovo evento"
 
 #: contents/ui/pages/AgendaPage.qml contents/ui/pages/ClimaPage.qml
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
-msgid "Hoje"
+msgid "Today"
 msgstr "Oggi"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Nenhum compromisso neste dia"
+msgid "No appointments on this day"
 msgstr "Nessun appuntamento in questo giorno"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Dia todo"
+msgid "All day"
 msgstr "Tutta la giornata"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Editar evento"
+msgid "Edit event"
 msgstr "Modifica evento"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Remover evento"
+msgid "Remove event"
 msgstr "Elimina evento"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Adicionar em:"
+msgid "Add to:"
 msgstr "Aggiungi a:"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Título do evento"
+msgid "Event title"
 msgstr "Titolo dell'evento"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Data:"
+msgid "Date:"
 msgstr "Data:"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Início:"
+msgid "Start:"
 msgstr "Inizio:"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Fim:"
+msgid "End:"
 msgstr "Fine:"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Local (opcional)"
+msgid "Location (optional)"
 msgstr "Luogo (opzionale)"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Descrição (opcional)"
+msgid "Description (optional)"
 msgstr "Descrizione (opzionale)"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Cancelar"
+msgid "Cancel"
 msgstr "Annulla"
 
 #: contents/ui/pages/AgendaPage.qml
-msgid "Salvar"
+msgid "Save"
 msgstr "Salva"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Toque em atualizar para carregar os dados."
+msgid "Tap refresh to load data."
 msgstr "Tocca aggiorna per caricare i dati."
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Nenhuma cidade configurada.\nVá em Configurações → Clima para adicionar."
+msgid "No city configured.\nGo to Settings → Weather to add one."
 msgstr "Nessuna città configurata.\nVai su Impostazioni → Meteo per aggiungerne una."
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Atualizar"
+msgid "Refresh"
 msgstr "Aggiorna"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Máx: %1°"
+msgid "High: %1°"
 msgstr "Max: %1°"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Mín: %1°"
+msgid "Low: %1°"
 msgstr "Min: %1°"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Umidade"
+msgid "Humidity"
 msgstr "Umidità"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Chuva"
+msgid "Rain"
 msgstr "Pioggia"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Vento"
+msgid "Wind"
 msgstr "Vento"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Sol"
+msgid "Sun"
 msgstr "Sole"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Previsão 7 dias"
+msgid "7-day forecast"
 msgstr "Previsioni a 7 giorni"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Máx"
+msgid "High"
 msgstr "Max"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Mín"
+msgid "Low"
 msgstr "Min"
 
 #: contents/ui/pages/ClimaPage.qml
-msgid "Cidade:"
+msgid "City:"
 msgstr "Città:"
 
 #: contents/ui/pages/ListasPage.qml
-msgid "Suas listas, compras ou qualquer coisa que precise organizar..."
+msgid "Your lists, shopping, or anything you need to organize..."
 msgstr "Le tue liste, acquisti o qualsiasi cosa tu debba organizzare..."
 
 #: contents/ui/pages/ListasPage.qml
-msgid "Nome da nova lista..."
+msgid "New list name..."
 msgstr "Nome della nuova lista..."
 
 #: contents/ui/pages/ListasPage.qml
-msgid "Histórico de listas finalizadas"
+msgid "Completed lists history"
 msgstr "Cronologia delle liste completate"
 
 #: contents/ui/pages/ListasPage.qml
-msgid "itens"
+msgid "items"
 msgstr "elementi"
 
 #: contents/ui/pages/ListasPage.qml
-msgid "Finalizar lista"
+msgid "Complete list"
 msgstr "Completa lista"
 
 #: contents/ui/pages/ListasPage.qml
-msgid "Adicionar item"
+msgid "Add item"
 msgstr "Aggiungi elemento"
 
 #: contents/ui/pages/ListasPage.qml
-msgid "Excluir lista"
+msgid "Delete list"
 msgstr "Elimina lista"
 
 #: contents/ui/pages/ListasPage.qml
-msgid "Novo item..."
+msgid "New item..."
 msgstr "Nuovo elemento..."
 
-#: contents/ui/pages/ListasPage.qml
-msgid "Finalizadas (%1)"
+#: contents/ui/pages/ListasPage.qml contents/ui/pages/ToDoPage.qml
+msgid "Completed (%1)"
 msgstr "Completate (%1)"
 
 #: contents/ui/pages/ListasPage.qml contents/ui/pages/ToDoPage.qml
-msgid "Fechar histórico"
+msgid "Close history"
 msgstr "Chiudi cronologia"
 
 #: contents/ui/pages/ListasPage.qml
-msgid "Restaurar lista"
+msgid "Restore list"
 msgstr "Ripristina lista"
 
 #: contents/ui/pages/ListasPage.qml
-msgid "Excluir permanentemente"
+msgid "Delete permanently"
 msgstr "Elimina definitivamente"
 
 #: contents/ui/pages/NotasPage.qml
-msgid "Suas notas, pensamentos ou qualquer coisa que precise anotar..."
+msgid "Your notes, thoughts, or anything you need to write down..."
 msgstr "Le tue note, pensieri o qualsiasi cosa tu debba annotare..."
 
 #: contents/ui/pages/NotasPage.qml
-msgid "Escreva sua nota…"
+msgid "Write your note…"
 msgstr "Scrivi la tua nota…"
 
 #: contents/ui/pages/NotasPage.qml
-msgid "Nenhuma nota ainda.\nEscreva uma acima para começar."
+msgid "No notes yet.\nWrite one above to get started."
 msgstr "Nessuna nota ancora.\nScrivine una sopra per iniziare."
 
 #: contents/ui/pages/NotasPage.qml
-msgid "Apagar"
+msgid "Delete"
 msgstr "Elimina"
 
 #: contents/ui/pages/NotasPage.qml
-msgid "Fechar"
+msgid "Close"
 msgstr "Chiudi"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Bom dia"
+msgid "Good morning"
 msgstr "Buongiorno"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Boa tarde"
+msgid "Good afternoon"
 msgstr "Buon pomeriggio"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Boa noite"
+msgid "Good evening"
 msgstr "Buonasera"
 
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
-msgid "Amanhã"
+msgid "Tomorrow"
 msgstr "Domani"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Toque para atualizar"
+msgid "Tap to refresh"
 msgstr "Tocca per aggiornare"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Próximos compromissos"
+msgid "Upcoming appointments"
 msgstr "Prossimi appuntamenti"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Nenhum compromisso próximo"
+msgid "No upcoming appointments"
 msgstr "Nessun appuntamento in arrivo"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Tarefas do dia"
+msgid "Today's tasks"
 msgstr "Attività di oggi"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Nenhuma tarefa para hoje"
+msgid "No tasks for today"
 msgstr "Nessuna attività per oggi"
 
 #: contents/ui/pages/ResumoPage.qml
-msgid "Dia"
+msgid "Day"
 msgstr "Giorno"
 
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
-msgid "Incluído em"
+msgid "Added on"
 msgstr "Aggiunto il"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Estas são suas tarefas que precisa completar"
+msgid "These are the tasks you need to complete"
 msgstr "Questi sono i compiti che devi completare"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Nova tarefa…"
+msgid "New task…"
 msgstr "Nuova attività…"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Prazo: %1"
+msgid "Deadline: %1"
 msgstr "Scadenza: %1"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Prazo"
+msgid "Deadline"
 msgstr "Scadenza"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Remover prazo"
+msgid "Remove deadline"
 msgstr "Rimuovi scadenza"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid " pendente(s)"
+msgid " pending"
 msgstr " in sospeso"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Nenhuma tarefa ainda.\nAdicione uma acima para começar o dia."
+msgid "No tasks yet.\nAdd one above to start your day."
 msgstr "Nessuna attività ancora.\nAggiungine una sopra per iniziare la giornata."
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Remover tarefa"
+msgid "Remove task"
 msgstr "Rimuovi attività"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Histórico de tarefas concluídas"
+msgid "Completed tasks history"
 msgstr "Cronologia delle attività completate"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Concluídas (%1)"
-msgstr "Completate (%1)"
-
-#: contents/ui/pages/ToDoPage.qml
-msgid "Restaurar tarefa"
+msgid "Restore task"
 msgstr "Ripristina attività"
 
 #: contents/ui/pages/ToDoPage.qml
-msgid "Remover permanentemente"
+msgid "Remove permanently"
 msgstr "Rimuovi definitivamente"
 
 #: <dinamico>
-msgid "Céu limpo"
+msgid "Clear sky"
 msgstr "Cielo sereno"
 
 #: <dinamico>
-msgid "Maiormente limpo"
+msgid "Mostly clear"
 msgstr "Principalmente sereno"
 
 #: <dinamico>
-msgid "Parcialmente nublado"
+msgid "Partly cloudy"
 msgstr "Parzialmente nuvoloso"
 
 #: <dinamico>
-msgid "Nublado"
+msgid "Cloudy"
 msgstr "Nuvoloso"
 
 #: <dinamico>
-msgid "Nevoeiro"
+msgid "Fog"
 msgstr "Nebbia"
 
 #: <dinamico>
-msgid "Garoa"
+msgid "Drizzle"
 msgstr "Pioviggine"
 
 #: <dinamico>
-msgid "Garoa gelada"
+msgid "Freezing drizzle"
 msgstr "Pioviggine ghiacciata"
 
 #: <dinamico>
-msgid "Chuva forte"
+msgid "Heavy rain"
 msgstr "Pioggia forte"
 
 #: <dinamico>
-msgid "Chuva gelada"
+msgid "Freezing rain"
 msgstr "Pioggia ghiacciata"
 
 #: <dinamico>
-msgid "Neve"
+msgid "Snow"
 msgstr "Neve"
 
 #: <dinamico>
-msgid "Granizo"
+msgid "Hail"
 msgstr "Grandine"
 
 #: <dinamico>
-msgid "Pancadas de chuva"
+msgid "Rain showers"
 msgstr "Rovesci di pioggia"
 
 #: <dinamico>
-msgid "Pancadas de neve"
+msgid "Snow showers"
 msgstr "Rovesci di neve"
 
 #: <dinamico>
-msgid "Trovoada"
+msgid "Thunderstorm"
 msgstr "Temporale"
 
 #: <dinamico>
-msgid "Trovoada com granizo"
+msgid "Thunderstorm with hail"
 msgstr "Temporale con grandine"
 
 #: <dinamico>
-msgid "Sem dados"
+msgid "No data"
 msgstr "Nessun dato"
+
+#~ msgid "Conectado ao Google Calendar"
+#~ msgstr "Connesso a Google Calendar"
+
+#~ msgid "Informe a URL do Apps Script"
+#~ msgstr "Inserisci l'URL di Apps Script"
+
+#~ msgid "Testando conexão..."
+#~ msgstr "Test della connessione..."
+
+#~ msgid "Resposta inválida: "
+#~ msgstr "Risposta non valida: "
+
+#~ msgid "Erro ao parsear: "
+#~ msgstr "Errore di analisi: "
+
+#~ msgid "Erro HTTP: "
+#~ msgstr "Errore HTTP: "
+
+#~ msgid "Erro de conexão. Verifique a URL."
+#~ msgstr "Errore di connessione. Controlla l'URL."
+
+#~ msgid "Tempo esgotado. Verifique a URL e a permissão de acesso."
+#~ msgstr "Timeout. Controlla l'URL e il permesso di accesso."
+
+#~ msgid "Desconectado"
+#~ msgstr "Disconnesso"
+
+#~ msgid "Selecionar arquivo .ics"
+#~ msgstr "Seleziona file .ics"
+
+#~ msgid "Calendário (*.ics)"
+#~ msgstr "Calendario (*.ics)"
+
+#~ msgid "Todos os arquivos (*)"
+#~ msgstr "Tutti i file (*)"
+
+#~ msgid "Google Calendar API (sincronização)"
+#~ msgstr "API Google Calendar (sincronizzazione)"
+
+#~ msgid ""
+#~ "Para sincronizar eventos, crie um projeto no Google Cloud Console e ative "
+#~ "a API do Google Calendar."
+#~ msgstr ""
+#~ "Per sincronizzare gli eventi, crea un progetto nella Console Google Cloud "
+#~ "e abilita l'API Google Calendar."
+
+#~ msgid ""
+#~ "1. Abra script.google.com\n"
+#~ "2. Crie um novo projeto\n"
+#~ "3. Cole o código abaixo\n"
+#~ "4. No menu lateral, clique em \"Serviços\" (+)\n"
+#~ "5. Busque \"Google Calendar API\" e ative\n"
+#~ "6. Salve e publique como Web App\n"
+#~ "7. Copie a URL gerada"
+#~ msgstr ""
+#~ "1. Apri script.google.com\n"
+#~ "2. Crea un nuovo progetto\n"
+#~ "3. Incolla il codice qui sotto\n"
+#~ "4. Nel menu laterale, clicca su \"Servizi\" (+)\n"
+#~ "5. Cerca \"Google Calendar API\" e attivala\n"
+#~ "6. Salva e pubblica come Web App\n"
+#~ "7. Copia l'URL generata"
+
+#~ msgid "Ver código do Apps Script"
+#~ msgstr "Mostra il codice di Apps Script"
+
+#~ msgid "Código do Apps Script"
+#~ msgstr "Codice Apps Script"
+
+#~ msgid "Conectado"
+#~ msgstr "Connesso"
+
+#~ msgid "Conectar"
+#~ msgstr "Connetti"
+
+#~ msgid "Desconectar"
+#~ msgstr "Disconnetti"
+
+#~ msgid "Calendários para sincronizar:"
+#~ msgstr "Calendari da sincronizzare:"
+
+#~ msgid "Fontes .ics (somente leitura)"
+#~ msgstr "Fonti .ics (sola lettura)"
+
+#~ msgid ""
+#~ "Adicione fontes de calendário (.ics) para ver seus compromissos nas abas "
+#~ "Agenda e Resumo."
+#~ msgstr ""
+#~ "Aggiungi fonti di calendario (.ics) per vedere i tuoi appuntamenti nelle "
+#~ "schede Calendario e Riepilogo."
+
+#~ msgid ""
+#~ "1. Abra o Google Calendar no navegador\n"
+#~ "2. Clique em Configurações (engrenagem)\n"
+#~ "3. Vá em Configurações do calendário\n"
+#~ "4. Selecione o calendário desejado\n"
+#~ "5. Role até Integração de calendário\n"
+#~ "6. Copie o link Endereço público do iCal"
+#~ msgstr ""
+#~ "1. Apri Google Calendar nel browser\n"
+#~ "2. Fai clic su Impostazioni (ingranaggio)\n"
+#~ "3. Vai su Impostazioni del calendario\n"
+#~ "4. Seleziona il calendario desiderato\n"
+#~ "5. Scorri fino a Integrazione del calendario\n"
+#~ "6. Copia il link dell'indirizzo pubblico iCal"
+
+#~ msgid ""
+#~ "Formato:\n"
+#~ "https://calendar.google.com/calendar/ical/seuemail%40gmail.com/public/"
+#~ "basic.ics"
+#~ msgstr ""
+#~ "Formato:\n"
+#~ "https://calendar.google.com/calendar/ical/tuamail%40gmail.com/public/"
+#~ "basic.ics"
+
+#~ msgid "Arquivo local"
+#~ msgstr "File locale"
+
+#~ msgid "Selecionar arquivo .ics..."
+#~ msgstr "Seleziona file .ics..."
+
+#~ msgid "Adicionar URL ou caminho"
+#~ msgstr "Aggiungi URL o percorso"
+
+#~ msgid "URL iCal ou caminho local..."
+#~ msgstr "URL iCal o percorso locale..."
+
+#~ msgid "Adicionar"
+#~ msgstr "Aggiungi"
+
+#~ msgid "Nenhuma fonte adicionada."
+#~ msgstr "Nessuna fonte aggiunta."
+
+#~ msgid "Remover fonte"
+#~ msgstr "Rimuovi fonte"
+
+#~ msgid "Informe uma URL válida (ex.: https://exemplo.com/feed.xml)."
+#~ msgstr "Inserisci un URL valido (es. https://esempio.com/feed.xml)."
+
+#~ msgid "Esse feed já foi adicionado."
+#~ msgstr "Questo feed è già stato aggiunto."
+
+#~ msgid "Informe uma URL válida."
+#~ msgstr "Inserisci un URL valido."
+
+#~ msgid "Falha ao testar: "
+#~ msgstr "Test fallito: "
+
+#~ msgid "Endereço válido — %1 notícia(s) carregada(s)."
+#~ msgstr "Indirizzo valido — %1 notizia(e) caricata(e)."
+
+#~ msgid "Tempo esgotado."
+#~ msgstr "Tempo scaduto."
+
+#~ msgid "Falha de conexão."
+#~ msgstr "Connessione fallita."
+
+#~ msgid "Resposta inválida."
+#~ msgstr "Risposta non valida."
+
+#~ msgid "Erro HTTP %1."
+#~ msgstr "Errore HTTP %1."
+
+#~ msgid "Endereço inválido: "
+#~ msgstr "Indirizzo non valido: "
+
+#~ msgid "A cada 5 minutos"
+#~ msgstr "Ogni 5 minuti"
+
+#~ msgid "A cada 10 minutos"
+#~ msgstr "Ogni 10 minuti"
+
+#~ msgid "A cada 15 minutos"
+#~ msgstr "Ogni 15 minuti"
+
+#~ msgid "A cada 30 minutos"
+#~ msgstr "Ogni 30 minuti"
+
+#~ msgid "A cada 1 hora"
+#~ msgstr "Ogni ora"
+
+#~ msgid "Atualizar manualmente"
+#~ msgstr "Aggiorna manualmente"
+
+#~ msgid "Adicionar feed RSS"
+#~ msgstr "Aggiungi feed RSS"
+
+#~ msgid "URL do feed (RSS ou Atom)…"
+#~ msgstr "URL del feed (RSS o Atom)…"
+
+#~ msgid "Limpar"
+#~ msgstr "Pulisci"
+
+#~ msgid "Testando…"
+#~ msgstr "Test in corso…"
+
+#~ msgid "Testar"
+#~ msgstr "Testa"
+
+#~ msgid "Seus feeds (%1)"
+#~ msgstr "I tuoi feed (%1)"
+
+#~ msgid "Remover feed"
+#~ msgstr "Rimuovi feed"
+
+#~ msgid "Limite:"
+#~ msgstr "Limite:"
+
+#~ msgid "notícias"
+#~ msgstr "notizie"
+
+#~ msgid "Exibição"
+#~ msgstr "Visualizzazione"
+
+#~ msgid "Máximo total de notícias:"
+#~ msgstr "Numero massimo totale di notizie:"
+
+#~ msgid "Linhas da chamada:"
+#~ msgstr "Righe del titolo:"
+
+#~ msgid "linhas por notícia"
+#~ msgstr "righe per notizia"
+
+#~ msgid "Atualizar:"
+#~ msgstr "Aggiorna:"
+
+#~ msgid "Resumo"
+#~ msgstr "Riepilogo"
+
+#~ msgid "Agenda"
+#~ msgstr "Calendario"
+
+#~ msgid "Tarefas"
+#~ msgstr "Attività"
+
+#~ msgid "Clima"
+#~ msgstr "Meteo"
+
+#~ msgid "Notas"
+#~ msgstr "Note"
+
+#~ msgid "Listas"
+#~ msgstr "Liste"
+
+#~ msgid "Notícias"
+#~ msgstr "Notizie"
+
+#~ msgid "Padrão (sistema)"
+#~ msgstr "Predefinito (sistema)"
+
+#~ msgid "Escolher ícone"
+#~ msgstr "Scegli icona"
+
+#~ msgid "Imagens (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"
+#~ msgstr "Immagini (*.png *.jpg *.jpeg *.svg *.webp *.bmp)"
+
+#~ msgid "Configurações gerais do widget."
+#~ msgstr "Impostazioni generali del widget."
+
+#~ msgid "Aba padrão ao abrir:"
+#~ msgstr "Scheda predefinita all'apertura:"
+
+#~ msgid "Define qual aba será exibida ao clicar no widget."
+#~ msgstr "Definisce quale scheda viene mostrata quando si fa clic sul widget."
+
+#~ msgid "Tema:"
+#~ msgstr "Tema:"
+
+#~ msgid "Claro"
+#~ msgstr "Chiaro"
+
+#~ msgid "Escuro"
+#~ msgstr "Scuro"
+
+#~ msgid "Automático"
+#~ msgstr "Automatico"
+
+#~ msgid "Define o tema visual do widget."
+#~ msgstr "Definisce il tema visivo del widget."
+
+#~ msgid "Cor de destaque:"
+#~ msgstr "Colore accento:"
+
+#~ msgid ""
+#~ "Cor usada nos destaques do widget. Vazio = cor de destaque do sistema."
+#~ msgstr ""
+#~ "Colore usato per gli accenti del widget. Vuoto = colore accento del "
+#~ "sistema."
+
+#~ msgid "Aparência no painel:"
+#~ msgstr "Aspetto nel pannello:"
+
+#~ msgid "Ícone"
+#~ msgstr "Icona"
+
+#~ msgid "Ícone interativo"
+#~ msgstr "Icona interattiva"
+
+#~ msgid "Relógio"
+#~ msgstr "Orologio"
+
+#~ msgid ""
+#~ "Define o que é exibido quando o widget fica na área de sistema (painel)."
+#~ msgstr ""
+#~ "Definisce cosa mostrare quando il widget si trova nell'area di sistema "
+#~ "(pannello)."
+
+#~ msgid "Ícone do widget"
+#~ msgstr "Icona del widget"
+
+#~ msgid "Ícone do sistema"
+#~ msgstr "Icona di sistema"
+
+#~ msgid "Arquivo..."
+#~ msgstr "File..."
+
+#~ msgid "Exportar suas listas para arquivo."
+#~ msgstr "Esporta le tue liste in un file."
+
+#~ msgid "Listas disponíveis: %1"
+#~ msgstr "Liste disponibili: %1"
+
+#~ msgid "Exportar como TXT"
+#~ msgstr "Esporta come TXT"
+
+#~ msgid "Exportar como CSV (Planilha)"
+#~ msgstr "Esporta come CSV (Foglio di calcolo)"
+
+#~ msgid "Salvar como TXT"
+#~ msgstr "Salva come TXT"
+
+#~ msgid "Arquivo de texto (*.txt)"
+#~ msgstr "File di testo (*.txt)"
+
+#~ msgid "Salvar como CSV"
+#~ msgstr "Salva come CSV"
+
+#~ msgid "Arquivo CSV (*.csv)"
+#~ msgstr "File CSV (*.csv)"
+
+#~ msgid "Máximo total de notícias na lista:"
+#~ msgstr "Numero massimo totale di notizie nella lista:"
+
+#~ msgid "Linhas da chamada da matéria:"
+#~ msgstr "Righe del titolo:"
+
+#~ msgid ""
+#~ "Este limite vale para a lista inteira, somando todos os feeds. Para "
+#~ "ajustar cada fonte individualmente, use a seção “Feeds de notícias”."
+#~ msgstr ""
+#~ "Questo limite si applica all'intera lista, sommando tutti i feed. Per "
+#~ "regolare ogni singola fonte, usa la sezione \"Feed di notizie\"."
+
+#~ msgid "As alterações são aplicadas imediatamente ao widget."
+#~ msgstr "Le modifiche vengono applicate immediatamente al widget."
+
+#~ msgid ""
+#~ "Fontes de calendário (.ics): uma URL do Google/CalDAV (definição “URL "
+#~ "pessoal do iCal” / secret) ou um caminho local para um arquivo .ics. Os "
+#~ "compromissos de hoje aparecem nas abas Agenda e Resumo."
+#~ msgstr ""
+#~ "Fonti di calendario (.ics): un URL Google/CalDAV (\"URL personale "
+#~ "iCal\" / segreto) o un percorso locale a un file .ics. Gli appuntamenti "
+#~ "di oggi appaiono nelle schede Calendario e Riepilogo."
+
+#~ msgid "URL .ics ou caminho local…"
+#~ msgstr "URL .ics o percorso locale…"
+
+#~ msgid "Busque uma cidade e escolha se ela será a principal ou adicional."
+#~ msgstr "Cerca una città e scegli se sarà principale o aggiuntiva."
+
+#~ msgid "Buscar cidade..."
+#~ msgstr "Cerca città..."
+
+#~ msgid "Buscar"
+#~ msgstr "Cerca"
+
+#~ msgid "Obtendo localização..."
+#~ msgstr "Ottenimento posizione..."
+
+#~ msgid "Minha localização"
+#~ msgstr "La mia posizione"
+
+#~ msgid "Definir como principal"
+#~ msgstr "Imposta come principale"
+
+#~ msgid "Adicionar como adicional"
+#~ msgstr "Aggiungi come aggiuntiva"
+
+#~ msgid "Cidade principal: %1"
+#~ msgstr "Città principale: %1"
+
+#~ msgid "Limpar principal"
+#~ msgstr "Rimuovi principale"
+
+#~ msgid "Cidades adicionais:"
+#~ msgstr "Città aggiuntive:"
+
+#~ msgid "Remover"
+#~ msgstr "Rimuovi"
+
+#~ msgid "Nenhuma cidade adicional."
+#~ msgstr "Nessuna città aggiuntiva."
+
+#~ msgid "tempo esgotado"
+#~ msgstr "tempo scaduto"
+
+#~ msgid "falha de conexão"
+#~ msgstr "connessione fallita"
+
+#~ msgid "resposta inválida (não é RSS) ou servidor inacessível"
+#~ msgstr "risposta non valida (non è RSS) o server irraggiungibile"
+
+#~ msgid "abortado"
+#~ msgstr "annullato"
+
+#~ msgid "Agenda ignorada: arquivo acima de 2 MB (%1)"
+#~ msgstr "Agenda ignorata: file oltre 2 MB (%1)"
+
+#~ msgid "Aqui estão as principais notícias de seu interesse"
+#~ msgstr "Ecco le principali notizie di tuo interesse"
+
+#~ msgid "Atualizar notícias"
+#~ msgstr "Aggiorna notizie"
+
+#~ msgid ""
+#~ "Nenhum feed configurado.\n"
+#~ "Adicione feeds RSS nas Configurações."
+#~ msgstr ""
+#~ "Nessun feed configurato.\n"
+#~ "Aggiungi feed RSS nelle Impostazioni."
+
+#~ msgid "Nenhuma notícia encontrada"
+#~ msgstr "Nessuna notizia trovata"
+
+#~ msgid "Nenhuma notícia carregada. Veja os detalhes abaixo."
+#~ msgstr "Nessuna notizia caricata. Vedere i dettagli sotto."
+
+#~ msgid "Abrir configurações"
+#~ msgstr "Apri impostazioni"
+
+#~ msgid "Tentar novamente"
+#~ msgstr "Riprova"
+
+#~ msgid "Alguns feeds não carregaram:"
+#~ msgstr "Alcuni feed non sono stati caricati:"
+
+#~ msgid "Atualizado às %1"
+#~ msgstr "Aggiornato alle %1"
+
+#~ msgid "Estes são os seus compromissos para esta data..."
+#~ msgstr "Ecco i suoi appuntamenti per questa data..."
+
+#~ msgid "Novo evento"
+#~ msgstr "Nuovo evento"
+
+#~ msgid "Hoje"
+#~ msgstr "Oggi"
+
+#~ msgid "Nenhum compromisso neste dia"
+#~ msgstr "Nessun appuntamento in questo giorno"
+
+#~ msgid "Dia todo"
+#~ msgstr "Tutta la giornata"
+
+#~ msgid "Editar evento"
+#~ msgstr "Modifica evento"
+
+#~ msgid "Remover evento"
+#~ msgstr "Elimina evento"
+
+#~ msgid "Adicionar em:"
+#~ msgstr "Aggiungi a:"
+
+#~ msgid "Título do evento"
+#~ msgstr "Titolo dell'evento"
+
+#~ msgid "Data:"
+#~ msgstr "Data:"
+
+#~ msgid "Início:"
+#~ msgstr "Inizio:"
+
+#~ msgid "Fim:"
+#~ msgstr "Fine:"
+
+#~ msgid "Local (opcional)"
+#~ msgstr "Luogo (opzionale)"
+
+#~ msgid "Descrição (opcional)"
+#~ msgstr "Descrizione (opzionale)"
+
+#~ msgid "Cancelar"
+#~ msgstr "Annulla"
+
+#~ msgid "Salvar"
+#~ msgstr "Salva"
+
+#~ msgid "Toque em atualizar para carregar os dados."
+#~ msgstr "Tocca aggiorna per caricare i dati."
+
+#~ msgid ""
+#~ "Nenhuma cidade configurada.\n"
+#~ "Vá em Configurações → Clima para adicionar."
+#~ msgstr ""
+#~ "Nessuna città configurata.\n"
+#~ "Vai su Impostazioni → Meteo per aggiungerne una."
+
+#~ msgid "Atualizar"
+#~ msgstr "Aggiorna"
+
+#~ msgid "Máx: %1°"
+#~ msgstr "Max: %1°"
+
+#~ msgid "Mín: %1°"
+#~ msgstr "Min: %1°"
+
+#~ msgid "Umidade"
+#~ msgstr "Umidità"
+
+#~ msgid "Chuva"
+#~ msgstr "Pioggia"
+
+#~ msgid "Vento"
+#~ msgstr "Vento"
+
+#~ msgid "Sol"
+#~ msgstr "Sole"
+
+#~ msgid "Previsão 7 dias"
+#~ msgstr "Previsioni a 7 giorni"
+
+#~ msgid "Máx"
+#~ msgstr "Max"
+
+#~ msgid "Mín"
+#~ msgstr "Min"
+
+#~ msgid "Cidade:"
+#~ msgstr "Città:"
+
+#~ msgid "Suas listas, compras ou qualquer coisa que precise organizar..."
+#~ msgstr "Le tue liste, acquisti o qualsiasi cosa tu debba organizzare..."
+
+#~ msgid "Nome da nova lista..."
+#~ msgstr "Nome della nuova lista..."
+
+#~ msgid "Histórico de listas finalizadas"
+#~ msgstr "Cronologia delle liste completate"
+
+#~ msgid "itens"
+#~ msgstr "elementi"
+
+#~ msgid "Finalizar lista"
+#~ msgstr "Completa lista"
+
+#~ msgid "Adicionar item"
+#~ msgstr "Aggiungi elemento"
+
+#~ msgid "Excluir lista"
+#~ msgstr "Elimina lista"
+
+#~ msgid "Novo item..."
+#~ msgstr "Nuovo elemento..."
+
+#~ msgid "Finalizadas (%1)"
+#~ msgstr "Completate (%1)"
+
+#~ msgid "Fechar histórico"
+#~ msgstr "Chiudi cronologia"
+
+#~ msgid "Restaurar lista"
+#~ msgstr "Ripristina lista"
+
+#~ msgid "Excluir permanentemente"
+#~ msgstr "Elimina definitivamente"
+
+#~ msgid "Suas notas, pensamentos ou qualquer coisa que precise anotar..."
+#~ msgstr "Le tue note, pensieri o qualsiasi cosa tu debba annotare..."
+
+#~ msgid "Escreva sua nota…"
+#~ msgstr "Scrivi la tua nota…"
+
+#~ msgid ""
+#~ "Nenhuma nota ainda.\n"
+#~ "Escreva uma acima para começar."
+#~ msgstr ""
+#~ "Nessuna nota ancora.\n"
+#~ "Scrivine una sopra per iniziare."
+
+#~ msgid "Apagar"
+#~ msgstr "Elimina"
+
+#~ msgid "Fechar"
+#~ msgstr "Chiudi"
+
+#~ msgid "Bom dia"
+#~ msgstr "Buongiorno"
+
+#~ msgid "Boa tarde"
+#~ msgstr "Buon pomeriggio"
+
+#~ msgid "Boa noite"
+#~ msgstr "Buonasera"
+
+#~ msgid "Amanhã"
+#~ msgstr "Domani"
+
+#~ msgid "Toque para atualizar"
+#~ msgstr "Tocca per aggiornare"
+
+#~ msgid "Próximos compromissos"
+#~ msgstr "Prossimi appuntamenti"
+
+#~ msgid "Nenhum compromisso próximo"
+#~ msgstr "Nessun appuntamento in arrivo"
+
+#~ msgid "Tarefas do dia"
+#~ msgstr "Attività di oggi"
+
+#~ msgid "Nenhuma tarefa para hoje"
+#~ msgstr "Nessuna attività per oggi"
+
+#~ msgid "Dia"
+#~ msgstr "Giorno"
+
+#~ msgid "Incluído em"
+#~ msgstr "Aggiunto il"
+
+#~ msgid "Estas são suas tarefas que precisa completar"
+#~ msgstr "Questi sono i compiti che devi completare"
+
+#~ msgid "Nova tarefa…"
+#~ msgstr "Nuova attività…"
+
+#~ msgid "Prazo: %1"
+#~ msgstr "Scadenza: %1"
+
+#~ msgid "Prazo"
+#~ msgstr "Scadenza"
+
+#~ msgid "Remover prazo"
+#~ msgstr "Rimuovi scadenza"
+
+#~ msgid " pendente(s)"
+#~ msgstr " in sospeso"
+
+#~ msgid ""
+#~ "Nenhuma tarefa ainda.\n"
+#~ "Adicione uma acima para começar o dia."
+#~ msgstr ""
+#~ "Nessuna attività ancora.\n"
+#~ "Aggiungine una sopra per iniziare la giornata."
+
+#~ msgid "Remover tarefa"
+#~ msgstr "Rimuovi attività"
+
+#~ msgid "Histórico de tarefas concluídas"
+#~ msgstr "Cronologia delle attività completate"
+
+#~ msgid "Concluídas (%1)"
+#~ msgstr "Completate (%1)"
+
+#~ msgid "Restaurar tarefa"
+#~ msgstr "Ripristina attività"
+
+#~ msgid "Remover permanentemente"
+#~ msgstr "Rimuovi definitivamente"
+
+#~ msgid "Céu limpo"
+#~ msgstr "Cielo sereno"
+
+#~ msgid "Maiormente limpo"
+#~ msgstr "Principalmente sereno"
+
+#~ msgid "Parcialmente nublado"
+#~ msgstr "Parzialmente nuvoloso"
+
+#~ msgid "Nublado"
+#~ msgstr "Nuvoloso"
+
+#~ msgid "Nevoeiro"
+#~ msgstr "Nebbia"
+
+#~ msgid "Garoa"
+#~ msgstr "Pioviggine"
+
+#~ msgid "Garoa gelada"
+#~ msgstr "Pioviggine ghiacciata"
+
+#~ msgid "Chuva forte"
+#~ msgstr "Pioggia forte"
+
+#~ msgid "Chuva gelada"
+#~ msgstr "Pioggia ghiacciata"
+
+#~ msgid "Neve"
+#~ msgstr "Neve"
+
+#~ msgid "Granizo"
+#~ msgstr "Grandine"
+
+#~ msgid "Pancadas de chuva"
+#~ msgstr "Rovesci di pioggia"
+
+#~ msgid "Pancadas de neve"
+#~ msgstr "Rovesci di neve"
+
+#~ msgid "Trovoada"
+#~ msgstr "Temporale"
+
+#~ msgid "Trovoada com granizo"
+#~ msgstr "Temporale con grandine"
+
+#~ msgid "Sem dados"
+#~ msgstr "Nessun dato"
 
 #~ msgid "Tarefas de hoje"
 #~ msgstr "Attività di oggi"

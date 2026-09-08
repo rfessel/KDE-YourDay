@@ -34,7 +34,7 @@ Item {
         var d = new Date(ms);
         var now = new Date();
         if (d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate()) {
-            return i18n("Hoje");
+            return i18n("Today");
         }
         return d.toLocaleString(Qt.locale(), "dd/MM");
     }
@@ -46,8 +46,8 @@ Item {
         var t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
         var d0 = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
         var diffDays = Math.round((d0 - t0) / 86400000);
-        if (diffDays === 0) return i18n("Hoje");
-        if (diffDays === 1) return i18n("Amanhã");
+        if (diffDays === 0) return i18n("Today");
+        if (diffDays === 1) return i18n("Tomorrow");
         return d.toLocaleString(Qt.locale(), "dd/MM/yyyy");
     }
 
@@ -81,7 +81,7 @@ Item {
                 PlasmaExtras.Heading {
                     level: 4
                     Layout.fillWidth: true
-                    text: i18n("Estas são suas tarefas que precisa completar")
+                    text: i18n("These are the tasks you need to complete")
                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                     elide: Text.ElideRight
                     font.pixelSize: 13
@@ -104,7 +104,7 @@ Item {
                 QQC2.TextField {
                     id: newTodoField
                     Layout.fillWidth: true
-                    placeholderText: i18n("Nova tarefa…")
+                    placeholderText: i18n("New task…")
                     onAccepted: {
                         if (text.trim() !== "") {
                             page.addTodo(text, page.newDueDate);
@@ -116,7 +116,7 @@ Item {
 
                 PlasmaComponents3.Button {
                     Layout.preferredWidth: Math.max(96, implicitWidth)
-                    text: page.newDueDate > 0 ? i18n("Prazo: %1", page.dueDateText(page.newDueDate)) : i18n("Prazo")
+                    text: page.newDueDate > 0 ? i18n("Deadline: %1", page.dueDateText(page.newDueDate)) : i18n("Deadline")
                     icon.name: "view-calendar-day"
                     onClicked: duePicker.open()
                 }
@@ -124,12 +124,12 @@ Item {
                 PlasmaComponents3.ToolButton {
                     visible: page.newDueDate > 0
                     text: "\u00D7"
-                    Accessible.name: i18n("Remover prazo")
+                    Accessible.name: i18n("Remove deadline")
                     onClicked: page.newDueDate = 0
                 }
 
                 PlasmaComponents3.Button {
-                    text: i18n("Adicionar")
+                    text: i18n("Add")
                     onClicked: {
                         if (newTodoField.text.trim() !== "") {
                             page.addTodo(newTodoField.text, page.newDueDate);
@@ -152,7 +152,7 @@ Item {
             PlasmaComponents3.Label {
                 Layout.fillWidth: true
                 visible: page.todos.length > 0
-                text: page.todos.length + i18n(" pendente(s)")
+                text: page.todos.length + i18n(" pending")
                 opacity: 0.6
                 font.pixelSize: 11
             }
@@ -160,7 +160,7 @@ Item {
             Kirigami.PlaceholderMessage {
                 visible: page.todos.length === 0
                 Layout.fillWidth: true
-                text: i18n("Nenhuma tarefa ainda.\nAdicione uma acima para começar o dia.")
+                text: i18n("No tasks yet.\nAdd one above to start your day.")
                 icon.name: "task-new"
             }
 
@@ -199,7 +199,7 @@ Item {
 
                     PlasmaComponents3.Label {
                         color: root.textMain
-                        text: i18n("Incluído em")
+                        text: i18n("Added on")
                         font.pixelSize: 9
                         opacity: 0.55
                     }
@@ -249,7 +249,7 @@ Item {
 
                 PlasmaComponents3.ToolButton {
                     text: "✕"
-                    Accessible.name: i18n("Remover tarefa")
+                    Accessible.name: i18n("Remove task")
                     onClicked: page.removeTodo(index)
                 }
             }
@@ -294,7 +294,7 @@ Item {
         Layout.topMargin: Kirigami.Units.smallSpacing
         Layout.bottomMargin: Kirigami.Units.smallSpacing
         visible: page.completedTodos.length > 0
-        text: (page.showHistory ? "\u25BC " : "\u25B6 ") + i18n("Histórico de tarefas concluídas") + " (" + page.completedTodos.length + ")"
+        text: (page.showHistory ? "\u25BC " : "\u25B6 ") + i18n("Completed tasks history") + " (" + page.completedTodos.length + ")"
         onClicked: page.showHistory = !page.showHistory
     }
 }
@@ -331,12 +331,12 @@ Rectangle {
             PlasmaExtras.Heading {
                 level: 4
                 color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                text: i18n("Concluídas (%1)", page.completedTodos.length)
+                text: i18n("Completed (%1)", page.completedTodos.length)
                 Layout.fillWidth: true
             }
             PlasmaComponents3.ToolButton {
                 text: "\u00D7"
-                Accessible.name: i18n("Fechar histórico")
+                Accessible.name: i18n("Close history")
                 onClicked: page.showHistory = false
             }
         }
@@ -400,7 +400,7 @@ Rectangle {
                                 width: 28
                                 height: 28
                                 QQC2.ToolTip.visible: hovered
-                                QQC2.ToolTip.text: i18n("Restaurar tarefa")
+                                QQC2.ToolTip.text: i18n("Restore task")
                                 onClicked: page.restoreTodo(index)
                             }
 
@@ -408,7 +408,7 @@ Rectangle {
                                 text: "\u00D7"
                                 width: 28
                                 height: 28
-                                Accessible.name: i18n("Remover permanentemente")
+                                Accessible.name: i18n("Remove permanently")
                                 onClicked: page.removeCompletedTodo(index)
                             }
                         }

@@ -36,16 +36,16 @@ var _dayIcons = {
 };
 
 var _descTable = {
-    0: "Céu limpo", 1: "Maiormente limpo", 2: "Parcialmente nublado", 3: "Nublado",
-    45: "Nevoeiro", 48: "Nevoeiro",
-    51: "Garoa", 53: "Garoa", 55: "Garoa",
-    56: "Garoa gelada", 57: "Garoa gelada",
-    61: "Chuva", 63: "Chuva", 65: "Chuva forte",
-    66: "Chuva gelada", 67: "Chuva gelada",
-    71: "Neve", 73: "Neve", 75: "Neve", 77: "Granizo",
-    80: "Pancadas de chuva", 81: "Pancadas de chuva", 82: "Pancadas de chuva",
-    85: "Pancadas de neve", 86: "Pancadas de neve",
-    95: "Trovoada", 96: "Trovoada com granizo", 99: "Trovoada com granizo"
+    0: "Clear sky", 1: "Mostly clear", 2: "Partly cloudy", 3: "Cloudy",
+    45: "Fog", 48: "Fog",
+    51: "Drizzle", 53: "Drizzle", 55: "Drizzle",
+    56: "Freezing drizzle", 57: "Freezing drizzle",
+    61: "Rain", 63: "Rain", 65: "Heavy rain",
+    66: "Freezing rain", 67: "Freezing rain",
+    71: "Snow", 73: "Snow", 75: "Snow", 77: "Hail",
+    80: "Rain showers", 81: "Rain showers", 82: "Rain showers",
+    85: "Snow showers", 86: "Snow showers",
+    95: "Thunderstorm", 96: "Thunderstorm with hail", 99: "Thunderstorm with hail"
 };
 
 function weatherIcon(code, isNight) {
@@ -60,7 +60,7 @@ function weatherIconWithRain(code, isNight, rain, showers) {
 }
 
 function weatherDescription(code) {
-    return _descTable[code] || "Sem dados";
+    return _descTable[code] || "No data";
 }
 
 function formatTime(isoStr) {

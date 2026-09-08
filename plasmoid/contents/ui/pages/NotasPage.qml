@@ -67,7 +67,7 @@ Item {
                 PlasmaExtras.Heading {
                     level: 4
                     Layout.fillWidth: true
-                    text: i18n("Suas notas, pensamentos ou qualquer coisa que precise anotar...")
+                    text: i18n("Your notes, thoughts, or anything you need to write down...")
                     color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                     elide: Text.ElideRight
                     font.pixelSize: 13
@@ -99,7 +99,7 @@ Item {
                     QQC2.TextField {
                         id: newNoteField
                         Layout.fillWidth: true
-                        placeholderText: i18n("Escreva sua nota…")
+                        placeholderText: i18n("Write your note…")
                         wrapMode: Text.Wrap
                         onAccepted: addNoteAction.trigger()
                     }
@@ -132,7 +132,7 @@ Item {
 
                         PlasmaComponents3.Button {
                             id: addNoteAction
-                            text: i18n("Adicionar")
+                            text: i18n("Add")
                             icon.name: "list-add"
                             enabled: newNoteField.text.trim() !== ""
                             onClicked: {
@@ -207,7 +207,7 @@ Item {
             Kirigami.PlaceholderMessage {
                 visible: page.notes.length === 0
                 Layout.fillWidth: true
-                text: i18n("Nenhuma nota ainda.\nEscreva uma acima para começar.")
+                text: i18n("No notes yet.\nWrite one above to get started.")
                 icon.name: "note-new"
             }
         }
@@ -299,7 +299,7 @@ Item {
                 spacing: Kirigami.Units.smallSpacing
 
                 PlasmaComponents3.Button {
-                    text: i18n("Apagar")
+                    text: i18n("Delete")
                     icon.name: "edit-delete"
                     onClicked: {
                         page.removeNote(notePopup.currentIndex);
@@ -310,7 +310,7 @@ Item {
                 Item { Layout.fillWidth: true }
 
                 PlasmaComponents3.Button {
-                    text: i18n("Fechar")
+                    text: i18n("Close")
                     icon.name: "window-close"
                     onClicked: notePopup.close()
                 }

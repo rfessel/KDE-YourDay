@@ -42,7 +42,7 @@ KCM.SimpleKCM {
         Kirigami.Heading {
             level: 3
             Layout.fillWidth: true
-            text: i18n("Exibição")
+            text: i18n("Display")
             textFormat: Text.PlainText
         }
 
@@ -51,7 +51,7 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
 
             QQC2.Label {
-                text: i18n("Máximo total de notícias na lista:")
+                text: i18n("Maximum total news items in list:")
             }
 
             QQC2.SpinBox {
@@ -74,7 +74,7 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
 
             QQC2.Label {
-                text: i18n("Linhas da chamada da matéria:")
+                text: i18n("Headline lines:")
             }
 
             QQC2.SpinBox {
@@ -87,7 +87,7 @@ KCM.SimpleKCM {
             }
 
             QQC2.Label {
-                text: i18n("linhas por notícia")
+                text: i18n("lines per story")
                 opacity: 0.6
             }
 
@@ -98,7 +98,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Este limite vale para a lista inteira, somando todos os feeds. Para ajustar cada fonte individualmente, use a seção “Feeds de notícias”.")
+            text: i18n("This limit applies to the entire list, summing all feeds. To adjust each source individually, use the \"News feeds\" section.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -106,7 +106,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("As alterações são aplicadas imediatamente ao widget.")
+            text: i18n("Changes are applied to the widget immediately.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -121,13 +121,13 @@ KCM.SimpleKCM {
             level: 3
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.smallSpacing
-            text: i18n("Agenda")
+            text: i18n("Calendar")
             textFormat: Text.PlainText
         }
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Fontes de calendário (.ics): uma URL do Google/CalDAV (definição “URL pessoal do iCal” / secret) ou um caminho local para um arquivo .ics. Os compromissos de hoje aparecem nas abas Agenda e Resumo.")
+            text: i18n("Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / secret) or a local path to an .ics file. Today's appointments appear in the Calendar and Summary tabs.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -140,13 +140,13 @@ KCM.SimpleKCM {
             QQC2.TextField {
                 id: agSourceField
                 Layout.fillWidth: true
-                placeholderText: i18n("URL .ics ou caminho local…")
+                placeholderText: i18n("URL .ics or local path…")
                 onAccepted: addAgButton.clicked()
             }
 
             QQC2.Button {
                 id: addAgButton
-                text: i18n("Adicionar")
+                text: i18n("Add")
                 icon.name: "list-add-symbolic"
                 onClicked: {
                     var u = agSourceField.text.trim();
@@ -164,7 +164,7 @@ KCM.SimpleKCM {
             visible: page.agendaSources().length === 0
             Layout.fillWidth: true
             opacity: 0.5
-            text: i18n("Nenhuma fonte adicionada.")
+            text: i18n("No source added.")
         }
 
         Repeater {
@@ -184,7 +184,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "edit-delete-remove-symbolic"
-                    Accessible.name: i18n("Remover fonte")
+                    Accessible.name: i18n("Remove source")
                     onClicked: {
                         var list = page.agendaSources().slice();
                         list.splice(index, 1);

@@ -3,7 +3,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 
     Relógio compacto com data completa, no estilo do relógio do KDE.
-    Usado na representação compacta (painel) quando o modo é "Relógio".
+    Usado na representação compacta (painel) quando o modo é "Clock".
 */
 import QtQuick
 import QtQml

@@ -39,7 +39,7 @@ KCM.SimpleKCM {
         var scriptUrl = Plasmoid.configuration.gcalClientId;
         if (scriptUrl && scriptUrl.indexOf("script.google.com") !== -1) {
             page.gcalAuthenticated = true;
-            page.gcalStatus = i18n("Conectado ao Google Calendar");
+            page.gcalStatus = i18n("Connected to Google Calendar");
             loadGoogleCalendarsFromScript();
         }
     }
@@ -47,7 +47,7 @@ KCM.SimpleKCM {
     function startGoogleAuth() {
         var scriptUrl = agClientIdField.text.trim();
         if (!scriptUrl) {
-            page.gcalStatus = i18n("Informe a URL do Apps Script");
+            page.gcalStatus = i18n("Enter the Apps Script URL");
             return;
         }
 
@@ -62,7 +62,7 @@ KCM.SimpleKCM {
         }
 
         Plasmoid.configuration.gcalClientId = scriptUrl;
-        page.gcalStatus = i18n("Testando conexão...");
+        page.gcalStatus = i18n("Testing connection...");
 
         // Testa a conexão
         var testUrl = scriptUrl + "?action=list&timeMin=" + encodeURIComponent(new Date().toISOString()) + "&timeMax=" + encodeURIComponent(new Date(Date.now() + 86400000).toISOString());
@@ -81,27 +81,27 @@ KCM.SimpleKCM {
                         console.log("[yourday] Resposta:", JSON.stringify(data).substring(0, 200));
                         if (Array.isArray(data)) {
                             page.gcalAuthenticated = true;
-                            page.gcalStatus = i18n("Conectado ao Google Calendar");
+                            page.gcalStatus = i18n("Connected to Google Calendar");
                             loadGoogleCalendarsFromScript();
                         } else {
-                            page.gcalStatus = i18n("Resposta inválida: ") + JSON.stringify(data).substring(0, 100);
+                            page.gcalStatus = i18n("Invalid response: ") + JSON.stringify(data).substring(0, 100);
                         }
                     } catch (e) {
-                        page.gcalStatus = i18n("Erro ao parsear: ") + e.message;
+                        page.gcalStatus = i18n("Parse error: ") + e.message;
                         console.log("[yourday] Parse error:", e.message, "Response:", xhr.responseText.substring(0, 200));
                     }
                 } else {
-                    page.gcalStatus = i18n("Erro HTTP: ") + xhr.status;
+                    page.gcalStatus = i18n("HTTP error: ") + xhr.status;
                     console.log("[yourday] HTTP Error:", xhr.status, xhr.responseText.substring(0, 200));
                 }
             }
         };
         xhr.onerror = function() {
-            page.gcalStatus = i18n("Erro de conexão. Verifique a URL.");
+            page.gcalStatus = i18n("Connection error. Check the URL.");
             console.log("[yourday] XHR error");
         };
         xhr.ontimeout = function() {
-            page.gcalStatus = i18n("Tempo esgotado. Verifique a URL e a permissão de acesso.");
+            page.gcalStatus = i18n("Timed out. Check the URL and access permissions.");
             console.log("[yourday] XHR timeout");
         };
         xhr.send(null);
@@ -157,13 +157,13 @@ KCM.SimpleKCM {
         Plasmoid.configuration.gcalSelectedCalendars = "";
         page.gcalAuthenticated = false;
         page.gcalCalendars = [];
-        page.gcalStatus = i18n("Desconectado");
+        page.gcalStatus = i18n("Disconnected");
     }
 
     FileDialog {
         id: fileDialog
-        title: i18n("Selecionar arquivo .ics")
-        nameFilters: [ i18n("Calendário (*.ics)"), i18n("Todos os arquivos (*)") ]
+        title: i18n("Select .ics file")
+        nameFilters: [ i18n("Calendar (*.ics)"), i18n("All files (*)") ]
         onAccepted: {
             var u = fileDialog.fileUrl.toString().replace("file://", "");
             if (u && !page.isAlreadyAdded(u)) {
@@ -184,13 +184,13 @@ KCM.SimpleKCM {
         Kirigami.Heading {
             level: 4
             Layout.fillWidth: true
-            text: i18n("Google Calendar API (sincronização)")
+            text: i18n("Google Calendar API (sync)")
             textFormat: Text.PlainText
         }
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Para sincronizar eventos, crie um projeto no Google Cloud Console e ative a API do Google Calendar.")
+            text: i18n("To sync events, create a project in Google Cloud Console and enable the Google Calendar API.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -198,7 +198,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("1. Abra script.google.com\n2. Crie um novo projeto\n3. Cole o código abaixo\n4. No menu lateral, clique em \"Serviços\" (+)\n5. Busque \"Google Calendar API\" e ative\n6. Salve e publique como Web App\n7. Copie a URL gerada")
+            text: i18n("1. Open script.google.com\n2. Create a new project\n3. Paste the code below\n4. In the left menu, click \"Services\" (+)\n5. Search for \"Google Calendar API\" and enable it\n6. Save and deploy as a Web App\n7. Copy the generated URL")
             opacity: 0.5
             font.pixelSize: 10
             font.italic: true
@@ -206,14 +206,14 @@ KCM.SimpleKCM {
         }
 
         QQC2.Button {
-            text: i18n("Ver código do Apps Script")
+            text: i18n("View Apps Script code")
             icon.name: "document-properties"
             onClicked: scriptCodeDialog.open()
         }
 
         QQC2.Dialog {
             id: scriptCodeDialog
-            title: i18n("Código do Apps Script")
+            title: i18n("Apps Script Code")
             modal: true
             standardButtons: QQC2.Dialog.Close
             width: 500
@@ -253,14 +253,14 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
 
             QQC2.Button {
-                text: page.gcalAuthenticated ? i18n("Conectado") : i18n("Conectar")
+                text: page.gcalAuthenticated ? i18n("Connected") : i18n("Connect")
                 icon.name: page.gcalAuthenticated ? "dialog-ok-apply" : "preferences-system-network"
                 enabled: !page.gcalAuthenticated
                 onClicked: startGoogleAuth()
             }
 
             QQC2.Button {
-                text: i18n("Desconectar")
+                text: i18n("Disconnect")
                 icon.name: "dialog-cancel"
                 visible: page.gcalAuthenticated
                 onClicked: disconnectGoogle()
@@ -287,7 +287,7 @@ KCM.SimpleKCM {
                 height: 16
             }
             QQC2.Label {
-                text: i18n("Conectado ao Google Calendar")
+                text: i18n("Connected to Google Calendar")
                 font.pixelSize: 12
                 font.bold: true
                 color: Kirigami.Theme.positiveTextColor
@@ -301,7 +301,7 @@ KCM.SimpleKCM {
             spacing: Kirigami.Units.smallSpacing
 
             QQC2.Label {
-                text: i18n("Calendários para sincronizar:")
+                text: i18n("Calendars to sync:")
                 font.pixelSize: 12
                 font.bold: true
             }
@@ -388,13 +388,13 @@ KCM.SimpleKCM {
             level: 4
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Fontes .ics (somente leitura)")
+            text: i18n(".ics sources (read only)")
             textFormat: Text.PlainText
         }
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Adicione fontes de calendário (.ics) para ver seus compromissos nas abas Agenda e Resumo.")
+            text: i18n("Add calendar sources (.ics) to see your appointments in the Calendar and Summary tabs.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -402,7 +402,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("1. Abra o Google Calendar no navegador\n2. Clique em Configurações (engrenagem)\n3. Vá em Configurações do calendário\n4. Selecione o calendário desejado\n5. Role até Integração de calendário\n6. Copie o link Endereço público do iCal")
+            text: i18n("1. Open Google Calendar in your browser\n2. Click Settings (gear)\n3. Go to Calendar settings\n4. Select the desired calendar\n5. Scroll to Calendar integration\n6. Copy the public iCal address link")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -410,7 +410,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Formato:\nhttps://calendar.google.com/calendar/ical/seuemail%40gmail.com/public/basic.ics")
+            text: i18n("Format:\nhttps://calendar.google.com/calendar/ical/youremail%40gmail.com/public/basic.ics")
             opacity: 0.5
             font.pixelSize: 10
             font.italic: true
@@ -426,12 +426,12 @@ KCM.SimpleKCM {
             level: 4
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Arquivo local")
+            text: i18n("Local file")
             textFormat: Text.PlainText
         }
 
         QQC2.Button {
-            text: i18n("Selecionar arquivo .ics...")
+            text: i18n("Select .ics file...")
             icon.name: "document-open"
             onClicked: fileDialog.open()
         }
@@ -445,7 +445,7 @@ KCM.SimpleKCM {
             level: 4
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Adicionar URL ou caminho")
+            text: i18n("Add URL or path")
             textFormat: Text.PlainText
         }
 
@@ -456,13 +456,13 @@ KCM.SimpleKCM {
             QQC2.TextField {
                 id: agSourceField
                 Layout.fillWidth: true
-                placeholderText: i18n("URL iCal ou caminho local...")
+                placeholderText: i18n("iCal URL or local path...")
                 onAccepted: addAgButton.clicked()
             }
 
             QQC2.Button {
                 id: addAgButton
-                text: i18n("Adicionar")
+                text: i18n("Add")
                 icon.name: "list-add"
                 onClicked: {
                     var u = agSourceField.text.trim();
@@ -480,7 +480,7 @@ KCM.SimpleKCM {
             visible: page.agendaSources().length === 0
             Layout.fillWidth: true
             opacity: 0.5
-            text: i18n("Nenhuma fonte adicionada.")
+            text: i18n("No source added.")
         }
 
         Repeater {
@@ -500,7 +500,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "list-remove"
-                    Accessible.name: i18n("Remover fonte")
+                    Accessible.name: i18n("Remove source")
                     onClicked: {
                         var list = page.agendaSources().slice();
                         list.splice(index, 1);

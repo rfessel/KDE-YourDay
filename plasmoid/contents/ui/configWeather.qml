@@ -62,7 +62,7 @@ KCM.SimpleKCM {
 
         QQC2.Label {
             Layout.fillWidth: true
-            text: i18n("Busque uma cidade e escolha se ela será a principal ou adicional.")
+            text: i18n("Search for a city and choose whether it will be primary or additional.")
             opacity: 0.6
             font.pixelSize: 11
             wrapMode: Text.Wrap
@@ -75,13 +75,13 @@ KCM.SimpleKCM {
             QQC2.TextField {
                 id: citySearchField
                 Layout.fillWidth: true
-                placeholderText: i18n("Buscar cidade...")
+                placeholderText: i18n("Search city...")
                 onAccepted: citySearchButton.clicked()
             }
 
             QQC2.Button {
                 id: citySearchButton
-                text: i18n("Buscar")
+                text: i18n("Search")
                 icon.name: "edit-find"
                 onClicked: {
                     var q = citySearchField.text.trim();
@@ -94,7 +94,7 @@ KCM.SimpleKCM {
             }
 
             QQC2.Button {
-                text: page.geoLoading ? i18n("Obtendo localização...") : i18n("Minha localização")
+                text: page.geoLoading ? i18n("Getting location...") : i18n("My location")
                 icon.name: page.geoLoading ? "view-refresh" : "geo-location"
                 enabled: !page.geoLoading
                 onClicked: {
@@ -133,7 +133,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "go-home"
-                    Accessible.name: i18n("Definir como principal")
+                    Accessible.name: i18n("Set as primary")
                     onClicked: {
                         page.setAsMain(modelData);
                         page.cityResults = [];
@@ -143,7 +143,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "list-add"
-                    Accessible.name: i18n("Adicionar como adicional")
+                    Accessible.name: i18n("Add as additional")
                     onClicked: {
                         page.addExtraCity(modelData);
                         page.cityResults = [];
@@ -156,14 +156,14 @@ KCM.SimpleKCM {
         PlasmaComponents3.Label {
             visible: Plasmoid.configuration.weatherCity !== ""
             Layout.fillWidth: true
-            text: i18n("Cidade principal: %1", Plasmoid.configuration.weatherCity)
+            text: i18n("Primary city: %1", Plasmoid.configuration.weatherCity)
             opacity: 0.6
             font.pixelSize: 11
         }
 
         QQC2.Button {
             visible: Plasmoid.configuration.weatherCity !== ""
-            text: i18n("Limpar principal")
+            text: i18n("Clear primary")
             icon.name: "edit-clear"
             onClicked: {
                 Plasmoid.configuration.weatherCity = "";
@@ -180,7 +180,7 @@ KCM.SimpleKCM {
         QQC2.Label {
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Cidades adicionais:")
+            text: i18n("Additional cities:")
             font.pixelSize: 12
             font.bold: true
         }
@@ -207,7 +207,7 @@ KCM.SimpleKCM {
 
                 QQC2.ToolButton {
                     icon.name: "list-remove"
-                    Accessible.name: i18n("Remover")
+                    Accessible.name: i18n("Remove")
                     onClicked: page.removeExtraCity(index)
                 }
             }
@@ -218,7 +218,7 @@ KCM.SimpleKCM {
             Layout.fillWidth: true
             opacity: 0.5
             font.pixelSize: 11
-            text: i18n("Nenhuma cidade adicional.")
+            text: i18n("No additional cities.")
         }
     }
 }

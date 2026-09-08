@@ -77,9 +77,9 @@ Item {
         },
         greeting: function() {
             var h = new Date().getHours();
-            if (h >= 5 && h < 12) return i18n("Bom dia");
-            if (h >= 12 && h < 18) return i18n("Boa tarde");
-            return i18n("Boa noite");
+            if (h >= 5 && h < 12) return i18n("Good morning");
+            if (h >= 12 && h < 18) return i18n("Good afternoon");
+            return i18n("Good evening");
         }
     })
 
@@ -88,7 +88,7 @@ Item {
         var d = new Date(ms);
         var now = new Date();
         if (d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate()) {
-            return i18n("Hoje");
+            return i18n("Today");
         }
         return d.toLocaleString(Qt.locale(), "dd/MM");
     }
@@ -100,8 +100,8 @@ Item {
         var t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
         var d0 = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
         var diffDays = Math.round((d0 - t0) / 86400000);
-        if (diffDays === 0) return i18n("Hoje");
-        if (diffDays === 1) return i18n("Amanhã");
+        if (diffDays === 0) return i18n("Today");
+        if (diffDays === 1) return i18n("Tomorrow");
         return d.toLocaleString(Qt.locale(), "dd/MM/yyyy");
     }
 
@@ -259,7 +259,7 @@ Item {
                     PlasmaComponents3.Label {
                         visible: page.weatherCity !== "" && !page.weatherLoading && page.weatherData === null
                         color: root.textMain
-                        text: i18n("Toque para atualizar")
+                        text: i18n("Tap to refresh")
                         font.pixelSize: 10
                         opacity: 0.4
                         MouseArea {
@@ -285,7 +285,7 @@ Item {
                 PlasmaExtras.Heading {
                     level: 4
                     color: root.textMain
-                    text: i18n("Próximos compromissos")
+                    text: i18n("Upcoming appointments")
                     Layout.fillWidth: true
                 }
             }
@@ -299,7 +299,7 @@ Item {
             Kirigami.PlaceholderMessage {
                 visible: !page.loading && page.nextEvents.length === 0
                 Layout.fillWidth: true
-                text: i18n("Nenhum compromisso próximo")
+                text: i18n("No upcoming appointments")
                 icon.name: "view-calendar-day"
             }
 
@@ -315,7 +315,7 @@ Item {
                 PlasmaExtras.Heading {
                     level: 4
                     color: root.textMain
-                    text: i18n("Tarefas do dia")
+                    text: i18n("Today's tasks")
                     Layout.fillWidth: true
                 }
             }
@@ -323,7 +323,7 @@ Item {
             Kirigami.PlaceholderMessage {
                 visible: page.todos.length === 0
                 Layout.fillWidth: true
-                text: i18n("Nenhuma tarefa para hoje")
+                text: i18n("No tasks for today")
                 icon.name: "task-new"
             }
 
@@ -368,7 +368,7 @@ Item {
                     Layout.preferredWidth: 52
 
                     PlasmaComponents3.Label {
-                        text: model.allDay ? i18n("Dia") : Cal.formatTime(model.start, model.allDay)
+                        text: model.allDay ? i18n("Day") : Cal.formatTime(model.start, model.allDay)
                         color: root.textMain
                         font.pixelSize: 12
                         font.weight: Font.DemiBold
@@ -380,8 +380,8 @@ Item {
                             var d = new Date(model.start);
                             var now = new Date();
                             var diff = Math.floor((d - now) / 86400000);
-                            if (diff === 0) return i18n("Hoje");
-                            if (diff === 1) return i18n("Amanhã");
+                            if (diff === 0) return i18n("Today");
+                            if (diff === 1) return i18n("Tomorrow");
                             return d.toLocaleString(Qt.locale(), "dd/MM");
                         }
                         font.pixelSize: 9
@@ -427,7 +427,7 @@ Item {
 
                     PlasmaComponents3.Label {
                         color: root.textMain
-                        text: i18n("Incluído em")
+                        text: i18n("Added on")
                         font.pixelSize: 9
                         opacity: 0.55
                     }
