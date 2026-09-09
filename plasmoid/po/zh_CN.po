@@ -515,6 +515,10 @@ msgid "Local"
 msgstr "本地"
 
 #: contents/ui/main.qml
+msgid "Settings"
+msgstr "设置"
+
+#: contents/ui/main.qml
 msgid "Here are the top news of interest to you"
 msgstr "以下是您感兴趣的主要新闻"
 
@@ -675,6 +679,10 @@ msgstr "日照"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Next hours"
+msgstr ""
+
+#: contents/ui/pages/ClimaPage.qml
+msgid "Temperature"
 msgstr ""
 
 #: contents/ui/pages/ClimaPage.qml

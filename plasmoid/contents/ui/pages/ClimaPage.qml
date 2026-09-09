@@ -77,6 +77,11 @@ Item {
     readonly property var chartPoints: page.currentData && page.currentData.hours
                                        ? page.currentData.hours.slice(0, 6) : []
 
+    // Cores FIXAS do gráfico de horas, independentes de tema/accent:
+    // legenda e traços usam exatamente as mesmas cores.
+    readonly property color tempLineColor: Qt.rgba(0.25, 0.55, 0.95, 1)
+    readonly property color rainLineColor: Qt.rgba(0.9, 0.25, 0.25, 1)
+
     function getCityData(name) {
         if (name === page.weatherCity) return page.currentData;
         return page.extraWeatherData[name] || null;
@@ -253,13 +258,50 @@ Item {
                         anchors.margins: Kirigami.Units.largeSpacing
                         spacing: Kirigami.Units.smallSpacing
 
-                        PlasmaExtras.Heading {
-                            level: 4
-                            color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
-                            text: i18n("Next hours")
+                        RowLayout {
+                            Layout.fillWidth: true
+                            spacing: Kirigami.Units.smallSpacing
+
+                            PlasmaExtras.Heading {
+                                objectName: "hoursHeader"
+                                level: 4
+                                Layout.fillWidth: true
+                                color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                                text: i18n("Next hours")
+                            }
+
+                            Row {
+                                spacing: 4
+                                Rectangle {
+                                    width: 14; height: 3; radius: 2
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    color: page.tempLineColor
+                                }
+                                PlasmaComponents3.Label {
+                                    text: i18n("Temperature")
+                                    font.pixelSize: 10
+                                    color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                                    opacity: 0.7
+                                }
+                            }
+
+                            Row {
+                                spacing: 4
+                                Rectangle {
+                                    width: 14; height: 3; radius: 2
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    color: page.rainLineColor
+                                }
+                                PlasmaComponents3.Label {
+                                    text: i18n("Rain")
+                                    font.pixelSize: 10
+                                    color: (root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1))
+                                    opacity: 0.7
+                                }
+                            }
                         }
 
-                        // Linha da temperatura: ° em cima, hora + % de chuva embaixo
+                        // Duas linhas: temperatura (azul) e chance de chuva (vermelha), cores fixas
                         Canvas {
                             id: hoursChart
                             Layout.fillWidth: true
@@ -302,12 +344,18 @@ Item {
                                     tmin -= pad;
                                     tmax += pad;
                                 }
+                                // Temperatura com escala própria; chuva em 0..100%.
                                 function yFor(t) { return topPad + (1 - (t - tmin) / (tmax - tmin)) * plotH; }
+                                function yRain(v) { return topPad + (1 - Math.max(0, Math.min(100, v)) / 100) * plotH; }
 
-                                var acc = root.accentMain || Qt.rgba(0.15, 0.5, 0.85, 1);
-                                var rainClr = root.isDarkTheme ? "rgba(0.45,0.75,1,0.95)" : "rgba(0.08,0.42,0.88,1)";
+                                var acc = page.tempLineColor;
+                                var rainLine = page.rainLineColor;
+                                var rainText = page.rainLineColor;
                                 var subtle = root.isDarkTheme ? "rgba(0.93,0.93,0.93,0.6)" : "rgba(0.13,0.13,0.13,0.6)";
                                 var textClr = root.textMain || Qt.rgba(0.13, 0.13, 0.13, 1);
+                                // só desenha "N%" quando a chance de chuva é > 0, para não
+                                // sujar a base do gráfico (onde ficam as horas) de vermelho
+                                function hasRain(d) { return (pts[d].rainChance || 0) > 0; }
 
                                 // grade (linhas sutis)
                                 ctx.strokeStyle = root.isDarkTheme ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)";
@@ -319,6 +367,18 @@ Item {
                                     ctx.lineTo(leftPad + plotW, gy);
                                     ctx.stroke();
                                 }
+
+                                // linha da precipitação (0..100%) em vermelho vivo, sem halo para não
+                                // "lavar" a cor perto de valores baixos
+                                ctx.strokeStyle = rainLine;
+                                ctx.lineWidth = 3;
+                                ctx.beginPath();
+                                for (var r = 0; r < n; r++) {
+                                    var rxx = xFor(r);
+                                    var ryy = yRain(pts[r].rainChance || 0);
+                                    if (r === 0) ctx.moveTo(rxx, ryy); else ctx.lineTo(rxx, ryy);
+                                }
+                                ctx.stroke();
 
                                 // linha da temperatura
                                 ctx.strokeStyle = acc;
@@ -337,7 +397,13 @@ Item {
                                 for (var d = 0; d < n; d++) {
                                     var dx = xFor(d);
                                     var dy = yFor(pts[d].temp);
-                                    // ponto
+                                    var dy_ = yRain(pts[d].rainChance || 0);
+                                    // ponto da precipitação
+                                    ctx.fillStyle = rainLine;
+                                    ctx.beginPath();
+                                    ctx.arc(dx, dy_, 2, 0, 2 * Math.PI);
+                                    ctx.fill();
+                                    // ponto da temperatura
                                     ctx.fillStyle = acc;
                                     ctx.beginPath();
                                     ctx.arc(dx, dy, 3, 0, 2 * Math.PI);
@@ -345,13 +411,17 @@ Item {
                                     // temperatura em cima
                                     ctx.fillStyle = textClr;
                                     ctx.fillText(Math.round(pts[d].temp) + "°", dx, dy - 8);
-                                    // hora + % de precipitação embaixo
-                                    var htxt = new Date(pts[d].time).getHours() + "h ";
-                                    var w = ctx.measureText(htxt).width;
-                                    ctx.fillStyle = subtle;
-                                    ctx.fillText(htxt, dx - w / 2, bottomY);
-                                    ctx.fillStyle = rainClr;
-                                    ctx.fillText(Math.round(pts[d].rainChance || 0) + "%", dx + w / 2, bottomY);
+                                    // % de precipitação logo abaixo da linha (só se houver chance de chuva)
+                                    if (hasRain(d)) {
+                                        var pct = Math.round(pts[d].rainChance || 0) + "%";
+                                        var pyl = dy_ + 11;
+                                        if (pyl > bottomY - 4) pyl = dy_ - 9;
+                                        ctx.fillStyle = rainText;
+                                        ctx.fillText(pct, dx, pyl);
+                                    }
+                                    // hora embaixo, sozinha, na cor do texto do tema
+                                    ctx.fillStyle = textClr;
+                                    ctx.fillText(new Date(pts[d].time).getHours() + "h", dx, bottomY);
                                 }
                             }
                         }

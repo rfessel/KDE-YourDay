@@ -516,6 +516,10 @@ msgid "Local"
 msgstr "Local"
 
 #: contents/ui/main.qml
+msgid "Settings"
+msgstr "Ajustes"
+
+#: contents/ui/main.qml
 msgid "Here are the top news of interest to you"
 msgstr "Aquí están las principales noticias de su interés"
 
@@ -676,6 +680,10 @@ msgstr "Sol"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Next hours"
+msgstr ""
+
+#: contents/ui/pages/ClimaPage.qml
+msgid "Temperature"
 msgstr ""
 
 #: contents/ui/pages/ClimaPage.qml

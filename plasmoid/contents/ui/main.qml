@@ -1986,6 +1986,62 @@ PlasmoidItem {
                     ]
                     delegate: navButton
                 }
+
+                // Espaçador para empurrar o botão de configurações para baixo
+                Item { Layout.fillHeight: true }
+
+                // Botão de configurações no fim da barra lateral
+                Rectangle {
+                    Layout.preferredWidth: 56
+                    Layout.preferredHeight: 52
+                    Layout.alignment: Qt.AlignHCenter
+
+                    radius: Kirigami.Units.smallSpacing
+                    color: "transparent"
+                    border.width: 0
+                    border.color: "transparent"
+
+                    readonly property bool hovered: settingsArea.containsMouse
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: Kirigami.Units.smallSpacing
+                        color: parent.hovered ? root.accentSoft : "transparent"
+                        border.width: parent.hovered ? 1 : 0
+                        border.color: parent.hovered ? root.accentBorder : "transparent"
+                        Behavior on color { ColorAnimation { duration: 150 } }
+                    }
+
+                    MouseArea {
+                        id: settingsArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: Plasmoid.internalAction("configure").trigger()
+                        Accessible.name: i18n("Settings")
+                    }
+
+                    Column {
+                        anchors.centerIn: parent
+                        spacing: 2
+
+                        Kirigami.Icon {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: 20
+                            height: 20
+                            source: "settings-configure"
+                            color: root.textMain
+                            isMask: true
+                        }
+
+                        PlasmaComponents3.Label {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            text: i18n("Settings")
+                            font.pixelSize: 10
+                            color: root.textMain
+                        }
+                    }
+                }
             }
 
             // Separador vertical

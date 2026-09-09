@@ -28,6 +28,26 @@ Item {
 
     property bool showHistory: false
     property var newDueDate: 0
+    property string draftTodoText: ""
+
+    // Mantém o cursor visível enquanto digita (caixa e barra acompanham).
+    function followCursor(flick, edit) {
+        var cr = edit.cursorRectangle;
+        if (cr.y < flick.contentY) {
+            flick.contentY = cr.y;
+        } else if (cr.y + cr.height > flick.contentY + flick.height) {
+            flick.contentY = cr.y + cr.height - flick.height;
+        }
+    }
+
+    function commitNewTodo() {
+        if (page.draftTodoText.trim() === "") {
+            return;
+        }
+        page.addTodo(page.draftTodoText.trim(), page.newDueDate);
+        page.draftTodoText = "";
+        page.newDueDate = 0;
+    }
 
     // Espaço reservado para a barra de rolagem vertical (desenhada por cima
     // do conteúdo no QQC2): tarefas e histórico não ficam sob a barra.
@@ -109,20 +129,114 @@ Item {
                 Layout.fillWidth: true
                 spacing: Kirigami.Units.smallSpacing
 
-                QQC2.TextField {
-                    id: newTodoField
+                // Entrada para nova tarefa: multi-linha com barra de rolagem própria
+                Rectangle {
+                    id: newTodoBox
                     Layout.fillWidth: true
-                    placeholderText: i18n("New task…")
-                    onAccepted: {
-                        if (text.trim() !== "") {
-                            page.addTodo(text, page.newDueDate);
-                            text = "";
-                            page.newDueDate = 0;
+                    Layout.preferredHeight: 52
+                    Layout.alignment: Qt.AlignVCenter
+                    radius: 4
+                    color: "transparent"
+                    border.width: 1
+                    border.color: Qt.alpha(root.textMain, 0.2)
+                    clip: true
+
+                    readonly property bool todoNeedsScroll: newTodoEdit.implicitHeight > newTodoFlick.height
+
+                    Text {
+                        visible: newTodoEdit.text === ""
+                        z: -1
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        anchors.margins: 6
+                        text: i18n("New task…")
+                        font.pixelSize: 13
+                        color: root.isDarkTheme ? Qt.rgba(0.6, 0.6, 0.6, 1) : Qt.rgba(0.35, 0.35, 0.35, 1)
+                    }
+
+                    Flickable {
+                        id: newTodoFlick
+                        anchors.fill: parent
+                        anchors.rightMargin: newTodoBox.todoNeedsScroll ? 7 : 1
+                        clip: true
+                        contentWidth: width
+                        contentHeight: newTodoEdit.implicitHeight
+                        boundsBehavior: Flickable.StopAtBounds
+
+                        TextEdit {
+                            id: newTodoEdit
+                            width: newTodoFlick.width + 1
+                            wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+                            text: page.draftTodoText
+                            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                            selectionColor: root.accentMain
+                            selectedTextColor: "white"
+                            selectByMouse: true
+                            persistentSelection: true
+                            padding: 6
+                            onTextChanged: page.draftTodoText = text
+                            onCursorRectangleChanged: page.followCursor(newTodoFlick, newTodoEdit)
+                            Keys.onReturnPressed: {
+                                if (!(event.modifiers & Qt.ShiftModifier)) {
+                                    page.commitNewTodo();
+                                    event.accepted = true;
+                                }
+                            }
+                            Keys.onEnterPressed: {
+                                if (!(event.modifiers & Qt.ShiftModifier)) {
+                                    page.commitNewTodo();
+                                    event.accepted = true;
+                                }
+                            }
+                        }
+                    }
+
+                    Rectangle {
+                        visible: newTodoBox.todoNeedsScroll
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.margins: 2
+                        width: 5
+                        radius: 2.5
+                        color: "transparent"
+
+                        Rectangle {
+                            id: newTodoHandle
+                            width: 5
+                            radius: 2.5
+                            color: root.isDarkTheme ? Qt.rgba(0.5, 0.8, 1, 0.6) : Qt.rgba(0.15, 0.5, 0.85, 0.55)
+                            height: Math.max(16, newTodoTrack.height * newTodoFlick.height / Math.max(1, newTodoEdit.implicitHeight))
+                            y: newTodoTrack.height > newTodoHandle.height
+                               ? (newTodoEdit.implicitHeight > newTodoFlick.height
+                                  ? newTodoFlick.contentY / (newTodoEdit.implicitHeight - newTodoFlick.height)
+                                    * (newTodoTrack.height - newTodoHandle.height)
+                                  : 0)
+                               : 0
+                        }
+                    }
+
+                    MouseArea {
+                        id: newTodoTrack
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.margins: 2
+                        width: 8
+                        visible: newTodoBox.todoNeedsScroll
+                        cursorShape: Qt.PointingHandCursor
+                        onPressed: (mouse) => newTodoGrab(mouse.y)
+                        onPositionChanged: (mouse) => newTodoGrab(mouse.y)
+                        function newTodoGrab(ty) {
+                            var range = Math.max(1, newTodoEdit.implicitHeight - newTodoFlick.height);
+                            var trav = Math.max(1, newTodoTrack.height - newTodoHandle.height);
+                            newTodoFlick.contentY = Math.max(0, Math.min(range, (ty - newTodoHandle.height / 2) / trav * range));
                         }
                     }
                 }
 
                 PlasmaComponents3.Button {
+                    Layout.alignment: Qt.AlignTop
                     Layout.preferredWidth: Math.max(96, implicitWidth)
                     text: page.newDueDate > 0 ? i18n("Deadline: %1", page.dueDateText(page.newDueDate)) : i18n("Deadline")
                     icon.name: "view-calendar-day"
@@ -130,6 +244,7 @@ Item {
                 }
 
                 PlasmaComponents3.ToolButton {
+                    Layout.alignment: Qt.AlignTop
                     visible: page.newDueDate > 0
                     text: "\u00D7"
                     Accessible.name: i18n("Remove deadline")
@@ -137,14 +252,10 @@ Item {
                 }
 
                 PlasmaComponents3.Button {
+                    Layout.alignment: Qt.AlignTop
                     text: i18n("Add")
-                    onClicked: {
-                        if (newTodoField.text.trim() !== "") {
-                            page.addTodo(newTodoField.text, page.newDueDate);
-                            newTodoField.text = "";
-                            page.newDueDate = 0;
-                        }
-                    }
+                    enabled: page.draftTodoText.trim() !== ""
+                    onClicked: page.commitNewTodo()
                 }
             }
 

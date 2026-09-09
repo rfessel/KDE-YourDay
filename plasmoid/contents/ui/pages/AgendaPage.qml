@@ -978,19 +978,109 @@ Item {
                     }
                 }
 
-                // Descrição
-                QQC2.TextArea {
+                // Descrição: caixa com quebra de linha e barra de rolagem própria
+                // (TextArea do Qt 6 não exibe barra de forma confiável).
+                Rectangle {
+                    id: descBox
                     Layout.fillWidth: true
                     Layout.preferredHeight: 60
-                    placeholderText: i18n("Description (optional)")
-                    text: page.dialogDescription
-                    onTextChanged: page.dialogDescription = text
-                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                    background: Rectangle {
-                        radius: 4
+                    radius: 4
+                    color: "transparent"
+                    border.width: 1
+                    border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+                    clip: true
+
+                    readonly property bool descNeedsScroll: descText.implicitHeight > descFlick.height
+
+                    Text {
+                        visible: descText.text === ""
+                        z: -1
+                        anchors.left: parent.left
+                        anchors.top: parent.top
+                        anchors.margins: 6
+                        text: i18n("Description (optional)")
+                        font.pixelSize: Math.min(12, descBox.height * 0.4)
+                        color: root.isDarkTheme ? Qt.rgba(0.6, 0.6, 0.6, 1) : Qt.rgba(0.35, 0.35, 0.35, 1)
+                    }
+
+                    Flickable {
+                        id: descFlick
+                        anchors.fill: parent
+                        anchors.rightMargin: descBox.descNeedsScroll ? 7 : 1
+                        clip: true
+                        contentWidth: width
+                        contentHeight: descText.implicitHeight
+                        boundsBehavior: Flickable.StopAtBounds
+
+                        TextEdit {
+                            id: descText
+                            width: descFlick.width + 1
+                            wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+                            text: page.dialogDescription
+                            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                            selectionColor: root.accentMain
+                            selectedTextColor: "white"
+                            selectByMouse: true
+                            persistentSelection: true
+                            padding: 6
+                            onTextChanged: page.dialogDescription = text
+                            // Mantém o cursor visível enquanto digita: a barra e a caixa
+                            // descem automaticamente, e voltam se o cursor ficar acima.
+                            onCursorRectangleChanged: {
+                                var cr = descText.cursorRectangle;
+                                if (cr.y < descFlick.contentY) {
+                                    descFlick.contentY = cr.y;
+                                } else if (cr.y + cr.height > descFlick.contentY + descFlick.height) {
+                                    descFlick.contentY = cr.y + cr.height - descFlick.height;
+                                }
+                            }
+                        }
+                    }
+
+                    // Barra de rolagem vertical (só quando o texto extrapola)
+                    Rectangle {
+                        visible: descBox.descNeedsScroll
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.margins: 2
+                        width: 5
+                        radius: 2.5
                         color: "transparent"
-                        border.width: 1
-                        border.color: root.isDarkTheme ? Qt.rgba(0.5, 0.5, 0.5, 1) : Qt.rgba(0.7, 0.7, 0.7, 1)
+
+                        Rectangle {
+                            id: descHandle
+                            width: 5
+                            radius: 2.5
+                            color: root.isDarkTheme ? Qt.rgba(0.5, 0.8, 1, 0.6) : Qt.rgba(0.15, 0.5, 0.85, 0.55)
+                            height: descHandle.implicitH
+                            property real implicitH: Math.max(18, descTrack.height * descFlick.height / Math.max(1, descText.implicitHeight))
+                            y: descTrack.height > descHandle.height
+                               ? (descText.implicitHeight > descFlick.height
+                                  ? descFlick.contentY / (descText.implicitHeight - descFlick.height)
+                                    * (descTrack.height - descHandle.height)
+                                  : 0)
+                               : 0
+                        }
+                    }
+
+                    // Arrastar a barra com o mouse
+                    MouseArea {
+                        id: descTrack
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.margins: 2
+                        width: 8
+                        visible: descBox.descNeedsScroll
+                        cursorShape: Qt.PointingHandCursor
+                        onPressed: (mouse) => descGrab(mouse.y)
+                        onPositionChanged: (mouse) => descGrab(mouse.y)
+                        function descGrab(ty) {
+                            var range = Math.max(1, descText.implicitHeight - descFlick.height);
+                            var trav = Math.max(1, descTrack.height - descHandle.height);
+                            descFlick.contentY = Math.max(0, Math.min(range, (ty - descHandle.height / 2) / trav * range));
+                        }
                     }
                 }
 

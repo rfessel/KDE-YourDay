@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Your Day... 2.3.1\n"
+"Project-Id-Version: Your Day... 2.4.0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -528,6 +528,10 @@ msgid "Local"
 msgstr ""
 
 #: contents/ui/main.qml
+msgid "Settings"
+msgstr ""
+
+#: contents/ui/main.qml
 msgid "Here are the top news of interest to you"
 msgstr ""
 
@@ -688,6 +692,10 @@ msgstr ""
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Next hours"
+msgstr ""
+
+#: contents/ui/pages/ClimaPage.qml
+msgid "Temperature"
 msgstr ""
 
 #: contents/ui/pages/ClimaPage.qml

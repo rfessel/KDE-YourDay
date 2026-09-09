@@ -26,6 +26,17 @@ Item {
     property string selectedColor: noteColors[0]
     property int popupIndex: -1
     property int pendingNoteIndex: -1
+    property string draftNoteText: ""
+
+    // Mantém o cursor visível enquanto digita (caixa e barra acompanham).
+    function followCursor(flick, edit) {
+        var cr = edit.cursorRectangle;
+        if (cr.y < flick.contentY) {
+            flick.contentY = cr.y;
+        } else if (cr.y + cr.height > flick.contentY + flick.height) {
+            flick.contentY = cr.y + cr.height - flick.height;
+        }
+    }
 
     // Espaço reservado para a barra de rolagem vertical (no QQC2 ela é
     // desenhada por cima do conteúdo): o grid de notas não fica sob a barra.
@@ -103,12 +114,109 @@ Item {
                     anchors.margins: Kirigami.Units.largeSpacing
                     spacing: Kirigami.Units.smallSpacing
 
-                    QQC2.TextField {
-                        id: newNoteField
+                    // Entrada para nova nota: multi-linha com barra de rolagem própria
+                    Rectangle {
+                        id: newNoteBox
                         Layout.fillWidth: true
-                        placeholderText: i18n("Write your note…")
-                        wrapMode: Text.Wrap
-                        onAccepted: addNoteAction.trigger()
+                        Layout.preferredHeight: 52
+                        radius: 4
+                        color: "transparent"
+                        border.width: 1
+                        border.color: Qt.alpha(root.textMain, 0.2)
+                        clip: true
+
+                        readonly property bool newNeedsScroll: newNoteEdit.implicitHeight > newNoteFlick.height
+
+                        Text {
+                            visible: newNoteEdit.text === ""
+                            z: -1
+                            anchors.left: parent.left
+                            anchors.top: parent.top
+                            anchors.margins: 6
+                            text: i18n("Write your note…")
+                            font.pixelSize: 13
+                            color: root.isDarkTheme ? Qt.rgba(0.6, 0.6, 0.6, 1) : Qt.rgba(0.35, 0.35, 0.35, 1)
+                        }
+
+                        Flickable {
+                            id: newNoteFlick
+                            anchors.fill: parent
+                            anchors.rightMargin: newNoteBox.newNeedsScroll ? 7 : 1
+                            clip: true
+                            contentWidth: width
+                            contentHeight: newNoteEdit.implicitHeight
+                            boundsBehavior: Flickable.StopAtBounds
+
+                            TextEdit {
+                                id: newNoteEdit
+                                width: newNoteFlick.width + 1
+                                wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+                                text: page.draftNoteText
+                                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                                selectionColor: root.accentMain
+                                selectedTextColor: "white"
+                                selectByMouse: true
+                                persistentSelection: true
+                                padding: 6
+                                onTextChanged: page.draftNoteText = text
+                                onCursorRectangleChanged: page.followCursor(newNoteFlick, newNoteEdit)
+                                Keys.onReturnPressed: {
+                                    if (!(event.modifiers & Qt.ShiftModifier)) {
+                                        addNoteAction.trigger();
+                                        event.accepted = true;
+                                    }
+                                }
+                                Keys.onEnterPressed: {
+                                    if (!(event.modifiers & Qt.ShiftModifier)) {
+                                        addNoteAction.trigger();
+                                        event.accepted = true;
+                                    }
+                                }
+                            }
+                        }
+
+                        Rectangle {
+                            visible: newNoteBox.newNeedsScroll
+                            anchors.right: parent.right
+                            anchors.top: parent.top
+                            anchors.bottom: parent.bottom
+                            anchors.margins: 2
+                            width: 5
+                            radius: 2.5
+                            color: "transparent"
+
+                            Rectangle {
+                                id: newNoteHandle
+                                width: 5
+                                radius: 2.5
+                                color: root.isDarkTheme ? Qt.rgba(0.5, 0.8, 1, 0.6) : Qt.rgba(0.15, 0.5, 0.85, 0.55)
+                                height: Math.max(16, newNoteTrack.height * newNoteFlick.height / Math.max(1, newNoteEdit.implicitHeight))
+                                y: newNoteTrack.height > newNoteHandle.height
+                                   ? (newNoteEdit.implicitHeight > newNoteFlick.height
+                                      ? newNoteFlick.contentY / (newNoteEdit.implicitHeight - newNoteFlick.height)
+                                        * (newNoteTrack.height - newNoteHandle.height)
+                                      : 0)
+                                   : 0
+                            }
+                        }
+
+                        MouseArea {
+                            id: newNoteTrack
+                            anchors.right: parent.right
+                            anchors.top: parent.top
+                            anchors.bottom: parent.bottom
+                            anchors.margins: 2
+                            width: 8
+                            visible: newNoteBox.newNeedsScroll
+                            cursorShape: Qt.PointingHandCursor
+                            onPressed: (mouse) => newNoteGrab(mouse.y)
+                            onPositionChanged: (mouse) => newNoteGrab(mouse.y)
+                            function newNoteGrab(ty) {
+                                var range = Math.max(1, newNoteEdit.implicitHeight - newNoteFlick.height);
+                                var trav = Math.max(1, newNoteTrack.height - newNoteHandle.height);
+                                newNoteFlick.contentY = Math.max(0, Math.min(range, (ty - newNoteHandle.height / 2) / trav * range));
+                            }
+                        }
                     }
 
                     RowLayout {
@@ -141,10 +249,10 @@ Item {
                             id: addNoteAction
                             text: i18n("Add")
                             icon.name: "list-add"
-                            enabled: newNoteField.text.trim() !== ""
+                            enabled: page.draftNoteText.trim() !== ""
                             onClicked: {
-                                page.addNote(newNoteField.text.trim(), page.selectedColor);
-                                newNoteField.text = "";
+                                page.addNote(page.draftNoteText.trim(), page.selectedColor);
+                                page.draftNoteText = "";
                             }
                         }
                     }
@@ -242,32 +350,97 @@ Item {
             anchors.margins: Kirigami.Units.largeSpacing
             spacing: Kirigami.Units.largeSpacing
 
-            // Texto da nota (editável)
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 150
-                radius: Kirigami.Units.smallSpacing
-                color: notePopup.currentColor
-                border.width: 1
-                border.color: Qt.alpha(root.textMain, 0.1)
+// Texto da nota (editável), com barra de rolagem própria e cursor
+                // sempre visível enquanto se digita.
+                Rectangle {
+                    id: noteEditBox
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 150
+                    radius: Kirigami.Units.smallSpacing
+                    color: notePopup.currentColor
+                    border.width: 1
+                    border.color: Qt.alpha(root.textMain, 0.1)
+                    clip: true
 
-                QQC2.TextArea {
-                    id: noteTextField
-                    anchors.fill: parent
-                    anchors.margins: Kirigami.Units.largeSpacing
-                    text: notePopup.currentText
-                    wrapMode: Text.Wrap
-                    font.pixelSize: 14
-                    color: "#1a1a1a"
-                    background: Item {}
-                    onTextChanged: {
-                        if (notePopup.currentIndex >= 0) {
-                            page.pendingNoteIndex = notePopup.currentIndex;
-                            noteSaveTimer.restart();
+                    readonly property bool noteNeedsScroll: noteTextField.implicitHeight > noteFlick.height
+
+                    Flickable {
+                        id: noteFlick
+                        anchors.fill: parent
+                        anchors.margins: Kirigami.Units.largeSpacing
+                        anchors.rightMargin: noteEditBox.noteNeedsScroll
+                                              ? Kirigami.Units.largeSpacing + 7 : Kirigami.Units.largeSpacing
+                        clip: true
+                        contentWidth: width
+                        contentHeight: noteTextField.implicitHeight
+                        boundsBehavior: Flickable.StopAtBounds
+
+                        TextEdit {
+                            id: noteTextField
+                            width: noteFlick.width + 1
+                            wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+                            text: notePopup.currentText
+                            font.pixelSize: 14
+                            color: "#1a1a1a"
+                            selectionColor: root.accentMain
+                            selectedTextColor: "white"
+                            selectByMouse: true
+                            persistentSelection: true
+                            padding: 1
+                            onTextChanged: {
+                                if (notePopup.currentIndex >= 0) {
+                                    page.pendingNoteIndex = notePopup.currentIndex;
+                                    noteSaveTimer.restart();
+                                }
+                            }
+                            onCursorRectangleChanged: page.followCursor(noteFlick, noteTextField)
+                        }
+                    }
+
+                    // Barra de rolagem vertical (só quando o texto extrapola)
+                    Rectangle {
+                        visible: noteEditBox.noteNeedsScroll
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.margins: 2
+                        width: 5
+                        radius: 2.5
+                        color: "transparent"
+
+                        Rectangle {
+                            id: noteHandle
+                            width: 5
+                            radius: 2.5
+                            color: Qt.rgba(0.15, 0.45, 0.85, 0.7)
+                            height: Math.max(18, noteTrack.height * noteFlick.height / Math.max(1, noteTextField.implicitHeight))
+                            y: noteTrack.height > noteHandle.height
+                               ? (noteTextField.implicitHeight > noteFlick.height
+                                  ? noteFlick.contentY / (noteTextField.implicitHeight - noteFlick.height)
+                                    * (noteTrack.height - noteHandle.height)
+                                  : 0)
+                               : 0
+                        }
+                    }
+
+                    MouseArea {
+                        id: noteTrack
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.margins: 2
+                        width: 8
+                        visible: noteEditBox.noteNeedsScroll
+                        cursorShape: Qt.PointingHandCursor
+                        onPressed: (mouse) => noteGrab(mouse.y)
+                        onPositionChanged: (mouse) => noteGrab(mouse.y)
+                        function noteGrab(ty) {
+                            var range = Math.max(1, noteTextField.implicitHeight - noteFlick.height);
+                            var trav = Math.max(1, noteTrack.height - noteHandle.height);
+                            noteFlick.contentY = Math.max(0, Math.min(range, (ty - noteHandle.height / 2) / trav * range));
                         }
                     }
                 }
-            }
 
             // Seletor de cor
             RowLayout {

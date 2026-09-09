@@ -517,6 +517,10 @@ msgid "Local"
 msgstr "Локальный"
 
 #: contents/ui/main.qml
+msgid "Settings"
+msgstr "Настройки"
+
+#: contents/ui/main.qml
 msgid "Here are the top news of interest to you"
 msgstr "Вот основные новости, которые могут вас заинтересовать"
 
@@ -677,6 +681,10 @@ msgstr "Солнце"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Next hours"
+msgstr ""
+
+#: contents/ui/pages/ClimaPage.qml
+msgid "Temperature"
 msgstr ""
 
 #: contents/ui/pages/ClimaPage.qml
