@@ -1956,6 +1956,15 @@ PlasmoidItem {
     fullRepresentation: Rectangle {
         color: (root.isDarkTheme ? Qt.rgba(0.16, 0.16, 0.16, 1) : Qt.rgba(0.96, 0.96, 0.96, 1))
 
+        // Tamanho padrão de instalação: popup nasce com 612x592 e só pode ser
+        // ampliado (minimum == preferred impede encolher abaixo disso).
+        Layout.minimumWidth: 612
+        Layout.minimumHeight: 592
+        Layout.preferredWidth: 612
+        Layout.preferredHeight: 592
+        Layout.maximumWidth: Kirigami.Units.gridUnit * 120
+        Layout.maximumHeight: Kirigami.Units.gridUnit * 100
+
         ColumnLayout {
             anchors.fill: parent
             spacing: 0
