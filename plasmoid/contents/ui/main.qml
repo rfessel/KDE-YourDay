@@ -259,10 +259,12 @@ PlasmoidItem {
     property string errorText: ""
     property string lastUpdated: ""
 
-    Layout.minimumWidth: Kirigami.Units.gridUnit * 20
-    Layout.minimumHeight: Kirigami.Units.gridUnit * 16
-    Layout.preferredWidth: Kirigami.Units.gridUnit * 36
-    Layout.preferredHeight: Kirigami.Units.gridUnit * 34
+    // Tamanho padrão de instalação: o widget nasce com 612x592 e só pode ser
+    // ampliado a partir disso (minimum == preferred evita diminuir abaixo).
+    Layout.minimumWidth: 612
+    Layout.minimumHeight: 592
+    Layout.preferredWidth: 612
+    Layout.preferredHeight: 592
     Layout.maximumWidth: Kirigami.Units.gridUnit * 120
     Layout.maximumHeight: Kirigami.Units.gridUnit * 100
 
