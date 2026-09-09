@@ -1974,26 +1974,47 @@ PlasmoidItem {
                 Layout.alignment: Qt.AlignTop
                 spacing: Kirigami.Units.smallSpacing
 
-                Repeater {
-                    model: [
-                        { label: i18n("Summary"), icon: "view-calendar-day" },
-                        { label: i18n("Calendar"), icon: "view-calendar" },
-                        { label: i18n("Tasks"), icon: "task-new" },
-                        { label: i18n("Weather"), icon: "weather-clear" },
-                        { label: i18n("Notes"), icon: "note" },
-                        { label: i18n("Lists"), icon: "view-list" },
-                        { label: i18n("News"), icon: root.iconResolvedName }
-                    ]
-                    delegate: navButton
+                // Abas em área rolável: em janelas baixas as abas rolam e o
+                // botão de configurações continua sempre visível no rodapé.
+                Item {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    clip: true
+
+                    Flickable {
+                        id: navFlick
+                        anchors.fill: parent
+                        contentWidth: width
+                        contentHeight: Math.max(height, navCol.implicitHeight)
+                        boundsBehavior: Flickable.StopAtBounds
+
+                        ColumnLayout {
+                            id: navCol
+                            width: parent.width
+                            spacing: Kirigami.Units.smallSpacing
+
+                            Repeater {
+                                model: [
+                                    { label: i18n("Summary"), icon: "view-calendar-day" },
+                                    { label: i18n("Calendar"), icon: "view-calendar" },
+                                    { label: i18n("Tasks"), icon: "task-new" },
+                                    { label: i18n("Weather"), icon: "weather-clear" },
+                                    { label: i18n("Notes"), icon: "note" },
+                                    { label: i18n("Lists"), icon: "view-list" },
+                                    { label: i18n("News"), icon: root.iconResolvedName }
+                                ]
+                                delegate: navButton
+                            }
+                        }
+                    }
                 }
 
-                // Espaçador para empurrar o botão de configurações para baixo
-                Item { Layout.fillHeight: true }
-
-                // Botão de configurações no fim da barra lateral
+                // Botão de configurações SEMPRE no fim da barra lateral
                 Rectangle {
                     Layout.preferredWidth: 56
                     Layout.preferredHeight: 52
+                    Layout.minimumHeight: 44
+                    Layout.maximumHeight: 52
                     Layout.alignment: Qt.AlignHCenter
 
                     radius: Kirigami.Units.smallSpacing
