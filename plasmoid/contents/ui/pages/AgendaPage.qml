@@ -1439,7 +1439,9 @@ Item {
                                 width: 28
                                 height: 28
                                 radius: 4
-                                visible: modelData > 0
+                                // Mantém a célula ocupando espaço no Grid mesmo vazia
+                                // (visible:false faria o Grid pulá-la e desalinhar a semana).
+                                opacity: modelData > 0 ? 1 : 0
                                 color: isCalSelected
                                        ? (root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1))
                                        : (isCalToday ? Qt.alpha((root.isDarkTheme ? Qt.rgba(0.45, 0.7, 1.0, 1) : Qt.rgba(0.15, 0.5, 0.85, 1)), 0.2) : "transparent")
@@ -1448,7 +1450,7 @@ Item {
 
                                 QQC2.Label {
                                     anchors.centerIn: parent
-                                    text: modelData
+                                    text: modelData > 0 ? modelData : ""
                                     font.pixelSize: 10
                                     font.weight: isCalSelected || isCalToday ? Font.Bold : Font.Normal
                                     color: isCalSelected
@@ -1459,7 +1461,11 @@ Item {
                                 MouseArea {
                                     anchors.fill: parent
                                     cursorShape: Qt.PointingHandCursor
-                                    onClicked: page.calPickerSelect(modelData)
+                                    onClicked: {
+                                        if (modelData > 0) {
+                                            page.calPickerSelect(modelData)
+                                        }
+                                    }
                                 }
                             }
                         }
