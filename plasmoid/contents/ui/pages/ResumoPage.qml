@@ -386,9 +386,15 @@ Item {
                     PlasmaComponents3.Label {
                         color: root.textMain
                         text: {
+                            // Diferença em DIAS do calendário (virada da
+                            // meia-noite local), não em horas decorridas:
+                            // um compromisso que começa amanhã cedo (menos de
+                            // 24h de agora) aparecia como "hoje" de noite.
                             var d = new Date(model.start);
                             var now = new Date();
-                            var diff = Math.floor((d - now) / 86400000);
+                            var t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+                            var d0 = new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+                            var diff = Math.round((d0 - t0) / 86400000);
                             if (diff === 0) return i18n("Today");
                             if (diff === 1) return i18n("Tomorrow");
                             return d.toLocaleString(Qt.locale(), "dd/MM");
