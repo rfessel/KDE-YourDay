@@ -2285,8 +2285,9 @@ PlasmoidItem {
                     // Header fixo
                     RowLayout {
                         Layout.fillWidth: true
-                        Layout.preferredHeight: 48
+                        Layout.preferredHeight: 58
                         Layout.rightMargin: Kirigami.Units.largeSpacing
+                        Layout.topMargin: Kirigami.Units.smallSpacing
                         spacing: Kirigami.Units.smallSpacing
 
                         PlasmaExtras.Heading {
@@ -2298,40 +2299,60 @@ PlasmoidItem {
                             color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
                         }
 
-                        PlasmaComponents3.ToolButton {
-                            id: newsRefreshBtn
-                            onClicked: root.loadAll()
-                            QQC2.ToolTip.visible: hovered
-                            QQC2.ToolTip.text: i18n("Refresh news")
+                        // Coluna à direita: botão de atualizar com a hora de
+                        // atualização logo abaixo (pedido do usuário).
+                        Column {
+                            Layout.preferredWidth: 120
+                            Layout.alignment: Qt.AlignVCenter
+                            spacing: 1
 
-                            contentItem: Item {
-                                implicitWidth: 36
-                                implicitHeight: 36
+                            PlasmaComponents3.ToolButton {
+                                id: newsRefreshBtn
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                onClicked: root.loadAll()
+                                QQC2.ToolTip.visible: hovered
+                                QQC2.ToolTip.text: i18n("Refresh news")
 
-                                Kirigami.Icon {
-                                    id: newsRefreshIcon
-                                    source: "view-refresh"
-                                    anchors.centerIn: parent
-                                    width: 20
-                                    height: 20
+                                contentItem: Item {
+                                    implicitWidth: 36
+                                    implicitHeight: 36
 
-                                    NumberAnimation on rotation {
-                                        from: 0
-                                        to: 360
-                                        duration: 1000
-                                        loops: Animation.Infinite
-                                        running: root.loading
+                                    Kirigami.Icon {
+                                        id: newsRefreshIcon
+                                        source: "view-refresh"
+                                        anchors.centerIn: parent
+                                        width: 20
+                                        height: 20
+
+                                        NumberAnimation on rotation {
+                                            from: 0
+                                            to: 360
+                                            duration: 1000
+                                            loops: Animation.Infinite
+                                            running: root.loading
+                                        }
                                     }
+                                }
+
+                                background: Rectangle {
+                                    radius: Kirigami.Units.smallSpacing
+                                    color: newsRefreshBtn.hovered
+                                           ? Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.1)
+                                           : newsRefreshBtn.pressed
+                                             ? Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.15)
+                                             : "transparent"
                                 }
                             }
 
-                            background: Rectangle {
-                                radius: Kirigami.Units.smallSpacing
-                                color: newsRefreshBtn.hovered
-                                       ? Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.1)
-                                       : newsRefreshBtn.pressed
-                                         ? Qt.alpha((root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)), 0.15)
-                                         : "transparent"
+                            PlasmaComponents3.Label {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: parent.width
+                                horizontalAlignment: Text.AlignHCenter
+                                elide: Text.ElideRight
+                                visible: root.lastUpdated !== ""
+                                text: i18n("Updated at %1", root.lastUpdated)
+                                font.pixelSize: 8
+                                opacity: 0.55
                             }
                         }
                     }
@@ -2393,9 +2414,9 @@ PlasmoidItem {
                             }
                         }
 
-                        // Rodapé da aba Notícias (erros + hora da atualização). Fica
-                        // DENTRO do conteúdo para não roubar altura da barra lateral
-                        // (mantém a posição do botão Configurações) quando a aba aberta.
+                        // Rodapé da aba Notícias (erros). Fica DENTRO do conteúdo para não roubar
+                        // altura da barra lateral (mantém a posição do botão
+                        // Configurações) quando a aba está aberta.
                         ColumnLayout {
                             Layout.fillWidth: true
                             Layout.rightMargin: Kirigami.Units.largeSpacing
@@ -2410,15 +2431,6 @@ PlasmoidItem {
                                 text: i18n("Some feeds failed to load:") + "\n" + root.errorText
                                 showCloseButton: true
                                 onVisibleChanged: if (!visible) root.errorText = ""
-                            }
-
-                            QQC2.Label {
-                                Layout.fillWidth: true
-                                horizontalAlignment: Text.AlignRight
-                                visible: root.lastUpdated !== ""
-                                text: i18n("Updated at %1", root.lastUpdated)
-                                opacity: 0.55
-                                font.pixelSize: 10
                             }
                         }
                     }
