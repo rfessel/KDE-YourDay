@@ -21,11 +21,35 @@ ColumnLayout {
         var out = [];
         if (raw) {
             for (var i = 0; i < raw.length; i++) {
-                var parts = raw[i].split("|");
-                var name = parts[0];
+                var entry = String(raw[i] || "").trim();
+                var name = "";
                 var items = [];
-                if (parts[1]) {
-                    var itemParts = parts[1].split(";");
+                // Formato atual: cada lista é um JSON {"name","items","done"}.
+                if (entry.charAt(0) === "{") {
+                    try {
+                        var obj = JSON.parse(entry);
+                        name = obj.name || "";
+                        var it = obj.items || [];
+                        for (var k = 0; k < it.length; k++) {
+                            items.push({ text: String(it[k].text || ""), done: !!it[k].done });
+                        }
+                        out.push({ name: name, items: items });
+                        continue;
+                    } catch (e) {
+                        // cai no fallback legado abaixo
+                    }
+                }
+                // Formato antigo: "nome|0/1|item1;item2".
+                var parts = entry.split("|");
+                name = parts[0];
+                var itemsPart = "";
+                if (parts.length >= 3) {
+                    itemsPart = parts[2];
+                } else if (parts.length >= 2) {
+                    itemsPart = parts[1];
+                }
+                if (itemsPart) {
+                    var itemParts = itemsPart.split(";");
                     for (var j = 0; j < itemParts.length; j++) {
                         var ip = itemParts[j].split("|");
                         items.push({ text: ip[1] || "", done: ip[0] === "1" });

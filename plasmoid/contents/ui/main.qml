@@ -14,6 +14,7 @@ import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kirigami as Kirigami
+import org.kde.notification
 
 import "js/feeds.js" as FeedParser
 import "js/calendar.js" as Cal
@@ -1610,6 +1611,15 @@ PlasmoidItem {
             } else if (key === "weatherCities") {
                 root.loadExtraCities();
                 root.refreshAllCitiesWeather();
+            } else if (key === "todos" || key === "completedTodos") {
+                root.parseTodos();
+            } else if (key === "notes") {
+                root.parseNotes();
+            } else if (key === "lists") {
+                root.loadLists();
+            } else if (key === "localEvents") {
+                root.parseLocalEvents();
+                root.refreshAgenda();
             }
         }
     }
@@ -1732,6 +1742,86 @@ PlasmoidItem {
             root.now = new Date();
             root.clockTick++;
         }
+    }
+
+    // --------------------------- lembretes de compromissos -----------------
+    // Modelo reutilizável de notificação da área de trabalho (KNotifications).
+    Component {
+        id: eventNotifComponent
+        Notification {
+            componentName: "plasma_workspace"
+            eventId: "notification"
+            autoDelete: true
+            urgency: Notification.HighUrgency
+        }
+    }
+
+    // Verifica a agenda uma vez por minuto e avisa quando um compromisso está
+    // para começar (notifyAdvanceMinutes). Cada evento notifica só uma vez
+    // (chave persistida em notifySeen, podada após 6h).
+    function checkUpcomingEvents() {
+        if (!Plasmoid.configuration.notifyEvents) {
+            return;
+        }
+        var advanceMin = Math.max(1, Number(Plasmoid.configuration.notifyAdvanceMinutes) || 15);
+        var now = Date.now();
+        var seen = (Plasmoid.configuration.notifySeen || []).slice();
+        var fadeBefore = now - 6 * 3600000;
+        var changed = false;
+
+        for (var i = 0; i < root.agendaEvents.length; i++) {
+            var ev = root.agendaEvents[i];
+            if (ev.allDay) {
+                continue; // dia inteiro não tem "minutos antes" significativo
+            }
+            var delta = ev.start - now;
+            if (delta <= 0 || delta > advanceMin * 60000) {
+                continue;
+            }
+            var key = ev.title + "|" + ev.start;
+            if (seen.indexOf(key) !== -1) {
+                continue;
+            }
+            var timeText = Cal.formatTime(ev.start, false);
+            var text = i18n("Starts at %1", timeText);
+            if (ev.location) {
+                text += "\n" + ev.location;
+            }
+            var notif = eventNotifComponent.createObject(root, {
+                title: ev.title,
+                text: text,
+                iconName: root.iconResolvedName || "view-calendar-day"
+            });
+            notif.sendEvent();
+            seen.push(key);
+            changed = true;
+        }
+
+        // Poda lembretes antigos para o notifySeen não crescer para sempre.
+        var pruned = [];
+        for (var j = 0; j < seen.length; j++) {
+            var parts = String(seen[j]).split("|");
+            var ts = parseInt(parts[parts.length - 1], 10) || 0;
+            if (ts > fadeBefore) {
+                pruned.push(seen[j]);
+            }
+        }
+        if (changed || pruned.length !== seen.length) {
+            Plasmoid.configuration.notifySeen = pruned;
+        }
+    }
+
+    Timer {
+        id: eventNotifTimer
+        interval: 60000
+        repeat: true
+        running: Plasmoid.configuration.notifyEvents
+        onTriggered: root.checkUpcomingEvents()
+    }
+
+    // Agenda recarregada (publicação após refresh): avalia lembretes na hora.
+    onAgendaEventsChanged: {
+        root.checkUpcomingEvents();
     }
 
     // ------------------------------------------------------------------- dados

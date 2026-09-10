@@ -136,18 +136,65 @@ msgid "iCal URL or local path..."
 msgstr "URL iCal или локальный путь..."
 
 #: contents/ui/configAgenda.qml contents/ui/configFeeds.qml
-#: contents/ui/configView.qml contents/ui/pages/NotasPage.qml
-#: contents/ui/pages/ToDoPage.qml
+#: contents/ui/pages/NotasPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Add"
 msgstr "Добавить"
 
-#: contents/ui/configAgenda.qml contents/ui/configView.qml
+#: contents/ui/configAgenda.qml
 msgid "No source added."
 msgstr "Источник не добавлен."
 
-#: contents/ui/configAgenda.qml contents/ui/configView.qml
+#: contents/ui/configAgenda.qml
 msgid "Remove source"
 msgstr "Удалить источник"
+
+#: contents/ui/configData.qml
+msgid "Reading file..."
+msgstr "Чтение файла…"
+
+#: contents/ui/configData.qml
+msgid "Invalid backup file: expected a JSON exported by this widget."
+msgstr "Недопустимый файл резервной копии: ожидается JSON, экспортированный этим виджетом."
+
+#: contents/ui/configData.qml
+msgid "Backup restored. The widget reloads the data right away."
+msgstr "Резервная копия восстановлена. Виджет сразу перезагружает данные."
+
+#: contents/ui/configData.qml
+msgid "Backup & restore"
+msgstr "Резервное копирование и восстановление"
+
+#: contents/ui/configData.qml
+msgid "Export all widget data (tasks, notes, lists, local events, feeds and cities) to a single JSON file, and later restore it on this or another computer."
+msgstr "Экспортирует все данные виджета (задачи, заметки, списки, локальные события, ленты и города) в один JSON-файл и позже восстанавливает их на этом или другом компьютере."
+
+#: contents/ui/configData.qml
+msgid "Export backup (JSON)"
+msgstr "Экспорт резервной копии (JSON)"
+
+#: contents/ui/configData.qml
+msgid "Import backup (JSON)"
+msgstr "Импорт резервной копии (JSON)"
+
+#: contents/ui/configData.qml
+msgid "Save backup"
+msgstr "Сохранить резервную копию"
+
+#: contents/ui/configData.qml
+msgid "JSON file (*.json)"
+msgstr "JSON-файл (*.json)"
+
+#: contents/ui/configData.qml
+msgid "Backup exported."
+msgstr "Резервная копия экспортирована."
+
+#: contents/ui/configData.qml
+msgid "Failed to write the file."
+msgstr "Не удалось записать файл."
+
+#: contents/ui/configData.qml
+msgid "Open backup"
+msgstr "Открыть резервную копию"
 
 #: contents/ui/configFeeds.qml
 msgid "Enter a valid URL (e.g., https://example.com/feed.xml)."
@@ -249,7 +296,7 @@ msgstr "Лимит:"
 msgid "news items"
 msgstr "новостей"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "Display"
 msgstr "Отображение"
 
@@ -257,11 +304,11 @@ msgstr "Отображение"
 msgid "Maximum total news:"
 msgstr "Макс. общее количество новостей:"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "Headline lines:"
 msgstr "Строк заголовка:"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "lines per story"
 msgstr "строк на новость"
 
@@ -273,8 +320,7 @@ msgstr "Обновление:"
 msgid "Summary"
 msgstr "Сводка"
 
-#: contents/ui/configGeneral.qml contents/ui/configView.qml
-#: contents/ui/main.qml
+#: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Calendar"
 msgstr "Календарь"
 
@@ -373,6 +419,26 @@ msgid "Defines what is shown when the widget is in the system tray (panel)."
 msgstr "Определяет, что показывается, когда виджет находится на панели (в системном трее)."
 
 #: contents/ui/configGeneral.qml
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: contents/ui/configGeneral.qml
+msgid "Remind me before calendar events:"
+msgstr "Напоминать о предстоящих событиях календаря:"
+
+#: contents/ui/configGeneral.qml
+msgid "minutes before"
+msgstr "мин до начала"
+
+#: contents/ui/configGeneral.qml
+msgid "Show a desktop notification when an event from the Calendar tab is about to start"
+msgstr "Показывать уведомление о событии на вкладке «Календарь» непосредственно перед его началом"
+
+#: contents/ui/configGeneral.qml
+msgid "The reminder runs in the background and appears once per event."
+msgstr "Напоминание работает в фоновом режиме и появляется один раз для каждого события."
+
+#: contents/ui/configGeneral.qml
 msgid "Widget icon"
 msgstr "Иконка виджета"
 
@@ -415,26 +481,6 @@ msgstr "Сохранить как CSV"
 #: contents/ui/configListas.qml
 msgid "CSV file (*.csv)"
 msgstr "Файл CSV (*.csv)"
-
-#: contents/ui/configView.qml
-msgid "Maximum total news items in list:"
-msgstr "Макс. общее количество новостей в списке:"
-
-#: contents/ui/configView.qml
-msgid "This limit applies to the entire list, summing all feeds. To adjust each source individually, use the \"News feeds\" section."
-msgstr "Этот лимит применяется ко всему списку, суммируя все ленты. Для настройки каждого источника используйте раздел «Новостные ленты»."
-
-#: contents/ui/configView.qml
-msgid "Changes are applied to the widget immediately."
-msgstr "Изменения применяются к виджету немедленно."
-
-#: contents/ui/configView.qml
-msgid "Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / secret) or a local path to an .ics file. Today's appointments appear in the Calendar and Summary tabs."
-msgstr "Источники календаря (.ics): URL Google/CalDAV («Персональный URL iCal» / секретный) или локальный путь к файлу .ics. Сегодняшние события отображаются на вкладках «Календарь» и «Сводка»."
-
-#: contents/ui/configView.qml
-msgid "URL .ics or local path…"
-msgstr "URL .ics или локальный путь…"
 
 #: contents/ui/configWeather.qml
 msgid "Search for a city and choose whether it will be primary or additional."
@@ -517,6 +563,10 @@ msgid "Local"
 msgstr "Локальный"
 
 #: contents/ui/main.qml
+msgid "Starts at %1"
+msgstr "Начнётся в %1"
+
+#: contents/ui/main.qml
 msgid "Settings"
 msgstr "Настройки"
 
@@ -558,21 +608,19 @@ msgstr "Обновлено в %1"
 
 #: contents/ui/main.qml
 msgid "Unsaved changes"
-msgstr ""
+msgstr "Несохранённые изменения"
 
 #: contents/ui/main.qml
-msgid ""
-"The appointment being edited has unsaved changes. Leave the tab to discard "
-"them?"
-msgstr ""
+msgid "The appointment being edited has unsaved changes. Leave the tab to discard them?"
+msgstr "В редактируемой встрече есть несохранённые изменения. Покинуть вкладку, чтобы отменить их?"
 
 #: contents/ui/main.qml
 msgid "Continue editing"
-msgstr ""
+msgstr "Продолжить редактирование"
 
 #: contents/ui/main.qml
 msgid "Leave without saving"
-msgstr ""
+msgstr "Выйти без сохранения"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "These are your appointments for this date..."
@@ -641,7 +689,7 @@ msgstr "Сохранить"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
@@ -681,11 +729,11 @@ msgstr "Солнце"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Next hours"
-msgstr ""
+msgstr "Ближайшие часы"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Temperature"
-msgstr ""
+msgstr "Температура"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "7-day forecast"
@@ -922,6 +970,31 @@ msgstr "Гроза с градом"
 #: <dinamico>
 msgid "No data"
 msgstr "Нет данных"
+
+#~ msgid "Maximum total news items in list:"
+#~ msgstr "Макс. общее количество новостей в списке:"
+
+#~ msgid ""
+#~ "This limit applies to the entire list, summing all feeds. To adjust each "
+#~ "source individually, use the \"News feeds\" section."
+#~ msgstr ""
+#~ "Этот лимит применяется ко всему списку, суммируя все ленты. Для настройки "
+#~ "каждого источника используйте раздел «Новостные ленты»."
+
+#~ msgid "Changes are applied to the widget immediately."
+#~ msgstr "Изменения применяются к виджету немедленно."
+
+#~ msgid ""
+#~ "Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / "
+#~ "secret) or a local path to an .ics file. Today's appointments appear in "
+#~ "the Calendar and Summary tabs."
+#~ msgstr ""
+#~ "Источники календаря (.ics): URL Google/CalDAV («Персональный URL iCal» / "
+#~ "секретный) или локальный путь к файлу .ics. Сегодняшние события "
+#~ "отображаются на вкладках «Календарь» и «Сводка»."
+
+#~ msgid "URL .ics or local path…"
+#~ msgstr "URL .ics или локальный путь…"
 
 #~ msgid "Conectado ao Google Calendar"
 #~ msgstr "Подключено к Google Calendar"

@@ -135,18 +135,65 @@ msgid "iCal URL or local path..."
 msgstr "URL iCal ou chemin local..."
 
 #: contents/ui/configAgenda.qml contents/ui/configFeeds.qml
-#: contents/ui/configView.qml contents/ui/pages/NotasPage.qml
-#: contents/ui/pages/ToDoPage.qml
+#: contents/ui/pages/NotasPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Add"
 msgstr "Ajouter"
 
-#: contents/ui/configAgenda.qml contents/ui/configView.qml
+#: contents/ui/configAgenda.qml
 msgid "No source added."
 msgstr "Aucune source ajoutée."
 
-#: contents/ui/configAgenda.qml contents/ui/configView.qml
+#: contents/ui/configAgenda.qml
 msgid "Remove source"
 msgstr "Supprimer la source"
+
+#: contents/ui/configData.qml
+msgid "Reading file..."
+msgstr "Lecture du fichier…"
+
+#: contents/ui/configData.qml
+msgid "Invalid backup file: expected a JSON exported by this widget."
+msgstr "Fichier de sauvegarde invalide : un JSON exporté par ce widget était attendu."
+
+#: contents/ui/configData.qml
+msgid "Backup restored. The widget reloads the data right away."
+msgstr "Sauvegarde restaurée. Le widget recharge les données immédiatement."
+
+#: contents/ui/configData.qml
+msgid "Backup & restore"
+msgstr "Sauvegarde et restauration"
+
+#: contents/ui/configData.qml
+msgid "Export all widget data (tasks, notes, lists, local events, feeds and cities) to a single JSON file, and later restore it on this or another computer."
+msgstr "Exporte toutes les données du widget (tâches, notes, listes, événements locaux, flux et villes) vers un fichier JSON unique, puis restaurez-les sur cet ordinateur ou un autre."
+
+#: contents/ui/configData.qml
+msgid "Export backup (JSON)"
+msgstr "Exporter la sauvegarde (JSON)"
+
+#: contents/ui/configData.qml
+msgid "Import backup (JSON)"
+msgstr "Importer la sauvegarde (JSON)"
+
+#: contents/ui/configData.qml
+msgid "Save backup"
+msgstr "Enregistrer la sauvegarde"
+
+#: contents/ui/configData.qml
+msgid "JSON file (*.json)"
+msgstr "Fichier JSON (*.json)"
+
+#: contents/ui/configData.qml
+msgid "Backup exported."
+msgstr "Sauvegarde exportée."
+
+#: contents/ui/configData.qml
+msgid "Failed to write the file."
+msgstr "Échec de l’écriture du fichier."
+
+#: contents/ui/configData.qml
+msgid "Open backup"
+msgstr "Ouvrir la sauvegarde"
 
 #: contents/ui/configFeeds.qml
 msgid "Enter a valid URL (e.g., https://example.com/feed.xml)."
@@ -248,7 +295,7 @@ msgstr "Limite :"
 msgid "news items"
 msgstr "actualités"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "Display"
 msgstr "Affichage"
 
@@ -256,11 +303,11 @@ msgstr "Affichage"
 msgid "Maximum total news:"
 msgstr "Maximum total d'actualités :"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "Headline lines:"
 msgstr "Lignes du titre :"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "lines per story"
 msgstr "lignes par article"
 
@@ -272,8 +319,7 @@ msgstr "Actualiser :"
 msgid "Summary"
 msgstr "Résumé"
 
-#: contents/ui/configGeneral.qml contents/ui/configView.qml
-#: contents/ui/main.qml
+#: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Calendar"
 msgstr "Agenda"
 
@@ -372,6 +418,26 @@ msgid "Defines what is shown when the widget is in the system tray (panel)."
 msgstr "Définit ce qui est affiché lorsque le widget se trouve dans la zone de notification (panneau)."
 
 #: contents/ui/configGeneral.qml
+msgid "Notifications"
+msgstr "Notifications"
+
+#: contents/ui/configGeneral.qml
+msgid "Remind me before calendar events:"
+msgstr "Me rappeler avant les événements du calendrier :"
+
+#: contents/ui/configGeneral.qml
+msgid "minutes before"
+msgstr "minutes avant"
+
+#: contents/ui/configGeneral.qml
+msgid "Show a desktop notification when an event from the Calendar tab is about to start"
+msgstr "Afficher une notification du bureau lorsqu’un événement de l’onglet Calendrier est sur le point de commencer"
+
+#: contents/ui/configGeneral.qml
+msgid "The reminder runs in the background and appears once per event."
+msgstr "Le rappel s’exécute en arrière-plan et n’apparaît qu’une fois par événement."
+
+#: contents/ui/configGeneral.qml
 msgid "Widget icon"
 msgstr "Icône du widget"
 
@@ -414,26 +480,6 @@ msgstr "Enregistrer en CSV"
 #: contents/ui/configListas.qml
 msgid "CSV file (*.csv)"
 msgstr "Fichier CSV (*.csv)"
-
-#: contents/ui/configView.qml
-msgid "Maximum total news items in list:"
-msgstr "Maximum total d'actualités dans la liste :"
-
-#: contents/ui/configView.qml
-msgid "This limit applies to the entire list, summing all feeds. To adjust each source individually, use the \"News feeds\" section."
-msgstr "Cette limite s'applique à la liste entière, en additionnant tous les flux. Pour ajuster chaque source individuellement, utilisez la section « Flux d'actualités »."
-
-#: contents/ui/configView.qml
-msgid "Changes are applied to the widget immediately."
-msgstr "Les modifications sont appliquées immédiatement au widget."
-
-#: contents/ui/configView.qml
-msgid "Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / secret) or a local path to an .ics file. Today's appointments appear in the Calendar and Summary tabs."
-msgstr "Sources de calendrier (.ics) : une URL Google/CalDAV (« URL personnelle iCal » / secrète) ou un chemin local vers un fichier .ics. Les rendez-vous du jour apparaissent dans les onglets Agenda et Résumé."
-
-#: contents/ui/configView.qml
-msgid "URL .ics or local path…"
-msgstr "URL .ics ou chemin local…"
 
 #: contents/ui/configWeather.qml
 msgid "Search for a city and choose whether it will be primary or additional."
@@ -516,6 +562,10 @@ msgid "Local"
 msgstr "Local"
 
 #: contents/ui/main.qml
+msgid "Starts at %1"
+msgstr "Commence à %1"
+
+#: contents/ui/main.qml
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -557,21 +607,19 @@ msgstr "Mis à jour à %1"
 
 #: contents/ui/main.qml
 msgid "Unsaved changes"
-msgstr ""
+msgstr "Modifications non enregistrées"
 
 #: contents/ui/main.qml
-msgid ""
-"The appointment being edited has unsaved changes. Leave the tab to discard "
-"them?"
-msgstr ""
+msgid "The appointment being edited has unsaved changes. Leave the tab to discard them?"
+msgstr "Le rendez-vous en cours de modification contient des changements non enregistrés. Quitter l’onglet pour les annuler ?"
 
 #: contents/ui/main.qml
 msgid "Continue editing"
-msgstr ""
+msgstr "Continuer la modification"
 
 #: contents/ui/main.qml
 msgid "Leave without saving"
-msgstr ""
+msgstr "Quitter sans enregistrer"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "These are your appointments for this date..."
@@ -640,7 +688,7 @@ msgstr "Enregistrer"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
@@ -680,11 +728,11 @@ msgstr "Soleil"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Next hours"
-msgstr ""
+msgstr "Heures suivantes"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Temperature"
-msgstr ""
+msgstr "Température"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "7-day forecast"
@@ -921,6 +969,32 @@ msgstr "Orage avec grêle"
 #: <dinamico>
 msgid "No data"
 msgstr "Pas de données"
+
+#~ msgid "Maximum total news items in list:"
+#~ msgstr "Maximum total d'actualités dans la liste :"
+
+#~ msgid ""
+#~ "This limit applies to the entire list, summing all feeds. To adjust each "
+#~ "source individually, use the \"News feeds\" section."
+#~ msgstr ""
+#~ "Cette limite s'applique à la liste entière, en additionnant tous les "
+#~ "flux. Pour ajuster chaque source individuellement, utilisez la section "
+#~ "« Flux d'actualités »."
+
+#~ msgid "Changes are applied to the widget immediately."
+#~ msgstr "Les modifications sont appliquées immédiatement au widget."
+
+#~ msgid ""
+#~ "Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / "
+#~ "secret) or a local path to an .ics file. Today's appointments appear in "
+#~ "the Calendar and Summary tabs."
+#~ msgstr ""
+#~ "Sources de calendrier (.ics) : une URL Google/CalDAV (« URL personnelle "
+#~ "iCal » / secrète) ou un chemin local vers un fichier .ics. Les rendez-"
+#~ "vous du jour apparaissent dans les onglets Agenda et Résumé."
+
+#~ msgid "URL .ics or local path…"
+#~ msgstr "URL .ics ou chemin local…"
 
 #~ msgid "Conectado ao Google Calendar"
 #~ msgstr "Connecté à Google Calendar"

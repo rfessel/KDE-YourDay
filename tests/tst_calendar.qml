@@ -101,6 +101,133 @@ Item {
             }
         }
 
+        // ---- recorrência MONTHLY (com INTERVAL, BYMONTHDAY, BYDAY ordinal) ----
+        function test_rrule_MONTHLY_BYMONTHDAY() {
+            // Dia 15 de cada mês desde 2020 -> cai 3x na janela (08/09/10-2026).
+            var ics = root.wrap([
+                root.vevent([
+                    "UID:m1", "DTSTART:20200115T100000Z", "DURATION:PT1H",
+                    "SUMMARY:Pagamento", "RRULE:FREQ=MONTHLY;INTERVAL=1"
+                ])
+            ]);
+            var evs = Cal.allEvents(ics, "src", root.fromMs, root.toMs);
+            compare(evs.length, 3, "mensal dia 15 -> 3 ocorrências na janela, veio " + evs.length);
+            for (var j = 0; j < evs.length; j++) {
+                var dm = new Date(evs[j].start);
+                compare(dm.getUTCDate(), 15, "dia incorreto: " + dm.toISOString());
+            }
+        }
+
+        function test_rrule_MONTHLY_INTERVAL() {
+            // A cada 2 meses a partir de 2025-12-01: 2026-08, 2026-10.
+            var ics = root.wrap([
+                root.vevent([
+                    "UID:m2", "DTSTART:20251201T090000Z", "DURATION:PT1H",
+                    "SUMMARY:Bimestral", "RRULE:FREQ=MONTHLY;INTERVAL=2"
+                ])
+            ]);
+            var evs = Cal.allEvents(ics, "src", root.fromMs, root.toMs);
+            compare(evs.length, 2, "bimestral -> ago/out 2026, veio " + evs.length);
+            var months = evs.map(function(e) { var d = new Date(e.start); return d.getUTCMonth(); });
+            months.sort(function(a, b) { return a - b; });
+            compare(months.join(","), "7,9", "meses esperados ago/out (7,9), veio " + months.join(","));
+        }
+
+        function test_rrule_MONTHLY_BYDAY_ordinal() {
+            // 2ª segunda-feira de cada mês (com UNTIL em 2027).
+            var ics = root.wrap([
+                root.vevent([
+                    "UID:m3", "DTSTART:20200113T090000Z", "DURATION:PT1H",
+                    "SUMMARY:ReuniaoMensal", "RRULE:FREQ=MONTHLY;BYDAY=2MO;UNTIL=20270101T000000Z"
+                ])
+            ]);
+            var evs = Cal.allEvents(ics, "src", root.fromMs, root.toMs);
+            verify(evs.length === 3, "2ª segunda de 08/09/10-2026 -> 3, veio " + evs.length);
+            for (var k = 0; k < evs.length; k++) {
+                var dk = new Date(evs[k].start);
+                var iso = ((dk.getUTCDay() + 6) % 7) + 1; // 1=seg..7=dom
+                compare(iso, 1, "não é segunda-feira: " + dk.toISOString());
+                verify(dk.getUTCDate() >= 8 && dk.getUTCDate() <= 14, "2ª segunda fora da faixa: " + dk.toISOString());
+            }
+        }
+
+        function test_rrule_MONTHLY_ULTIMO_DIA() {
+            // BYMONTHDAY=-1 -> último dia do mês.
+            var ics = root.wrap([
+                root.vevent([
+                    "UID:m4", "DTSTART:20260131T120000Z", "DURATION:PT1H",
+                    "SUMMARY:FimDeMes", "RRULE:FREQ=MONTHLY;BYMONTHDAY=-1"
+                ])
+            ]);
+            var evs = Cal.allEvents(ics, "src", root.fromMs, root.toMs);
+            // ago=31, set=30, out=31 na janela
+            compare(evs.length, 3, "último dia -> 3 na janela, veio " + evs.length);
+            for (var i = 0; i < evs.length; i++) {
+                var dm = new Date(evs[i].start);
+                var month = dm.getUTCMonth() + 1;
+                var dim = new Date(Date.UTC(dm.getUTCFullYear(), month, 0)).getUTCDate();
+                compare(dm.getUTCDate(), dim, "não é o último dia: " + dm.toISOString() + " dim=" + dim);
+            }
+        }
+
+        function test_rrule_MONTHLY_31_em_mes_curto_salta() {
+            // Dia 31 mensal: meses sem dia 31 não geram ocorrência.
+            var ics = root.wrap([
+                root.vevent([
+                    "UID:m5", "DTSTART:20260131T120000Z", "DURATION:PT1H",
+                    "SUMMARY:Dia31", "RRULE:FREQ=MONTHLY;BYMONTHDAY=31"
+                ])
+            ]);
+            var evs = Cal.allEvents(ics, "src", root.fromMs, root.toMs);
+            // ago(31) e out(31) existem; set(30) pula -> 2
+            compare(evs.length, 2, "dia 31 só em ago/out -> 2, veio " + evs.length);
+            for (var i = 0; i < evs.length; i++) {
+                compare(new Date(evs[i].start).getUTCDate(), 31);
+            }
+        }
+
+        // ---- recorrência YEARLY (com BYMONTH, BYMONTHDAY, BYDAY) ----
+        function test_rrule_YEARLY_BYMONTH_BYMONTHDAY() {
+            // Aniversário 05/08 desde 1990, UNTIL no futuro: cai na janela.
+            var ics = root.wrap([
+                root.vevent([
+                    "UID:y1", "DTSTART:19900805T090000Z", "DURATION:PT1H",
+                    "SUMMARY:Aniversario", "RRULE:FREQ=YEARLY;BYMONTH=8;BYMONTHDAY=5;UNTIL=20300101T000000Z"
+                ])
+            ]);
+            var evs = Cal.allEvents(ics, "src", root.fromMs, root.toMs);
+            compare(evs.length, 1, "aniversário em 08/2026 -> 1 na janela, veio " + evs.length);
+            compare(new Date(evs[0].start).getUTCDate(), 5);
+            compare(new Date(evs[0].start).getUTCMonth(), 7);
+        }
+
+        function test_rrule_YEARLY_1MO_novembro() {
+            // 1ª segunda-feira de outubro (desde 2000). A janela cobre 08-10/2026.
+            var ics = root.wrap([
+                root.vevent([
+                    "UID:y2", "DTSTART:20001002T100000Z", "DURATION:PT1H",
+                    "SUMMARY:PrimeiraSeg", "RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=1MO"
+                ])
+            ]);
+            var evs = Cal.allEvents(ics, "src", root.fromMs, root.toMs);
+            compare(evs.length, 1, "1ª seg de out/2026 -> 1, veio " + evs.length);
+            var dn = new Date(evs[0].start);
+            compare(dn.getUTCMonth(), 9, "não é outubro");
+            compare(dn.getUTCDate(), 5, "1ª segunda de out/2026 é dia 5, veio " + dn.toISOString());
+        }
+
+        function test_rrule_YEARLY_INTERVAL() {
+            // A cada 2 anos em 01/05, começando 2025 -> 2026 não tem (2025, 2027).
+            var ics = root.wrap([
+                root.vevent([
+                    "UID:y3", "DTSTART:20250501T100000Z", "DURATION:PT1H",
+                    "SUMMARY:Bienal", "RRULE:FREQ=YEARLY;INTERVAL=2"
+                ])
+            ]);
+            var evs = Cal.allEvents(ics, "src", root.fromMs, root.toMs);
+            compare(evs.length, 0, "bienal ímpar -> nada na janela, veio " + evs.length);
+        }
+
         function test_cap_bytes() {
             verify(Cal.withinIcsCap(root.wrap([])), "ics vazio dentro do cap");
             // Monta um .ics com mais de 2 MB (> MAX_ICS_BYTES) sem depender de conta exata

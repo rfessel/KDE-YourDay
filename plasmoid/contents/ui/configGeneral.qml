@@ -185,7 +185,66 @@ KCM.SimpleKCM {
             wrapMode: Text.Wrap
         }
 
-        // Idioma segue o locale do sistema (catálogos .mo do Plasma).
+        Kirigami.Separator {
+            Layout.fillWidth: true
+            Layout.topMargin: Kirigami.Units.largeSpacing
+        }
+
+        // Lembretes na área de trabalho
+        Kirigami.Heading {
+            level: 3
+            Layout.fillWidth: true
+            Layout.topMargin: Kirigami.Units.largeSpacing
+            text: i18n("Notifications")
+            textFormat: Text.PlainText
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.topMargin: Kirigami.Units.largeSpacing
+            spacing: Kirigami.Units.smallSpacing
+
+            PlasmaComponents3.Label {
+                text: i18n("Remind me before calendar events:")
+                font.pixelSize: 13
+            }
+
+            Item { Layout.fillWidth: true }
+
+            QQC2.SpinBox {
+                Layout.preferredWidth: 90
+                from: 0
+                to: 360
+                editable: true
+                enabled: Plasmoid.configuration.notifyEvents
+                value: Number(Plasmoid.configuration.notifyAdvanceMinutes) > 0
+                       ? Number(Plasmoid.configuration.notifyAdvanceMinutes)
+                       : 15
+                onValueModified: Plasmoid.configuration.notifyAdvanceMinutes = value
+            }
+
+            PlasmaComponents3.Label {
+                text: i18n("minutes before")
+                font.pixelSize: 11
+                opacity: 0.7
+                visible: Plasmoid.configuration.notifyEvents
+            }
+        }
+
+        QQC2.CheckBox {
+            Layout.fillWidth: true
+            text: i18n("Show a desktop notification when an event from the Calendar tab is about to start")
+            checked: Plasmoid.configuration.notifyEvents
+            onToggled: Plasmoid.configuration.notifyEvents = checked
+        }
+
+        QQC2.Label {
+            Layout.fillWidth: true
+            text: i18n("The reminder runs in the background and appears once per event.")
+            opacity: 0.5
+            font.pixelSize: 11
+            wrapMode: Text.Wrap
+        }
 
         Kirigami.Separator {
             Layout.fillWidth: true

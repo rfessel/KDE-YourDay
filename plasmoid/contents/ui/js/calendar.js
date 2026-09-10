@@ -6,8 +6,9 @@
 
     Parser de calendários iCalendar (.ics) — VEVENT — sem dependências
     externas (rodando no motor JS do QML, Qt 6), cobrindo DTSTART/DTEND/
-    DURATION, eventos de dia inteiro e recorrência diária simples (RRULE
-    FREQ=DAILY com UNTIL). Também expõe a leitura de to-dos locais.
+    DURATION, eventos de dia inteiro e recorrência FREQ=DAILY/WEEKLY/
+    MONTHLY/YEARLY (com INTERVAL, UNTIL, BYDAY, BYMONTHDAY e BYMONTH).
+    Também expõe a leitura de to-dos locais.
 
     Cada evento retornado tem o formato:
       { title, start (ms), end (ms), allDay (bool), source (string) }
@@ -147,8 +148,211 @@ function timeOfDayMs(ms) {
     return d.getHours() * 3600000 + d.getMinutes() * 60000 + d.getSeconds() * 1000;
 }
 
-// Expande ocorrências de um VEVENT segundo FREQ=DAILY ou FREQ=WEEKLY
-// (com INTERVAL, UNTIL e BYDAY). targetStart/targetEnd = janela de interesse.
+// Semana ISO: 1=segunda ... 7=domingo (usada em BYDAY e em nthWeekdayIndex).
+var WD_ISO = { MO: 1, TU: 2, WE: 3, TH: 4, FR: 5, SA: 6, SU: 7 };
+
+// Interpreta BYDAY como lista de { ord, wd } (wd em ISO). "MO" => ord=0 (todos),
+// "1MO"/"-1FR" => ordinal (1º / último daquele weekday no período).
+function parseByDayEntries(rrule) {
+    var m = String(rrule).match(/BYDAY=([A-Z0-9\-,]+)/);
+    if (!m) {
+        return null;
+    }
+    var out = [];
+    var parts = m[1].split(",");
+    for (var i = 0; i < parts.length; i++) {
+        var rm = parts[i].trim().match(/^(-?\d+)?([A-Z]{2})$/);
+        if (!rm) {
+            continue;
+        }
+        var wd = WD_ISO[rm[2].toUpperCase()];
+        if (!wd) {
+            continue;
+        }
+        var ord = rm[1] ? Math.max(-53, Math.min(53, parseInt(rm[1], 10))) : 0;
+        out.push({ ord: ord, wd: wd });
+    }
+    return out.length ? out : null;
+}
+
+// Numerico BYMONTHDAY: lista de dias (positivos ou negativos, -1 = último).
+function parseByMonthDay(rrule) {
+    var m = String(rrule).match(/BYMONTHDAY=([^;\s]+)/);
+    if (!m) {
+        return null;
+    }
+    var out = [];
+    var parts = m[1].split(",");
+    for (var i = 0; i < parts.length; i++) {
+        var v = parseInt(parts[i], 10);
+        if (v !== 0 && Math.abs(v) <= 31) {
+            out.push(v);
+        }
+    }
+    return out.length ? out : null;
+}
+
+// BYMONTH: lista de meses 1..12.
+function parseByMonth(rrule) {
+    var m = String(rrule).match(/BYMONTH=([^;\s]+)/);
+    if (!m) {
+        return null;
+    }
+    var out = [];
+    var parts = m[1].split(",");
+    for (var i = 0; i < parts.length; i++) {
+        var v = parseInt(parts[i], 10);
+        if (v >= 1 && v <= 12) {
+            out.push(v);
+        }
+    }
+    return out.length ? out : null;
+}
+
+function daysInMonth(y, m) {
+    return new Date(y, m + 1, 0).getDate();
+}
+
+// Dia do mês do n-ésimo weekday (wd em ISO). n>0 = 1º/2º/..., n<0 = último(-1)/
+// penúltimo(-2)...; retorna 0 se o dia não existir no mês (JS year, month 0-11).
+function nthWeekdayIndex(y, m, wd, n) {
+    var dim = daysInMonth(y, m);
+    var lastDay = new Date(y, m, dim).getDay();
+    var lastIso = lastDay === 0 ? 7 : lastDay;
+    if (n > 0) {
+        var firstDay = new Date(y, m, 1).getDay();
+        var firstIso = firstDay === 0 ? 7 : firstDay;
+        var day = 1 + ((wd - firstIso + 7) % 7) + (n - 1) * 7;
+        return day <= dim ? day : 0;
+    }
+    var dayB = dim - ((lastIso - wd + 7) % 7) - (Math.abs(n) - 1) * 7;
+    return dayB >= 1 ? dayB : 0;
+}
+
+// Dias do mês em que a recorrência pode cair para FREQ=MONTHLY/YEARLY:
+// por BYMONTHDAY, por BYDAY (com ordinal = n-ésimo weekday, sem ordinal =
+// todos os daquele weekday no mês) ou o dia padrão de DTSTART. Dias que não
+// existem no mês viram 0 (pular).
+function monthCandidateDays(y, m, byMonthDay, byDay, dtStartDay) {
+    var dim = daysInMonth(y, m);
+    var out = [];
+    var i, d;
+    if (byDay) {
+        for (i = 0; i < byDay.length; i++) {
+            var e = byDay[i];
+            if (e.ord !== 0) {
+                var day = nthWeekdayIndex(y, m, e.wd, e.ord);
+                if (day) {
+                    out.push(day);
+                }
+            } else {
+                for (d = 1; d <= dim; d++) {
+                    var iso = ((new Date(y, m, d).getDay() + 6) % 7) + 1;
+                    if (iso === e.wd) {
+                        out.push(d);
+                    }
+                }
+            }
+        }
+    } else if (byMonthDay) {
+        for (i = 0; i < byMonthDay.length; i++) {
+            var v = byMonthDay[i];
+            var dn = v > 0 ? v : dim + 1 + v;
+            if (dn >= 1 && dn <= dim) {
+                out.push(dn);
+            } else {
+                out.push(0);
+            }
+        }
+    } else {
+        out.push(dtStartDay <= dim ? dtStartDay : 0);
+    }
+    return out;
+}
+
+// Expande FREQ=MONTHLY (com INTERVAL/UNTIL/BYMONTHDAY/BYDAY). Anda por blocos
+// de mês alinhados a partir do mês de DTSTART; pula direto para o bloco que
+// toca a janela (guard: 1024 blocos por evento).
+function expandMonthly(start, tod, dur, occ, until, interval, targetStart, targetEnd, ev, rrule) {
+    var d0 = new Date(start);
+    var byMonthDay = parseByMonthDay(rrule);
+    var byDay = parseByDayEntries(rrule);
+    var startIdx = d0.getFullYear() * 12 + d0.getMonth();
+    var win0 = new Date(targetStart).getFullYear() * 12 + new Date(targetStart).getMonth();
+    var win1 = new Date(targetEnd).getFullYear() * 12 + new Date(targetEnd).getMonth();
+    var step = Math.max(1, interval);
+    var idx = startIdx + Math.floor((win0 - startIdx) / step) * step;
+    var out = [];
+    var guard = 0;
+    while (idx <= win1 && guard < 1024) {
+        var y = Math.floor(idx / 12);
+        var m = idx % 12;
+        var days = monthCandidateDays(y, m, byMonthDay, byDay, d0.getDate());
+        for (var i = 0; i < days.length; i++) {
+            if (!days[i]) {
+                continue;
+            }
+            var occStart = new Date(y, m, days[i]).getTime() + tod;
+            if (until && occStart > until + 86400000) {
+                continue;
+            }
+            if (occStart >= targetEnd) {
+                continue;
+            }
+            if (occStart + dur > targetStart) {
+                out.push(occ(occStart));
+            }
+        }
+        idx += step;
+        guard++;
+    }
+    return out;
+}
+
+// Expande FREQ=YEARLY (com INTERVAL/UNTIL/BYMONTH/BYMONTHDAY/BYDAY). Anda por
+// anos; dentro do ano, expande cada BYMONTH.
+function expandYearly(start, tod, dur, occ, until, interval, targetStart, targetEnd, ev, rrule) {
+    var d0 = new Date(start);
+    var byMonth = parseByMonth(rrule);
+    var byMonthDay = parseByMonthDay(rrule);
+    var byDay = parseByDayEntries(rrule);
+    var months = byMonth || [d0.getMonth() + 1];
+    var startYr = d0.getFullYear();
+    var win0 = new Date(targetStart).getFullYear();
+    var win1 = new Date(targetEnd).getFullYear();
+    var stepYr = Math.max(1, interval);
+    var yr = startYr + Math.floor((win0 - startYr) / stepYr) * stepYr;
+    var out = [];
+    var guard = 0;
+    while (yr <= win1 && guard < 1024) {
+        for (var mi = 0; mi < months.length; mi++) {
+            var m = months[mi] - 1;
+            var days = monthCandidateDays(yr, m, byMonthDay, byDay, d0.getDate());
+            for (var i = 0; i < days.length; i++) {
+                if (!days[i]) {
+                    continue;
+                }
+                var occStart = new Date(yr, m, days[i]).getTime() + tod;
+                if (until && occStart > until + 86400000) {
+                    continue;
+                }
+                if (occStart >= targetEnd) {
+                    continue;
+                }
+                if (occStart + dur > targetStart) {
+                    out.push(occ(occStart));
+                }
+            }
+        }
+        yr += stepYr;
+        guard++;
+    }
+    return out;
+}
+
+// Expande ocorrências de um VEVENT segundo FREQ=DAILY, FREQ=WEEKLY,
+// FREQ=MONTHLY ou FREQ=YEARLY (com INTERVAL, UNTIL, BYDAY, BYMONTHDAY e
+// BYMONTH). targetStart/targetEnd = janela de interesse.
 // Em vez de caminhar dia a dia de DTSTART até a janela (que travava para
 // recorrências antigas: até 5000 passos no vazio por evento), dá um salto
 // direto para a primeira ocorrência dentro da janela e caminha só o trecho
@@ -216,13 +420,18 @@ function expandOccurrences(ev, targetStart, targetEnd) {
 
     var isDaily = rrule.indexOf("FREQ=DAILY") !== -1;
     var isWeekly = rrule.indexOf("FREQ=WEEKLY") !== -1;
-    if (!isDaily && !isWeekly) {
-        // Frequência não suportada (MONTHLY/YEARLY etc.): só a primeira se cair na janela.
+    var isMonthly = rrule.indexOf("FREQ=MONTHLY") !== -1;
+    var isYearly = rrule.indexOf("FREQ=YEARLY") !== -1;
+    if (!isDaily && !isWeekly && !isMonthly && !isYearly) {
+        // Frequência não suportada (HOURLY/MINUTELY/SECONDLY etc.): só a
+        // primeira se cair na janela.
         if (end > targetStart && start < targetEnd) {
             return [occ(start)];
         }
         return [];
     }
+
+    var tod = timeOfDayMs(start);
 
     var out = [];
     var guard = 0;
@@ -247,50 +456,62 @@ function expandOccurrences(ev, targetStart, targetEnd) {
         return out;
     }
 
-    // Weekly (com BYDAY opcional). A semana começa na segunda-feira da semana
-    // de DTSTART; cada weekday listado (ou o weekday de DTSTART) ocorre nela.
-    var d0 = new Date(start);
-    var monday0 = new Date(d0.getFullYear(), d0.getMonth(), d0.getDate() - ((d0.getDay() + 6) % 7), 0, 0, 0, 0).getTime();
-    var tod = timeOfDayMs(start);
+    if (isWeekly) {
+        // Weekly (com BYDAY opcional). A semana começa na segunda-feira da
+        // semana de DTSTART; cada weekday listado (ou o weekday de DTSTART)
+        // ocorre nela.
+        var d0 = new Date(start);
+        var monday0 = new Date(d0.getFullYear(), d0.getMonth(), d0.getDate() - ((d0.getDay() + 6) % 7), 0, 0, 0, 0).getTime();
 
-    var byday = [];
-    var bm = rrule.match(/BYDAY=([A-Z]{2}(?:,[A-Z]{2})*)/);
-    if (bm) {
-        var partsIo = bm[1].split(",");
-        for (var bi = 0; bi < partsIo.length; bi++) {
-            var iso = dayNm[partsIo[bi]];
-            if (iso) {
-                byday.push(iso);
+        var byday = [];
+        var bm = rrule.match(/BYDAY=([A-Z]{2}(?:,[A-Z]{2})*)/);
+        if (bm) {
+            var partsIo = bm[1].split(",");
+            for (var bi = 0; bi < partsIo.length; bi++) {
+                var iso = dayNm[partsIo[bi]];
+                if (iso) {
+                    byday.push(iso);
+                }
             }
         }
-    }
-    if (byday.length === 0) {
-        byday.push(((d0.getDay() + 6) % 7) + 1);
-    }
-    byday.sort(function(a, b) { return a - b; });
-
-    var wstep = interval * 7 * 86400000;
-    var wstart = monday0;
-    if (wstart < targetStart && wstep > 0) {
-        wstart = monday0 + Math.floor((targetStart - monday0) / wstep) * wstep;
-    }
-    while (wstart < targetEnd && guard < 1024) {
-        for (var wi = 0; wi < byday.length; wi++) {
-            var occStart = wstart + (byday[wi] - 1) * 86400000 + tod;
-            var occEnd = occStart + dur;
-            if (until && occStart > until + 86400000) {
-                continue;
-            }
-            if (occStart >= targetEnd) {
-                continue;
-            }
-            if (occEnd > targetStart) {
-                out.push(occ(occStart));
-            }
+        if (byday.length === 0) {
+            byday.push(((d0.getDay() + 6) % 7) + 1);
         }
-        wstart += wstep;
-        guard++;
+        byday.sort(function(a, b) { return a - b; });
+
+        var wstep = interval * 7 * 86400000;
+        var wstart = monday0;
+        if (wstart < targetStart && wstep > 0) {
+            wstart = monday0 + Math.floor((targetStart - monday0) / wstep) * wstep;
+        }
+        while (wstart < targetEnd && guard < 1024) {
+            for (var wi = 0; wi < byday.length; wi++) {
+                var occStart = wstart + (byday[wi] - 1) * 86400000 + tod;
+                var occEnd = occStart + dur;
+                if (until && occStart > until + 86400000) {
+                    continue;
+                }
+                if (occStart >= targetEnd) {
+                    continue;
+                }
+                if (occEnd > targetStart) {
+                    out.push(occ(occStart));
+                }
+            }
+            wstart += wstep;
+            guard++;
+        }
+        out.sort(function(a, b) { return a.start - b.start; });
+        return out;
     }
+
+    if (isMonthly) {
+        out = expandMonthly(start, tod, dur, occ, until, interval, targetStart, targetEnd, ev, rrule);
+        out.sort(function(a, b) { return a.start - b.start; });
+        return out;
+    }
+
+    out = expandYearly(start, tod, dur, occ, until, interval, targetStart, targetEnd, ev, rrule);
     out.sort(function(a, b) { return a.start - b.start; });
     return out;
 }

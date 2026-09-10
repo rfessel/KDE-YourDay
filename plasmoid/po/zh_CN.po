@@ -134,18 +134,65 @@ msgid "iCal URL or local path..."
 msgstr "iCal URL 或本地路径..."
 
 #: contents/ui/configAgenda.qml contents/ui/configFeeds.qml
-#: contents/ui/configView.qml contents/ui/pages/NotasPage.qml
-#: contents/ui/pages/ToDoPage.qml
+#: contents/ui/pages/NotasPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Add"
 msgstr "添加"
 
-#: contents/ui/configAgenda.qml contents/ui/configView.qml
+#: contents/ui/configAgenda.qml
 msgid "No source added."
 msgstr "未添加来源。"
 
-#: contents/ui/configAgenda.qml contents/ui/configView.qml
+#: contents/ui/configAgenda.qml
 msgid "Remove source"
 msgstr "删除来源"
+
+#: contents/ui/configData.qml
+msgid "Reading file..."
+msgstr "正在读取文件…"
+
+#: contents/ui/configData.qml
+msgid "Invalid backup file: expected a JSON exported by this widget."
+msgstr "备份文件无效：应为该小组件导出的 JSON 文件。"
+
+#: contents/ui/configData.qml
+msgid "Backup restored. The widget reloads the data right away."
+msgstr "已恢复备份。小组件会立即重新加载数据。"
+
+#: contents/ui/configData.qml
+msgid "Backup & restore"
+msgstr "备份与还原"
+
+#: contents/ui/configData.qml
+msgid "Export all widget data (tasks, notes, lists, local events, feeds and cities) to a single JSON file, and later restore it on this or another computer."
+msgstr "将小组件的所有数据（任务、笔记、列表、本地事件、订阅源和城市）导出到单个 JSON 文件，之后可在此计算机或其他计算机上还原。"
+
+#: contents/ui/configData.qml
+msgid "Export backup (JSON)"
+msgstr "导出备份 (JSON)"
+
+#: contents/ui/configData.qml
+msgid "Import backup (JSON)"
+msgstr "导入备份 (JSON)"
+
+#: contents/ui/configData.qml
+msgid "Save backup"
+msgstr "保存备份"
+
+#: contents/ui/configData.qml
+msgid "JSON file (*.json)"
+msgstr "JSON 文件 (*.json)"
+
+#: contents/ui/configData.qml
+msgid "Backup exported."
+msgstr "备份已导出。"
+
+#: contents/ui/configData.qml
+msgid "Failed to write the file."
+msgstr "写入文件失败。"
+
+#: contents/ui/configData.qml
+msgid "Open backup"
+msgstr "打开备份"
 
 #: contents/ui/configFeeds.qml
 msgid "Enter a valid URL (e.g., https://example.com/feed.xml)."
@@ -247,7 +294,7 @@ msgstr "限制:"
 msgid "news items"
 msgstr "条新闻"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "Display"
 msgstr "显示"
 
@@ -255,11 +302,11 @@ msgstr "显示"
 msgid "Maximum total news:"
 msgstr "最大新闻总数:"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "Headline lines:"
 msgstr "标题行数:"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "lines per story"
 msgstr "每条新闻行数"
 
@@ -271,8 +318,7 @@ msgstr "刷新:"
 msgid "Summary"
 msgstr "摘要"
 
-#: contents/ui/configGeneral.qml contents/ui/configView.qml
-#: contents/ui/main.qml
+#: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Calendar"
 msgstr "日历"
 
@@ -371,6 +417,26 @@ msgid "Defines what is shown when the widget is in the system tray (panel)."
 msgstr "定义当小组件位于系统托盘（面板）中时显示的内容。"
 
 #: contents/ui/configGeneral.qml
+msgid "Notifications"
+msgstr "通知"
+
+#: contents/ui/configGeneral.qml
+msgid "Remind me before calendar events:"
+msgstr "在日历事件开始前提醒我："
+
+#: contents/ui/configGeneral.qml
+msgid "minutes before"
+msgstr "分钟前"
+
+#: contents/ui/configGeneral.qml
+msgid "Show a desktop notification when an event from the Calendar tab is about to start"
+msgstr "当“日历”选项卡中的事件即将开始时显示桌面通知"
+
+#: contents/ui/configGeneral.qml
+msgid "The reminder runs in the background and appears once per event."
+msgstr "提醒在后台运行，每个事件仅出现一次。"
+
+#: contents/ui/configGeneral.qml
 msgid "Widget icon"
 msgstr "小部件图标"
 
@@ -413,26 +479,6 @@ msgstr "保存为 CSV"
 #: contents/ui/configListas.qml
 msgid "CSV file (*.csv)"
 msgstr "CSV 文件 (*.csv)"
-
-#: contents/ui/configView.qml
-msgid "Maximum total news items in list:"
-msgstr "列表中最大新闻总数:"
-
-#: contents/ui/configView.qml
-msgid "This limit applies to the entire list, summing all feeds. To adjust each source individually, use the \"News feeds\" section."
-msgstr "此限制适用于整个列表（所有订阅源的总和）。如需单独调整每个来源，请使用「新闻订阅源」部分。"
-
-#: contents/ui/configView.qml
-msgid "Changes are applied to the widget immediately."
-msgstr "更改会立即应用到小部件。"
-
-#: contents/ui/configView.qml
-msgid "Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / secret) or a local path to an .ics file. Today's appointments appear in the Calendar and Summary tabs."
-msgstr "日历来源 (.ics)：Google/CalDAV 的 URL（「iCal 个人 URL」/ 密钥）或 .ics 文件的本地路径。今日日程显示在「日历」和「摘要」标签页中。"
-
-#: contents/ui/configView.qml
-msgid "URL .ics or local path…"
-msgstr "URL .ics 或本地路径…"
 
 #: contents/ui/configWeather.qml
 msgid "Search for a city and choose whether it will be primary or additional."
@@ -515,6 +561,10 @@ msgid "Local"
 msgstr "本地"
 
 #: contents/ui/main.qml
+msgid "Starts at %1"
+msgstr "开始于 %1"
+
+#: contents/ui/main.qml
 msgid "Settings"
 msgstr "设置"
 
@@ -556,21 +606,19 @@ msgstr "更新于 %1"
 
 #: contents/ui/main.qml
 msgid "Unsaved changes"
-msgstr ""
+msgstr "未保存的更改"
 
 #: contents/ui/main.qml
-msgid ""
-"The appointment being edited has unsaved changes. Leave the tab to discard "
-"them?"
-msgstr ""
+msgid "The appointment being edited has unsaved changes. Leave the tab to discard them?"
+msgstr "正在编辑的约会有未保存的更改。离开此选项卡以放弃它们？"
 
 #: contents/ui/main.qml
 msgid "Continue editing"
-msgstr ""
+msgstr "继续编辑"
 
 #: contents/ui/main.qml
 msgid "Leave without saving"
-msgstr ""
+msgstr "不保存并离开"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "These are your appointments for this date..."
@@ -639,7 +687,7 @@ msgstr "保存"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "OK"
-msgstr ""
+msgstr "确定"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
@@ -679,11 +727,11 @@ msgstr "日照"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Next hours"
-msgstr ""
+msgstr "接下来几小时"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Temperature"
-msgstr ""
+msgstr "温度"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "7-day forecast"
@@ -920,6 +968,30 @@ msgstr "雷暴伴冰雹"
 #: <dinamico>
 msgid "No data"
 msgstr "无数据"
+
+#~ msgid "Maximum total news items in list:"
+#~ msgstr "列表中最大新闻总数:"
+
+#~ msgid ""
+#~ "This limit applies to the entire list, summing all feeds. To adjust each "
+#~ "source individually, use the \"News feeds\" section."
+#~ msgstr ""
+#~ "此限制适用于整个列表（所有订阅源的总和）。如需单独调整每个来源，请使用「新"
+#~ "闻订阅源」部分。"
+
+#~ msgid "Changes are applied to the widget immediately."
+#~ msgstr "更改会立即应用到小部件。"
+
+#~ msgid ""
+#~ "Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / "
+#~ "secret) or a local path to an .ics file. Today's appointments appear in "
+#~ "the Calendar and Summary tabs."
+#~ msgstr ""
+#~ "日历来源 (.ics)：Google/CalDAV 的 URL（「iCal 个人 URL」/ 密钥）或 .ics 文"
+#~ "件的本地路径。今日日程显示在「日历」和「摘要」标签页中。"
+
+#~ msgid "URL .ics or local path…"
+#~ msgstr "URL .ics 或本地路径…"
 
 #~ msgid "Conectado ao Google Calendar"
 #~ msgstr "已连接到 Google 日历"

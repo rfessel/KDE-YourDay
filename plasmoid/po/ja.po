@@ -135,18 +135,65 @@ msgid "iCal URL or local path..."
 msgstr "iCal URLまたはローカルパス..."
 
 #: contents/ui/configAgenda.qml contents/ui/configFeeds.qml
-#: contents/ui/configView.qml contents/ui/pages/NotasPage.qml
-#: contents/ui/pages/ToDoPage.qml
+#: contents/ui/pages/NotasPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Add"
 msgstr "追加"
 
-#: contents/ui/configAgenda.qml contents/ui/configView.qml
+#: contents/ui/configAgenda.qml
 msgid "No source added."
 msgstr "ソースが追加されていません。"
 
-#: contents/ui/configAgenda.qml contents/ui/configView.qml
+#: contents/ui/configAgenda.qml
 msgid "Remove source"
 msgstr "ソースを削除"
+
+#: contents/ui/configData.qml
+msgid "Reading file..."
+msgstr "ファイルを読み込み中…"
+
+#: contents/ui/configData.qml
+msgid "Invalid backup file: expected a JSON exported by this widget."
+msgstr "無効なバックアップファイルです。このウィジェットがエクスポートした JSON ファイルを選択してください。"
+
+#: contents/ui/configData.qml
+msgid "Backup restored. The widget reloads the data right away."
+msgstr "バックアップを復元しました。ウィジェットがすぐにデータを再読み込みします。"
+
+#: contents/ui/configData.qml
+msgid "Backup & restore"
+msgstr "バックアップと復元"
+
+#: contents/ui/configData.qml
+msgid "Export all widget data (tasks, notes, lists, local events, feeds and cities) to a single JSON file, and later restore it on this or another computer."
+msgstr "ウィジェットの全データ（タスク、メモ、リスト、ローカルイベント、フィード、都市）を 1 つの JSON ファイルにエクスポートし、後でこのコンピューターまたは別のコンピューターで復元します。"
+
+#: contents/ui/configData.qml
+msgid "Export backup (JSON)"
+msgstr "バックアップをエクスポート (JSON)"
+
+#: contents/ui/configData.qml
+msgid "Import backup (JSON)"
+msgstr "バックアップをインポート (JSON)"
+
+#: contents/ui/configData.qml
+msgid "Save backup"
+msgstr "バックアップを保存"
+
+#: contents/ui/configData.qml
+msgid "JSON file (*.json)"
+msgstr "JSON ファイル (*.json)"
+
+#: contents/ui/configData.qml
+msgid "Backup exported."
+msgstr "バックアップをエクスポートしました。"
+
+#: contents/ui/configData.qml
+msgid "Failed to write the file."
+msgstr "ファイルの書き込みに失敗しました。"
+
+#: contents/ui/configData.qml
+msgid "Open backup"
+msgstr "バックアップを開く"
 
 #: contents/ui/configFeeds.qml
 msgid "Enter a valid URL (e.g., https://example.com/feed.xml)."
@@ -248,7 +295,7 @@ msgstr "上限:"
 msgid "news items"
 msgstr "ニュース"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "Display"
 msgstr "表示"
 
@@ -256,11 +303,11 @@ msgstr "表示"
 msgid "Maximum total news:"
 msgstr "最大ニュース数:"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "Headline lines:"
 msgstr "見出しの行数:"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "lines per story"
 msgstr "ニュースあたりの行数"
 
@@ -272,8 +319,7 @@ msgstr "更新:"
 msgid "Summary"
 msgstr "概要"
 
-#: contents/ui/configGeneral.qml contents/ui/configView.qml
-#: contents/ui/main.qml
+#: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Calendar"
 msgstr "カレンダー"
 
@@ -372,6 +418,26 @@ msgid "Defines what is shown when the widget is in the system tray (panel)."
 msgstr "ウィジェットがシステムトレイ（パネル）にあるときに表示する内容を定義します。"
 
 #: contents/ui/configGeneral.qml
+msgid "Notifications"
+msgstr "通知"
+
+#: contents/ui/configGeneral.qml
+msgid "Remind me before calendar events:"
+msgstr "カレンダーのイベント開始前に通知:"
+
+#: contents/ui/configGeneral.qml
+msgid "minutes before"
+msgstr "分前"
+
+#: contents/ui/configGeneral.qml
+msgid "Show a desktop notification when an event from the Calendar tab is about to start"
+msgstr "「カレンダー」タブのイベントが始まる直前にデスクトップ通知を表示する"
+
+#: contents/ui/configGeneral.qml
+msgid "The reminder runs in the background and appears once per event."
+msgstr "リマインダーはバックグラウンドで実行され、イベントごとに 1 回表示されます。"
+
+#: contents/ui/configGeneral.qml
 msgid "Widget icon"
 msgstr "ウィジェットアイコン"
 
@@ -414,26 +480,6 @@ msgstr "CSVとして保存"
 #: contents/ui/configListas.qml
 msgid "CSV file (*.csv)"
 msgstr "CSVファイル (*.csv)"
-
-#: contents/ui/configView.qml
-msgid "Maximum total news items in list:"
-msgstr "リスト内の最大ニュース数:"
-
-#: contents/ui/configView.qml
-msgid "This limit applies to the entire list, summing all feeds. To adjust each source individually, use the \"News feeds\" section."
-msgstr "この制限は全フィードの合計に対して適用されます。各ソースを個別に調整するには「ニュースフィード」セクションを使用してください。"
-
-#: contents/ui/configView.qml
-msgid "Changes are applied to the widget immediately."
-msgstr "変更はウィジェットに即座に適用されます。"
-
-#: contents/ui/configView.qml
-msgid "Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / secret) or a local path to an .ics file. Today's appointments appear in the Calendar and Summary tabs."
-msgstr "カレンダーソース (.ics)：Google/CalDAV のURL（「iCalパーソナルURL」/ シークレット）または .ics ファイルへのローカルパス。今日の予定は「カレンダー」タブと「概要」タブに表示されます。"
-
-#: contents/ui/configView.qml
-msgid "URL .ics or local path…"
-msgstr "URL .ics またはローカルパス…"
 
 #: contents/ui/configWeather.qml
 msgid "Search for a city and choose whether it will be primary or additional."
@@ -516,6 +562,10 @@ msgid "Local"
 msgstr "ローカル"
 
 #: contents/ui/main.qml
+msgid "Starts at %1"
+msgstr "%1 に開始"
+
+#: contents/ui/main.qml
 msgid "Settings"
 msgstr "設定"
 
@@ -557,21 +607,19 @@ msgstr "%1に更新"
 
 #: contents/ui/main.qml
 msgid "Unsaved changes"
-msgstr ""
+msgstr "保存されていない変更"
 
 #: contents/ui/main.qml
-msgid ""
-"The appointment being edited has unsaved changes. Leave the tab to discard "
-"them?"
-msgstr ""
+msgid "The appointment being edited has unsaved changes. Leave the tab to discard them?"
+msgstr "編集中の予定には保存されていない変更があります。タブを離れて破棄しますか？"
 
 #: contents/ui/main.qml
 msgid "Continue editing"
-msgstr ""
+msgstr "編集を続ける"
 
 #: contents/ui/main.qml
 msgid "Leave without saving"
-msgstr ""
+msgstr "保存せずに離れる"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "These are your appointments for this date..."
@@ -640,7 +688,7 @@ msgstr "保存"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
@@ -680,11 +728,11 @@ msgstr "太陽"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Next hours"
-msgstr ""
+msgstr "次の時間帯"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Temperature"
-msgstr ""
+msgstr "気温"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "7-day forecast"
@@ -921,6 +969,31 @@ msgstr "ひょうを伴う雷雨"
 #: <dinamico>
 msgid "No data"
 msgstr "データなし"
+
+#~ msgid "Maximum total news items in list:"
+#~ msgstr "リスト内の最大ニュース数:"
+
+#~ msgid ""
+#~ "This limit applies to the entire list, summing all feeds. To adjust each "
+#~ "source individually, use the \"News feeds\" section."
+#~ msgstr ""
+#~ "この制限は全フィードの合計に対して適用されます。各ソースを個別に調整するに"
+#~ "は「ニュースフィード」セクションを使用してください。"
+
+#~ msgid "Changes are applied to the widget immediately."
+#~ msgstr "変更はウィジェットに即座に適用されます。"
+
+#~ msgid ""
+#~ "Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / "
+#~ "secret) or a local path to an .ics file. Today's appointments appear in "
+#~ "the Calendar and Summary tabs."
+#~ msgstr ""
+#~ "カレンダーソース (.ics)：Google/CalDAV のURL（「iCalパーソナルURL」/ シー"
+#~ "クレット）または .ics ファイルへのローカルパス。今日の予定は「カレンダー」"
+#~ "タブと「概要」タブに表示されます。"
+
+#~ msgid "URL .ics or local path…"
+#~ msgstr "URL .ics またはローカルパス…"
 
 #~ msgid "Conectado ao Google Calendar"
 #~ msgstr "Google Calendar に接続済み"

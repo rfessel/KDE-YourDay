@@ -36,4 +36,10 @@ ConfigModel {
         icon: "view-list"
         source: "configListas.qml"
     }
+
+    ConfigCategory {
+        name: "Backup & data"
+        icon: "document-save"
+        source: "configData.qml"
+    }
 }

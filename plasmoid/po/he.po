@@ -135,18 +135,65 @@ msgid "iCal URL or local path..."
 msgstr "כתובת URL iCal או נתיב מקומי..."
 
 #: contents/ui/configAgenda.qml contents/ui/configFeeds.qml
-#: contents/ui/configView.qml contents/ui/pages/NotasPage.qml
-#: contents/ui/pages/ToDoPage.qml
+#: contents/ui/pages/NotasPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Add"
 msgstr "הוסף"
 
-#: contents/ui/configAgenda.qml contents/ui/configView.qml
+#: contents/ui/configAgenda.qml
 msgid "No source added."
 msgstr "לא נוסף מקור."
 
-#: contents/ui/configAgenda.qml contents/ui/configView.qml
+#: contents/ui/configAgenda.qml
 msgid "Remove source"
 msgstr "הסר מקור"
+
+#: contents/ui/configData.qml
+msgid "Reading file..."
+msgstr "קורא את הקובץ…"
+
+#: contents/ui/configData.qml
+msgid "Invalid backup file: expected a JSON exported by this widget."
+msgstr "קובץ גיבוי לא חוקי: צפוי JSON שיוצא על ידי יישומון זה."
+
+#: contents/ui/configData.qml
+msgid "Backup restored. The widget reloads the data right away."
+msgstr "הגיבוי שוחזר. היישומון טוען את הנתונים מחדש מיד."
+
+#: contents/ui/configData.qml
+msgid "Backup & restore"
+msgstr "גיבוי ושחזור"
+
+#: contents/ui/configData.qml
+msgid "Export all widget data (tasks, notes, lists, local events, feeds and cities) to a single JSON file, and later restore it on this or another computer."
+msgstr "ייצא את כל נתוני היישומון (משימות, הערות, רשימות, אירועים מקומיים, הזנות וערים) לקובץ JSON אחד, ובהמשך תשחזר אותם במחשב זה או במחשב אחר."
+
+#: contents/ui/configData.qml
+msgid "Export backup (JSON)"
+msgstr "ייצוא גיבוי (JSON)"
+
+#: contents/ui/configData.qml
+msgid "Import backup (JSON)"
+msgstr "יבוא גיבוי (JSON)"
+
+#: contents/ui/configData.qml
+msgid "Save backup"
+msgstr "שמירת גיבוי"
+
+#: contents/ui/configData.qml
+msgid "JSON file (*.json)"
+msgstr "קובץ JSON (*.json)"
+
+#: contents/ui/configData.qml
+msgid "Backup exported."
+msgstr "הגיבוי יוצא."
+
+#: contents/ui/configData.qml
+msgid "Failed to write the file."
+msgstr "כתיבת הקובץ נכשלה."
+
+#: contents/ui/configData.qml
+msgid "Open backup"
+msgstr "פתיחת גיבוי"
 
 #: contents/ui/configFeeds.qml
 msgid "Enter a valid URL (e.g., https://example.com/feed.xml)."
@@ -248,7 +295,7 @@ msgstr "מגבלה:"
 msgid "news items"
 msgstr "חדשות"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "Display"
 msgstr "תצוגה"
 
@@ -256,11 +303,11 @@ msgstr "תצוגה"
 msgid "Maximum total news:"
 msgstr "מספר חדשות מרבי:"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "Headline lines:"
 msgstr "שורות כותרת:"
 
-#: contents/ui/configFeeds.qml contents/ui/configView.qml
+#: contents/ui/configFeeds.qml
 msgid "lines per story"
 msgstr "שורות לכתבה"
 
@@ -272,8 +319,7 @@ msgstr "רענון:"
 msgid "Summary"
 msgstr "סיכום"
 
-#: contents/ui/configGeneral.qml contents/ui/configView.qml
-#: contents/ui/main.qml
+#: contents/ui/configGeneral.qml contents/ui/main.qml
 msgid "Calendar"
 msgstr "לוח שנה"
 
@@ -372,6 +418,26 @@ msgid "Defines what is shown when the widget is in the system tray (panel)."
 msgstr "מגדיר מה מוצג כאשר היישומון נמצא במגש המערכת (בחלונית)."
 
 #: contents/ui/configGeneral.qml
+msgid "Notifications"
+msgstr "התראות"
+
+#: contents/ui/configGeneral.qml
+msgid "Remind me before calendar events:"
+msgstr "הזכר לי לפני אירועי לוח שנה:"
+
+#: contents/ui/configGeneral.qml
+msgid "minutes before"
+msgstr "דקות לפני"
+
+#: contents/ui/configGeneral.qml
+msgid "Show a desktop notification when an event from the Calendar tab is about to start"
+msgstr "הצג התראה בשולחן העבודה כאשר אירוע בכרטיסיית לוח השנה עומד להתחיל"
+
+#: contents/ui/configGeneral.qml
+msgid "The reminder runs in the background and appears once per event."
+msgstr "התזכורת פועלת ברקע ומופיעה פעם אחת לכל אירוע."
+
+#: contents/ui/configGeneral.qml
 msgid "Widget icon"
 msgstr "סמל הווידג׳ט"
 
@@ -414,26 +480,6 @@ msgstr "שמור כ-CSV"
 #: contents/ui/configListas.qml
 msgid "CSV file (*.csv)"
 msgstr "קובץ CSV (*.csv)"
-
-#: contents/ui/configView.qml
-msgid "Maximum total news items in list:"
-msgstr "מספר חדשות מרבי ברשימה:"
-
-#: contents/ui/configView.qml
-msgid "This limit applies to the entire list, summing all feeds. To adjust each source individually, use the \"News feeds\" section."
-msgstr "מגבלת זו חלה על הרשימה כולה, כולל כל ההזנות. כדי להתאים כל מקור בנפרד, השתמש בחלק \"הזנות חדשות\"."
-
-#: contents/ui/configView.qml
-msgid "Changes are applied to the widget immediately."
-msgstr "השינויים מוחלים מיד על הווידג׳ט."
-
-#: contents/ui/configView.qml
-msgid "Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / secret) or a local path to an .ics file. Today's appointments appear in the Calendar and Summary tabs."
-msgstr "מקורות לוח שנה (.ics): כתובת URL של Google/CalDAV (\"כתובת URL אישית של iCal\" / סודית) או נתיב מקומי לקובץ .ics. האירועים של היום מופיעים בלשוניות לוח שנה וסיכום."
-
-#: contents/ui/configView.qml
-msgid "URL .ics or local path…"
-msgstr "כתובת URL .ics או נתיב מקומי…"
 
 #: contents/ui/configWeather.qml
 msgid "Search for a city and choose whether it will be primary or additional."
@@ -516,6 +562,10 @@ msgid "Local"
 msgstr "מקומי"
 
 #: contents/ui/main.qml
+msgid "Starts at %1"
+msgstr "מתחיל ב-%1"
+
+#: contents/ui/main.qml
 msgid "Settings"
 msgstr "הגדרות"
 
@@ -557,21 +607,19 @@ msgstr "עודכן ב-%1"
 
 #: contents/ui/main.qml
 msgid "Unsaved changes"
-msgstr ""
+msgstr "שינויים שלא נשמרו"
 
 #: contents/ui/main.qml
-msgid ""
-"The appointment being edited has unsaved changes. Leave the tab to discard "
-"them?"
-msgstr ""
+msgid "The appointment being edited has unsaved changes. Leave the tab to discard them?"
+msgstr "הרשם המעובד מכיל שינויים שלא נשמרו. לצאת מהכרטיסייה כדי לוותר עליהם?"
 
 #: contents/ui/main.qml
 msgid "Continue editing"
-msgstr ""
+msgstr "המשך עריכה"
 
 #: contents/ui/main.qml
 msgid "Leave without saving"
-msgstr ""
+msgstr "יציאה ללא שמירה"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "These are your appointments for this date..."
@@ -640,7 +688,7 @@ msgstr "שמירה"
 
 #: contents/ui/pages/AgendaPage.qml
 msgid "OK"
-msgstr ""
+msgstr "אישור"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
@@ -680,11 +728,11 @@ msgstr "שמש"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Next hours"
-msgstr ""
+msgstr "השעות הקרובות"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "Temperature"
-msgstr ""
+msgstr "טמפרטורה"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "7-day forecast"
@@ -921,6 +969,31 @@ msgstr "סופת רעמים עם ברד"
 #: <dinamico>
 msgid "No data"
 msgstr "אין נתונים"
+
+#~ msgid "Maximum total news items in list:"
+#~ msgstr "מספר חדשות מרבי ברשימה:"
+
+#~ msgid ""
+#~ "This limit applies to the entire list, summing all feeds. To adjust each "
+#~ "source individually, use the \"News feeds\" section."
+#~ msgstr ""
+#~ "מגבלת זו חלה על הרשימה כולה, כולל כל ההזנות. כדי להתאים כל מקור בנפרד, "
+#~ "השתמש בחלק \"הזנות חדשות\"."
+
+#~ msgid "Changes are applied to the widget immediately."
+#~ msgstr "השינויים מוחלים מיד על הווידג׳ט."
+
+#~ msgid ""
+#~ "Calendar sources (.ics): a Google/CalDAV URL (\"personal iCal URL\" / "
+#~ "secret) or a local path to an .ics file. Today's appointments appear in "
+#~ "the Calendar and Summary tabs."
+#~ msgstr ""
+#~ "מקורות לוח שנה (.ics): כתובת URL של Google/CalDAV (\"כתובת URL אישית של "
+#~ "iCal\" / סודית) או נתיב מקומי לקובץ .ics. האירועים של היום מופיעים "
+#~ "בלשוניות לוח שנה וסיכום."
+
+#~ msgid "URL .ics or local path…"
+#~ msgstr "כתובת URL .ics או נתיב מקומי…"
 
 #~ msgid "Conectado ao Google Calendar"
 #~ msgstr "מחובר ל-Google Calendar"

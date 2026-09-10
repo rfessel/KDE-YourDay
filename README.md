@@ -69,13 +69,16 @@ Para atualizar uma instalação existente use `-u` no lugar de `-i`, ou rode o
 Botão direito no widget → **Configure Seu Dia...**
 
 - **Geral**: aba padrão, aparência no painel (ícone / ícone interativo /
-  relógio), tema (claro/escuro/automático) e ícone do widget
+  relógio), tema (claro/escuro/automático), ícone do widget e notificações
+  para eventos do calendário que estão prestes a começar
 - **Feeds de notícias**: adicionar/remover feeds RSS/Atom, ajustar limite por
   fonte e atualizar manualmente
 - **Agenda**: fontes `.ics` (URL pessoal do Google Calendar / CalDAV ou
   caminho para arquivo local)
 - **Clima**: cidade principal e cidades adicionais + serviço de geolocalização
 - **Listas**: exportar todas as listas para TXT ou CSV
+- **Backup & dados**: exportar/importar todos os dados do widget (tarefas,
+  notas, listas, eventos locais, feeds e cidades) em um único arquivo JSON
 - **Exibição**: máximo total de notícias na lista (soma de todos os feeds) e
   linhas da chamada da matéria
 
@@ -111,7 +114,7 @@ plasmoid/
     │   ├── configAgenda.qml
     │   ├── configWeather.qml
     │   ├── configListas.qml
-    │   ├── configView.qml
+    │   ├── configData.qml
     │   └── js/
     │       ├── feeds.js           # parser RSS/Atom + auto-refresh
     │       ├── weather.js         # Open-Meteo + Nominatim + ipinfo.io

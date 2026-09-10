@@ -102,6 +102,17 @@
       <default>{}</default>
       <label>Cores dos calendários em formato JSON.</label>
     </entry>
+    <entry name="notifyEvents" type="Bool">
+      <default>false</default>
+      <label>Notificar na área de trabalho antes de um compromisso da agenda começar.</label>
+    </entry>
+    <entry name="notifyAdvanceMinutes" type="Int">
+      <default>15</default>
+      <label>Minutos de antecedência para o lembrete de compromisso.</label>
+    </entry>
+    <entry name="notifySeen" type="StringList">
+      <label>Compromissos já notificados ("titulo|startMs"), para não repetir o lembrete.</label>
+    </entry>
   </group>
 
 </kcfg>
