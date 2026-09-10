@@ -2392,6 +2392,35 @@ PlasmoidItem {
                                 onTriggered: root.currentFeeds().length === 0 ? root.openConfig() : root.loadAll()
                             }
                         }
+
+                        // Rodapé da aba Notícias (erros + hora da atualização). Fica
+                        // DENTRO do conteúdo para não roubar altura da barra lateral
+                        // (mantém a posição do botão Configurações) quando a aba aberta.
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            Layout.rightMargin: Kirigami.Units.largeSpacing
+                            Layout.bottomMargin: Kirigami.Units.smallSpacing
+                            spacing: Kirigami.Units.smallSpacing
+
+                            Kirigami.InlineMessage {
+                                id: errorMessage
+                                Layout.fillWidth: true
+                                visible: root.errorText !== ""
+                                type: Kirigami.MessageType.Warning
+                                text: i18n("Some feeds failed to load:") + "\n" + root.errorText
+                                showCloseButton: true
+                                onVisibleChanged: if (!visible) root.errorText = ""
+                            }
+
+                            QQC2.Label {
+                                Layout.fillWidth: true
+                                horizontalAlignment: Text.AlignRight
+                                visible: root.lastUpdated !== ""
+                                text: i18n("Updated at %1", root.lastUpdated)
+                                opacity: 0.55
+                                font.pixelSize: 10
+                            }
+                        }
                     }
                 }
             }
@@ -2399,36 +2428,6 @@ PlasmoidItem {
                 } // StackLayout (tabFade)
                 } // Item wrapper (fade)
         } // RowLayout (abas + conteúdo)
-
-        // ---------------- Rodapé (apenas na aba Notícias)
-        ColumnLayout {
-            visible: root.currentTab === 6
-            Layout.fillWidth: true
-            Layout.leftMargin: Kirigami.Units.largeSpacing
-            Layout.rightMargin: Kirigami.Units.largeSpacing
-            Layout.bottomMargin: Kirigami.Units.smallSpacing
-            spacing: Kirigami.Units.smallSpacing
-
-            Kirigami.InlineMessage {
-                id: errorMessage
-                Layout.fillWidth: true
-                visible: root.errorText !== ""
-                type: Kirigami.MessageType.Warning
-                text: i18n("Some feeds failed to load:") + "\n" + root.errorText
-                showCloseButton: true
-                onVisibleChanged: if (!visible) root.errorText = ""
-            }
-
-            QQC2.Label {
-                Layout.fillWidth: true
-                horizontalAlignment: Text.AlignRight
-                text: root.lastUpdated === ""
-                      ? ""
-                      : i18n("Updated at %1", root.lastUpdated)
-                opacity: 0.55
-                font.pixelSize: 10
-            }
-        } // ColumnLayout (bodyItem)
 
         // Confirmação ao sair da aba Agenda com o diálogo de compromisso aberto.
         Rectangle {
