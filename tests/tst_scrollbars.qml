@@ -33,6 +33,18 @@ Item {
     property var selectedCityName: ""
     function refreshWeather() {}
 
+    // ---- ambiente extra só da página de Notícias (NewsPage lê do `root`) ----
+    property var slicedAll: []
+    property bool loading: false
+    property string lastUpdated: ""
+    property string errorText: ""
+    property int headlineLines: 2
+    property var iconResolvedName: ""
+    property var iconResolvedSource: ""
+    function currentFeeds() { return []; }
+    function loadAll() {}
+    function openConfig() {}
+
     // local onde as páginas são instanciadas (mantém o root de teste limpo)
     Item { id: holder; anchors.fill: parent }
 
@@ -237,6 +249,18 @@ Item {
         }
     }
 
+    // Coleta todos os cabeçalhos PageHeader (RowLayout com objectName
+    // "pageHeaderRow") de uma página — deve haver exatamente um por página.
+    function collectHeaders(pageItem, out) {
+        var data = pageItem.data ? pageItem.data : [];
+        for (var i = 0; i < data.length; i++) {
+            var c = data[i];
+            if (!c) continue;
+            if (c.objectName === "pageHeaderRow") out.push(c);
+            if (c.data) collectHeaders(c, out);
+        }
+    }
+
     TestCase {
         name: "scrollbarOverlap"
         when: windowShown
@@ -321,6 +345,27 @@ Item {
             });
             page.showHistory = true;
             assertNoScrollbarOverlap(page, "Listas", tcase);
+        }
+
+        function test_headers_fixos_48px() {
+            var cases = [
+                { name: "AgendaPage", props: { width: 360, height: 420, events: makeEvents(3), loading: false, notice: "" } },
+                { name: "ToDoPage", props: { width: 360, height: 420, todos: makeTodos(5), completedTodos: makeTodos(3), showHistory: true } },
+                { name: "ClimaPage", props: { width: 360, height: 420, weatherData: makeWeather(), weatherLoading: false, weatherCity: "Campinas", extraCities: [], extraWeatherData: ({}), selectedCityName: "" } },
+                { name: "NotasPage", props: { width: 360, height: 420, notes: makeNotes(5) } },
+                { name: "ListasPage", props: { width: 360, height: 420, lists: makeLists(3, false), expandedList: -1, showHistory: false } },
+                { name: "ResumoPage", props: { width: 360, height: 420, events: makeEvents(3), todos: makeTodos(3), loading: false, weatherData: null, weatherLoading: false, weatherCity: "" } },
+                { name: "NewsPage", props: { width: 360, height: 420 } }
+            ];
+            for (var i = 0; i < cases.length; i++) {
+                var c = cases[i];
+                var page = createPage(c.name, c.props);
+                var rows = [];
+                collectHeaders(page, rows);
+                compare(rows.length, 1, c.name + ": exatamente 1 PageHeader");
+                compare(rows[0].height, 48, c.name + ": altura fixa do header === 48 px");
+                page.destroy();
+            }
         }
     }
 }

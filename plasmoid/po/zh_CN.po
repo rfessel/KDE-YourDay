@@ -569,42 +569,6 @@ msgid "Settings"
 msgstr "设置"
 
 #: contents/ui/main.qml
-msgid "Here are the top news of interest to you"
-msgstr "以下是您感兴趣的主要新闻"
-
-#: contents/ui/main.qml
-msgid "Refresh news"
-msgstr "刷新新闻"
-
-#: contents/ui/main.qml
-msgid "No feeds configured.\nAdd RSS feeds in Settings."
-msgstr "未配置订阅源。\n请在设置中添加 RSS 订阅源。"
-
-#: contents/ui/main.qml
-msgid "No news found"
-msgstr "未找到新闻"
-
-#: contents/ui/main.qml
-msgid "No news loaded. See details below."
-msgstr "未加载新闻。详情请见下方。"
-
-#: contents/ui/main.qml
-msgid "Open settings"
-msgstr "打开设置"
-
-#: contents/ui/main.qml
-msgid "Try again"
-msgstr "重试"
-
-#: contents/ui/main.qml
-msgid "Some feeds failed to load:"
-msgstr "部分订阅源加载失败:"
-
-#: contents/ui/main.qml
-msgid "Updated at %1"
-msgstr "更新于 %1"
-
-#: contents/ui/main.qml
 msgid "Unsaved changes"
 msgstr "未保存的更改"
 
@@ -690,16 +654,20 @@ msgid "OK"
 msgstr "确定"
 
 #: contents/ui/pages/ClimaPage.qml
+msgid "Forecast"
+msgstr "预报"
+
+#: contents/ui/pages/ClimaPage.qml
+msgid "Refresh"
+msgstr "刷新"
+
+#: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
 msgstr "点击刷新以加载数据。"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "No city configured.\nGo to Settings → Weather to add one."
 msgstr "未配置城市。\n请前往设置 → 天气添加城市。"
-
-#: contents/ui/pages/ClimaPage.qml
-msgid "Refresh"
-msgstr "刷新"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "High: %1°"
@@ -797,6 +765,42 @@ msgstr "恢复列表"
 msgid "Delete permanently"
 msgstr "永久删除"
 
+#: contents/ui/pages/NewsPage.qml
+msgid "Here are the top news of interest to you"
+msgstr "以下是您感兴趣的主要新闻"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Refresh news"
+msgstr "刷新新闻"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Updated at %1"
+msgstr "更新于 %1"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No feeds configured.\nAdd RSS feeds in Settings."
+msgstr "未配置订阅源。\n请在设置中添加 RSS 订阅源。"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No news found"
+msgstr "未找到新闻"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No news loaded. See details below."
+msgstr "未加载新闻。详情请见下方。"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Open settings"
+msgstr "打开设置"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Try again"
+msgstr "重试"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Some feeds failed to load:"
+msgstr "部分订阅源加载失败:"
+
 #: contents/ui/pages/NotasPage.qml
 msgid "Your notes, thoughts, or anything you need to write down..."
 msgstr "您的笔记、想法或任何需要记录的内容..."
@@ -832,6 +836,10 @@ msgstr "晚上好"
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Tomorrow"
 msgstr "明天"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Your day at a glance"
+msgstr "概览您的一天"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tap to refresh"

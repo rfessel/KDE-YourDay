@@ -570,42 +570,6 @@ msgid "Settings"
 msgstr "הגדרות"
 
 #: contents/ui/main.qml
-msgid "Here are the top news of interest to you"
-msgstr "הנה החדשות המרכזיות שמעניינות אותך"
-
-#: contents/ui/main.qml
-msgid "Refresh news"
-msgstr "רענן חדשות"
-
-#: contents/ui/main.qml
-msgid "No feeds configured.\nAdd RSS feeds in Settings."
-msgstr "אין הזנות מוגדרות.\nהוסף הזנות RSS בהגדרות."
-
-#: contents/ui/main.qml
-msgid "No news found"
-msgstr "לא נמצאו חדשות"
-
-#: contents/ui/main.qml
-msgid "No news loaded. See details below."
-msgstr "לא נטענו חדשות. ראה פרטים למטה."
-
-#: contents/ui/main.qml
-msgid "Open settings"
-msgstr "פתח הגדרות"
-
-#: contents/ui/main.qml
-msgid "Try again"
-msgstr "נסה שוב"
-
-#: contents/ui/main.qml
-msgid "Some feeds failed to load:"
-msgstr "חלק מההזנות לא נטענו:"
-
-#: contents/ui/main.qml
-msgid "Updated at %1"
-msgstr "עודכן ב-%1"
-
-#: contents/ui/main.qml
 msgid "Unsaved changes"
 msgstr "שינויים שלא נשמרו"
 
@@ -691,16 +655,20 @@ msgid "OK"
 msgstr "אישור"
 
 #: contents/ui/pages/ClimaPage.qml
+msgid "Forecast"
+msgstr "תחזית"
+
+#: contents/ui/pages/ClimaPage.qml
+msgid "Refresh"
+msgstr "רענן"
+
+#: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
 msgstr "לחץ על רענון כדי לטעון נתונים."
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "No city configured.\nGo to Settings → Weather to add one."
 msgstr "לא מוגדרת עיר.\nעבור להגדרות → מזג אוויר כדי להוסיף."
-
-#: contents/ui/pages/ClimaPage.qml
-msgid "Refresh"
-msgstr "רענן"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "High: %1°"
@@ -798,6 +766,42 @@ msgstr "שחזור רשימה"
 msgid "Delete permanently"
 msgstr "מחיקה לצמיתות"
 
+#: contents/ui/pages/NewsPage.qml
+msgid "Here are the top news of interest to you"
+msgstr "הנה החדשות המרכזיות שמעניינות אותך"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Refresh news"
+msgstr "רענן חדשות"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Updated at %1"
+msgstr "עודכן ב-%1"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No feeds configured.\nAdd RSS feeds in Settings."
+msgstr "אין הזנות מוגדרות.\nהוסף הזנות RSS בהגדרות."
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No news found"
+msgstr "לא נמצאו חדשות"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No news loaded. See details below."
+msgstr "לא נטענו חדשות. ראה פרטים למטה."
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Open settings"
+msgstr "פתח הגדרות"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Try again"
+msgstr "נסה שוב"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Some feeds failed to load:"
+msgstr "חלק מההזנות לא נטענו:"
+
 #: contents/ui/pages/NotasPage.qml
 msgid "Your notes, thoughts, or anything you need to write down..."
 msgstr "ההערות, המחשבות או כל דבר שתרצה לכתוב..."
@@ -833,6 +837,10 @@ msgstr "ערב טוב"
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Tomorrow"
 msgstr "מחר"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Your day at a glance"
+msgstr "היום שלך במבט חטוף"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tap to refresh"

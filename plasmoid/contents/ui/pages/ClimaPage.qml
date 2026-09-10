@@ -95,6 +95,32 @@ Item {
         anchors.rightMargin: 0
         spacing: Kirigami.Units.largeSpacing
 
+        // Cabeçalho padrão (48 px) — previsão + refresh manual do clima.
+        PageHeader {
+            title: i18n("Forecast")
+            margins: 0
+
+            PlasmaComponents3.ToolButton {
+                Layout.preferredWidth: 32
+                Layout.preferredHeight: 32
+                QQC2.ToolTip.text: i18n("Refresh")
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.delay: 500
+                contentItem: Kirigami.Icon {
+                    source: "view-refresh"
+                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
+                    RotationAnimation on rotation {
+                        running: page.weatherLoading
+                        from: 0
+                        to: 360
+                        duration: 800
+                        loops: Animation.Infinite
+                    }
+                }
+                onClicked: root.refreshWeather()
+            }
+        }
+
         // Loading
         QQC2.BusyIndicator {
             visible: page.weatherLoading

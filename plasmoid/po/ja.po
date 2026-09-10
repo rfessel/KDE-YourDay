@@ -570,42 +570,6 @@ msgid "Settings"
 msgstr "設定"
 
 #: contents/ui/main.qml
-msgid "Here are the top news of interest to you"
-msgstr "皆様に興味のある主要ニュースをお届けします"
-
-#: contents/ui/main.qml
-msgid "Refresh news"
-msgstr "ニュースを更新"
-
-#: contents/ui/main.qml
-msgid "No feeds configured.\nAdd RSS feeds in Settings."
-msgstr "フィードが設定されていません。\n設定でRSSフィードを追加してください。"
-
-#: contents/ui/main.qml
-msgid "No news found"
-msgstr "ニュースが見つかりません"
-
-#: contents/ui/main.qml
-msgid "No news loaded. See details below."
-msgstr "ニュースが読み込まれませんでした。詳細は以下をご確認ください。"
-
-#: contents/ui/main.qml
-msgid "Open settings"
-msgstr "設定を開く"
-
-#: contents/ui/main.qml
-msgid "Try again"
-msgstr "再試行"
-
-#: contents/ui/main.qml
-msgid "Some feeds failed to load:"
-msgstr "一部のフィードを読み込めませんでした:"
-
-#: contents/ui/main.qml
-msgid "Updated at %1"
-msgstr "%1に更新"
-
-#: contents/ui/main.qml
 msgid "Unsaved changes"
 msgstr "保存されていない変更"
 
@@ -691,16 +655,20 @@ msgid "OK"
 msgstr "OK"
 
 #: contents/ui/pages/ClimaPage.qml
+msgid "Forecast"
+msgstr "予報"
+
+#: contents/ui/pages/ClimaPage.qml
+msgid "Refresh"
+msgstr "更新"
+
+#: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
 msgstr "更新をタップしてデータを読み込む。"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "No city configured.\nGo to Settings → Weather to add one."
 msgstr "都市が設定されていません。\n設定 → 天気で追加してください。"
-
-#: contents/ui/pages/ClimaPage.qml
-msgid "Refresh"
-msgstr "更新"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "High: %1°"
@@ -798,6 +766,42 @@ msgstr "リストを復元"
 msgid "Delete permanently"
 msgstr "完全に削除"
 
+#: contents/ui/pages/NewsPage.qml
+msgid "Here are the top news of interest to you"
+msgstr "皆様に興味のある主要ニュースをお届けします"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Refresh news"
+msgstr "ニュースを更新"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Updated at %1"
+msgstr "%1に更新"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No feeds configured.\nAdd RSS feeds in Settings."
+msgstr "フィードが設定されていません。\n設定でRSSフィードを追加してください。"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No news found"
+msgstr "ニュースが見つかりません"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No news loaded. See details below."
+msgstr "ニュースが読み込まれませんでした。詳細は以下をご確認ください。"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Open settings"
+msgstr "設定を開く"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Try again"
+msgstr "再試行"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Some feeds failed to load:"
+msgstr "一部のフィードを読み込めませんでした:"
+
 #: contents/ui/pages/NotasPage.qml
 msgid "Your notes, thoughts, or anything you need to write down..."
 msgstr "メモ、考え、書き留めたいこと..."
@@ -833,6 +837,10 @@ msgstr "こんばんは"
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Tomorrow"
 msgstr "明日"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Your day at a glance"
+msgstr "一日の概要"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tap to refresh"

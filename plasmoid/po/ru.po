@@ -571,42 +571,6 @@ msgid "Settings"
 msgstr "Настройки"
 
 #: contents/ui/main.qml
-msgid "Here are the top news of interest to you"
-msgstr "Вот основные новости, которые могут вас заинтересовать"
-
-#: contents/ui/main.qml
-msgid "Refresh news"
-msgstr "Обновить новости"
-
-#: contents/ui/main.qml
-msgid "No feeds configured.\nAdd RSS feeds in Settings."
-msgstr "Ленты не настроены.\nДобавьте RSS-ленты в Настройках."
-
-#: contents/ui/main.qml
-msgid "No news found"
-msgstr "Новости не найдены"
-
-#: contents/ui/main.qml
-msgid "No news loaded. See details below."
-msgstr "Новости не загружены. Подробности см. ниже."
-
-#: contents/ui/main.qml
-msgid "Open settings"
-msgstr "Открыть настройки"
-
-#: contents/ui/main.qml
-msgid "Try again"
-msgstr "Попробовать снова"
-
-#: contents/ui/main.qml
-msgid "Some feeds failed to load:"
-msgstr "Некоторые ленты не загрузились:"
-
-#: contents/ui/main.qml
-msgid "Updated at %1"
-msgstr "Обновлено в %1"
-
-#: contents/ui/main.qml
 msgid "Unsaved changes"
 msgstr "Несохранённые изменения"
 
@@ -692,16 +656,20 @@ msgid "OK"
 msgstr "OK"
 
 #: contents/ui/pages/ClimaPage.qml
+msgid "Forecast"
+msgstr "Прогноз"
+
+#: contents/ui/pages/ClimaPage.qml
+msgid "Refresh"
+msgstr "Обновить"
+
+#: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
 msgstr "Нажмите обновить для загрузки данных."
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "No city configured.\nGo to Settings → Weather to add one."
 msgstr "Город не настроен.\nПерейдите в Настройки → Погода, чтобы добавить."
-
-#: contents/ui/pages/ClimaPage.qml
-msgid "Refresh"
-msgstr "Обновить"
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "High: %1°"
@@ -799,6 +767,42 @@ msgstr "Восстановить список"
 msgid "Delete permanently"
 msgstr "Удалить навсегда"
 
+#: contents/ui/pages/NewsPage.qml
+msgid "Here are the top news of interest to you"
+msgstr "Вот основные новости, которые могут вас заинтересовать"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Refresh news"
+msgstr "Обновить новости"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Updated at %1"
+msgstr "Обновлено в %1"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No feeds configured.\nAdd RSS feeds in Settings."
+msgstr "Ленты не настроены.\nДобавьте RSS-ленты в Настройках."
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No news found"
+msgstr "Новости не найдены"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No news loaded. See details below."
+msgstr "Новости не загружены. Подробности см. ниже."
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Open settings"
+msgstr "Открыть настройки"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Try again"
+msgstr "Попробовать снова"
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Some feeds failed to load:"
+msgstr "Некоторые ленты не загрузились:"
+
 #: contents/ui/pages/NotasPage.qml
 msgid "Your notes, thoughts, or anything you need to write down..."
 msgstr "Ваши заметки, мысли или всё, что нужно записать..."
@@ -834,6 +838,10 @@ msgstr "Добрый вечер"
 #: contents/ui/pages/ResumoPage.qml contents/ui/pages/ToDoPage.qml
 msgid "Tomorrow"
 msgstr "Завтра"
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Your day at a glance"
+msgstr "Ваш день с первого взгляда"
 
 #: contents/ui/pages/ResumoPage.qml
 msgid "Tap to refresh"

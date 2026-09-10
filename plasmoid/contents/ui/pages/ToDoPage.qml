@@ -100,28 +100,10 @@ Item {
             anchors.topMargin: Kirigami.Units.smallSpacing
             spacing: Kirigami.Units.smallSpacing
 
-            // Header (mesmo padrão da Agenda)
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 48
-                spacing: Kirigami.Units.smallSpacing
-
-                PlasmaExtras.Heading {
-                    level: 4
-                    Layout.fillWidth: true
-                    text: i18n("These are the tasks you need to complete")
-                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                    elide: Text.ElideRight
-                    font.pixelSize: 13
-                }
-            }
-
-            Kirigami.Separator {
-                Layout.fillWidth: true
-                Layout.topMargin: Kirigami.Units.smallSpacing
-                Layout.bottomMargin: Kirigami.Units.smallSpacing
-                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                opacity: 0.15
+            // Header (padrão em todas as abas)
+            PageHeader {
+                title: i18n("These are the tasks you need to complete")
+                margins: 0
             }
 
             // Entrada para nova tarefa

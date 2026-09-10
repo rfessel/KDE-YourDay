@@ -577,42 +577,6 @@ msgid "Settings"
 msgstr ""
 
 #: contents/ui/main.qml
-msgid "Here are the top news of interest to you"
-msgstr ""
-
-#: contents/ui/main.qml
-msgid "Refresh news"
-msgstr ""
-
-#: contents/ui/main.qml
-msgid "No feeds configured.\nAdd RSS feeds in Settings."
-msgstr ""
-
-#: contents/ui/main.qml
-msgid "No news found"
-msgstr ""
-
-#: contents/ui/main.qml
-msgid "No news loaded. See details below."
-msgstr ""
-
-#: contents/ui/main.qml
-msgid "Open settings"
-msgstr ""
-
-#: contents/ui/main.qml
-msgid "Try again"
-msgstr ""
-
-#: contents/ui/main.qml
-msgid "Some feeds failed to load:"
-msgstr ""
-
-#: contents/ui/main.qml
-msgid "Updated at %1"
-msgstr ""
-
-#: contents/ui/main.qml
 msgid "Unsaved changes"
 msgstr ""
 
@@ -700,15 +664,19 @@ msgid "OK"
 msgstr ""
 
 #: contents/ui/pages/ClimaPage.qml
+msgid "Forecast"
+msgstr ""
+
+#: contents/ui/pages/ClimaPage.qml
+msgid "Refresh"
+msgstr ""
+
+#: contents/ui/pages/ClimaPage.qml
 msgid "Tap refresh to load data."
 msgstr ""
 
 #: contents/ui/pages/ClimaPage.qml
 msgid "No city configured.\nGo to Settings → Weather to add one."
-msgstr ""
-
-#: contents/ui/pages/ClimaPage.qml
-msgid "Refresh"
 msgstr ""
 
 #: contents/ui/pages/ClimaPage.qml
@@ -809,6 +777,42 @@ msgstr ""
 msgid "Delete permanently"
 msgstr ""
 
+#: contents/ui/pages/NewsPage.qml
+msgid "Here are the top news of interest to you"
+msgstr ""
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Refresh news"
+msgstr ""
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Updated at %1"
+msgstr ""
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No feeds configured.\nAdd RSS feeds in Settings."
+msgstr ""
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No news found"
+msgstr ""
+
+#: contents/ui/pages/NewsPage.qml
+msgid "No news loaded. See details below."
+msgstr ""
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Open settings"
+msgstr ""
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Try again"
+msgstr ""
+
+#: contents/ui/pages/NewsPage.qml
+msgid "Some feeds failed to load:"
+msgstr ""
+
 #: contents/ui/pages/NotasPage.qml
 msgid "Your notes, thoughts, or anything you need to write down..."
 msgstr ""
@@ -844,6 +848,10 @@ msgstr ""
 #: contents/ui/pages/ResumoPage.qml
 #: contents/ui/pages/ToDoPage.qml
 msgid "Tomorrow"
+msgstr ""
+
+#: contents/ui/pages/ResumoPage.qml
+msgid "Your day at a glance"
 msgstr ""
 
 #: contents/ui/pages/ResumoPage.qml

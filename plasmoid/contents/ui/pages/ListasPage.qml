@@ -42,31 +42,9 @@ Item {
         anchors.fill: parent
         spacing: 0
 
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 48
-            Layout.leftMargin: Kirigami.Units.largeSpacing
-            Layout.rightMargin: Kirigami.Units.largeSpacing
-            spacing: Kirigami.Units.smallSpacing
-
-            PlasmaExtras.Heading {
-                level: 4
-                Layout.fillWidth: true
-                text: i18n("Your lists, shopping, or anything you need to organize...")
-                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                elide: Text.ElideRight
-                font.pixelSize: 13
-            }
-        }
-
-        Kirigami.Separator {
-            Layout.fillWidth: true
-            Layout.topMargin: Kirigami.Units.smallSpacing
-            Layout.bottomMargin: Kirigami.Units.smallSpacing
-            Layout.leftMargin: Kirigami.Units.largeSpacing
-            Layout.rightMargin: Kirigami.Units.largeSpacing
-            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-            opacity: 0.15
+        PageHeader {
+            title: i18n("Your lists, shopping, or anything you need to organize...")
+            margins: Kirigami.Units.largeSpacing
         }
 
         RowLayout {

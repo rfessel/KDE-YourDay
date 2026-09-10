@@ -144,6 +144,12 @@ Item {
             anchors.topMargin: Kirigami.Units.smallSpacing
             spacing: Kirigami.Units.largeSpacing
 
+            // Cabeçalho padrão (48 px) — o herói fica ABAIXO desta faixa.
+            PageHeader {
+                title: i18n("Your day at a glance")
+                margins: Kirigami.Units.largeSpacing
+            }
+
             // Saudação + progresso do dia + clima (herói com gradiente suave)
             KCoreAddons.KUser {
                 id: kuserInfo

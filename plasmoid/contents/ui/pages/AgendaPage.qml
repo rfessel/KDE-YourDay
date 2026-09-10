@@ -381,21 +381,10 @@ Item {
         anchors.rightMargin: 0
         spacing: 0
 
-        // Header
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 48
-            Layout.rightMargin: Kirigami.Units.smallSpacing
-            spacing: Kirigami.Units.smallSpacing
-
-            PlasmaExtras.Heading {
-                level: 4
-                Layout.fillWidth: true
-                text: i18n("These are your appointments for this date...")
-                color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                elide: Text.ElideRight
-                font.pixelSize: 13
-            }
+        // Cabeçalho padrão (48 px) — título + ações, separator incluso.
+        PageHeader {
+            title: i18n("These are your appointments for this date...")
+            margins: 0
 
             PlasmaComponents3.ToolButton {
                 icon.name: "list-add"
@@ -410,15 +399,6 @@ Item {
                 }
                 onClicked: openNewEventDialog()
             }
-        }
-
-        Kirigami.Separator {
-            Layout.fillWidth: true
-            Layout.rightMargin: Kirigami.Units.smallSpacing
-            Layout.topMargin: Kirigami.Units.smallSpacing
-            Layout.bottomMargin: Kirigami.Units.smallSpacing
-            color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-            opacity: 0.15
         }
 
         RowLayout {

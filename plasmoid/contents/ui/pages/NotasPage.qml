@@ -10,7 +10,6 @@ import QtQuick.Controls as QQC2
 
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
-import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kirigami as Kirigami
 
 Item {
@@ -77,26 +76,9 @@ Item {
             anchors.topMargin: Kirigami.Units.smallSpacing
             spacing: 0
 
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 48
-                spacing: Kirigami.Units.smallSpacing
-
-                PlasmaExtras.Heading {
-                    level: 4
-                    Layout.fillWidth: true
-                    text: i18n("Your notes, thoughts, or anything you need to write down...")
-                    color: root.isDarkTheme ? Qt.rgba(0.93, 0.93, 0.93, 1) : Qt.rgba(0.13, 0.13, 0.13, 1)
-                    elide: Text.ElideRight
-                    font.pixelSize: 13
-                }
-            }
-
-            Kirigami.Separator {
-                Layout.fillWidth: true
-                Layout.topMargin: Kirigami.Units.smallSpacing
-                Layout.bottomMargin: Kirigami.Units.smallSpacing
-                color: Qt.alpha(root.textMain, 0.15)
+            PageHeader {
+                title: i18n("Your notes, thoughts, or anything you need to write down...")
+                margins: 0
             }
 
             // Entrada para nova nota
