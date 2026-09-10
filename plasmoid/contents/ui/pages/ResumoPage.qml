@@ -48,27 +48,43 @@ Item {
         return pct + "%";
     }
 
-    readonly property var nextEvents: {
-        // page.events já vem cortado na janela (mês passado .. +3 meses);
-        // aqui filtra só o que termina a partir de hoje e limita a 3.
-        // Como agendaEvents vem ordenado por start, o 1º break já garante
-        // os 3 menores starts dentre os candidatos (sem varrer tudo).
+    // Próximos compromissos: só pré-visualiza os CONFIRMADOS, vivos agora ou
+    // no futuro (ev.end > agora). Conforme o relógio passa, os que terminaram
+    // saem e entram os próximos — atualizado a cada minuto (Timer) e a cada
+    // republicação da agenda (onEventsChanged). A chave de cache evita
+    // recriar os delegates do Repeater sem necessidade (relógio bate a 1 Hz).
+    property var nextEvents: []
+
+    property string nextEventsKey: ""
+
+    function updateNextEvents() {
         var now = Date.now();
-        var d = new Date();
-        var todayStart = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0).getTime();
         var upcoming = [];
+        var key = [];
         var evs = page.events;
-        for (var i = 0; i < evs.length; i++) {
+        for (var i = 0; i < evs.length && upcoming.length < 3; i++) {
             var ev = evs[i];
-            if (ev.end > todayStart) {
+            if (ev.end > now) {
                 upcoming.push(ev);
-                if (upcoming.length >= 3) {
-                    break;
-                }
+                key.push(ev.start + "|" + ev.title);
             }
         }
-        return upcoming;
+        var joined = key.join(";");
+        if (joined !== page.nextEventsKey) {
+            page.nextEventsKey = joined;
+            page.nextEvents = upcoming;
+        }
     }
+
+    onEventsChanged: page.updateNextEvents()
+
+    Timer {
+        interval: 60000
+        repeat: true
+        onTriggered: page.updateNextEvents()
+    }
+
+    Component.onCompleted: page.updateNextEvents()
 
     readonly property var rootGreeting: ({
         capFirst: function(s) {
